@@ -39,14 +39,14 @@ function Get-Object {
   [OutputType([Object])]
   param (
     [Parameter(ValueFromPipeline)]
-    [object]$Schema
+    [object]$SchemaDocument
   )
 
   process {
-    $Properties = $Schema.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
+    $Properties = $SchemaDocument.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
     $Members = @{};
     foreach ($Property in $Properties) {
-      switch ($Schema.properties.$Property.type) {
+      switch ($SchemaDocument.properties.$Property.type) {
         'object' {
           $Members.Add($Property, (New-Object -TypeName psobject -Property @{}))
         }
@@ -71,14 +71,14 @@ function Get-Array {
   [OutputType([Array])]
   param (
     [Parameter(ValueFromPipeline)]
-    [object]$Schema
+    [object]$SchemaDocument
   )
 
   process {
-    $Properties = $Schema.items.anyOf.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
+    $Properties = $SchemaDocument.items.anyOf.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
     $Members = @{};
     foreach ($Property in $Properties) {
-      switch ($Schema.items.anyOf.properties.$Property.type) {
+      switch ($SchemaDocument.items.anyOf.properties.$Property.type) {
         'object' {
           $Members.Add($Property, (New-Object -TypeName psobject -Property @{}))
         }
@@ -103,16 +103,16 @@ function Get-Property {
   [OutputType([Object])]
   param (
     [Parameter(ValueFromPipeline)]
-    [object]$Schema,
+    [object]$SchemaDocument,
     [string]$Name
   )
 
   process {
     if ($Name) {
-      $Schema.properties.$Name;
+      $SchemaDocument.properties.$Name;
     }
     else {
-      $Schema.properties;
+      $SchemaDocument.properties;
     }
   }
 }
