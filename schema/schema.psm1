@@ -1,4 +1,4 @@
-function Get-SchemaDocument {
+function Get-Document {
   param (
     [string]$Path
   )
@@ -11,75 +11,77 @@ function Get-SchemaDocument {
 
     switch ($Schema.Scheme) {
       'file' {
-        Get-Content -Path $Path |ConvertFrom-Json
+        Get-Content -Path $Path | ConvertFrom-Json
       }
       'https' {
-        Invoke-WebRequest -UseBasicParsing -Uri $Path |Select-Object -ExpandProperty Content |ConvertFrom-Json
+        Invoke-WebRequest -UseBasicParsing -Uri $Path | Select-Object -ExpandProperty Content | ConvertFrom-Json
       }
       'http' {
-        Invoke-WebRequest -UseBasicParsing -Uri $Path |Select-Object -ExpandProperty Content |ConvertFrom-Json
+        Invoke-WebRequest -UseBasicParsing -Uri $Path | Select-Object -ExpandProperty Content | ConvertFrom-Json
       }
     }
-  } catch {
+  }
+  catch {
     throw $_
   }
 }
-function Get-SchemaObject {
+function Get-Object {
   param (
     [object]$Schema
   )
-  $Properties = $Schema.properties |Get-Member -MemberType NoteProperty |Select-Object -ExpandProperty Name;
+  $Properties = $Schema.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
   $Members = @{};
   foreach ($Property in $Properties) {
     switch ($Schema.properties.$Property.type) {
       'object' {
-        $Members.Add($Property,(New-Object -TypeName psobject -Property @{}))
+        $Members.Add($Property, (New-Object -TypeName psobject -Property @{}))
       }
       'array' {
-        $Members.Add($Property,@())
+        $Members.Add($Property, @())
       }
       'string' {
-        $Members.Add($Property,"")
+        $Members.Add($Property, "")
       }
       'number' {
-        $Members.Add($Property,[Int16]"")
+        $Members.Add($Property, [Int16]"")
       }
     }
   }
   New-Object -TypeName psobject -Property $Members;
 }
-function Get-SchemaArray {
+function Get-Array {
   param (
     [object]$Schema
   )
-  $Properties = $Schema.items.anyOf.properties |Get-Member -MemberType NoteProperty |Select-Object -ExpandProperty Name;
+  $Properties = $Schema.items.anyOf.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
   $Members = @{};
   foreach ($Property in $Properties) {
     switch ($Schema.items.anyOf.properties.$Property.type) {
       'object' {
-        $Members.Add($Property,(New-Object -TypeName psobject -Property @{}))
+        $Members.Add($Property, (New-Object -TypeName psobject -Property @{}))
       }
       'array' {
-        $Members.Add($Property,@())
+        $Members.Add($Property, @())
       }
       'string' {
-        $Members.Add($Property,"")
+        $Members.Add($Property, "")
       }
       'number' {
-        $Members.Add($Property,[Int16]"")
+        $Members.Add($Property, [Int16]"")
       }
     }
   }
   New-Object -TypeName psobject -Property $Members;
 }
-function Get-SchemaProperty {
+function Get-Property {
   param (
     [object]$Schema,
     [string]$Name
   )
   if ($Name) {
     $Schema.properties.$Name;
-  } else {
+  }
+  else {
     $Schema.properties;
   }
 }
@@ -92,11 +94,12 @@ function New-RootDocument {
     $ErrorActionPreference = 'Stop';
     $Error.Clear();
 
-    $Schema = Get-SchemaDocument -Path $Path;
-    $rootDocument = Get-SchemaObject -Schema $Schema;
-    $rootDocument |Add-Member -MemberType NoteProperty -Name '$schema' -Value ($Schema.'$id')
+    $Schema = Get-Document -Path $Path;
+    $rootDocument = Get-Object - $Schema;
+    $rootDocument | Add-Member -MemberType NoteProperty -Name '$schema' -Value ($Schema.'$id')
     return $rootDocument
-  } catch {
+  }
+  catch {
 
   }
 }
