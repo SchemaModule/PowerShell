@@ -116,21 +116,3 @@ function Get-Property {
     }
   }
 }
-function New-RootDocument {
-  param (
-    [string]$Path
-  )
-
-  try {
-    $ErrorActionPreference = 'Stop';
-    $Error.Clear();
-
-    $Schema = Get-Document -Path $Path;
-    $rootDocument = Get-Object - $Schema;
-    $rootDocument | Add-Member -MemberType NoteProperty -Name '$schema' -Value ($Schema.'$id')
-    return $rootDocument
-  }
-  catch {
-    throw $_;
-  }
-}
