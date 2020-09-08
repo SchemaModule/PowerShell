@@ -97,6 +97,10 @@ function Get-Array {
   }
 }
 function Get-Property {
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-Property.md#get-property',
+    PositionalBinding = $true)]
+  [OutputType([Object])]
   param (
     [object]$Schema,
     [string]$Name
