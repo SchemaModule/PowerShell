@@ -102,6 +102,7 @@ function Get-Property {
     PositionalBinding = $true)]
   [OutputType([Object])]
   param (
+    [Parameter(ValueFromPipeline)]
     [object]$Schema,
     [string]$Name
   )
