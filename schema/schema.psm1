@@ -1,28 +1,35 @@
 function Get-Document {
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument',
+    PositionalBinding = $true)]
+  [OutputType([Object])]
   param (
+    [Parameter(ValueFromPipeline)]
     [string]$Path
   )
 
-  try {
-    $ErrorActionPreference = 'Stop';
-    $Error.Clear();
+  process {
+    try {
+      $ErrorActionPreference = 'Stop';
+      $Error.Clear();
 
-    $Schema = [System.UriBuilder]::new($Path);
+      $Schema = [System.UriBuilder]::new($Path);
 
-    switch ($Schema.Scheme) {
-      'file' {
-        Get-Content -Path $Path | ConvertFrom-Json
-      }
-      'https' {
-        Invoke-WebRequest -UseBasicParsing -Uri $Path | Select-Object -ExpandProperty Content | ConvertFrom-Json
-      }
-      'http' {
-        Invoke-WebRequest -UseBasicParsing -Uri $Path | Select-Object -ExpandProperty Content | ConvertFrom-Json
+      switch ($Schema.Scheme) {
+        'file' {
+          Get-Content -Path $Path | ConvertFrom-Json;
+        }
+        'https' {
+          Invoke-WebRequest -UseBasicParsing -Uri $Path | Select-Object -ExpandProperty Content | ConvertFrom-Json;
+        }
+        'http' {
+          Invoke-WebRequest -UseBasicParsing -Uri $Path | Select-Object -ExpandProperty Content | ConvertFrom-Json;
+        }
       }
     }
-  }
-  catch {
-    throw $_
+    catch {
+      throw $_;
+    }
   }
 }
 function Get-Object {
