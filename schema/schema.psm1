@@ -100,6 +100,6 @@ function New-RootDocument {
     return $rootDocument
   }
   catch {
-
+    throw $_;
   }
 }
