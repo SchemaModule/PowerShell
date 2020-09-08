@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Get-SchemaProperty [[-Schema] <Object>] [[-Name] <String>]
+Get-SchemaProperty [[-SchemaDocument] <Object>] [[-Name] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -45,8 +45,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Schema
-{{ Fill Schema Description }}
+### -SchemaDocument
+{{ Fill SchemaDocument Description }}
 
 ```yaml
 Type: Object
@@ -56,17 +56,21 @@ Aliases:
 Required: False
 Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
 ## INPUTS
 
-### None
+### System.Object
 
 ## OUTPUTS
 
 ### System.Object
+
 ## NOTES
 
 ## RELATED LINKS
