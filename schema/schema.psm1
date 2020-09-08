@@ -106,11 +106,14 @@ function Get-Property {
     [object]$Schema,
     [string]$Name
   )
-  if ($Name) {
-    $Schema.properties.$Name;
-  }
-  else {
-    $Schema.properties;
+
+  process {
+    if ($Name) {
+      $Schema.properties.$Name;
+    }
+    else {
+      $Schema.properties;
+    }
   }
 }
 function New-RootDocument {
