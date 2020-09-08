@@ -97,15 +97,23 @@ function Get-Array {
   }
 }
 function Get-Property {
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-Property.md#get-property',
+    PositionalBinding = $true)]
+  [OutputType([Object])]
   param (
+    [Parameter(ValueFromPipeline)]
     [object]$Schema,
     [string]$Name
   )
-  if ($Name) {
-    $Schema.properties.$Name;
-  }
-  else {
-    $Schema.properties;
+
+  process {
+    if ($Name) {
+      $Schema.properties.$Name;
+    }
+    else {
+      $Schema.properties;
+    }
   }
 }
 function New-RootDocument {
