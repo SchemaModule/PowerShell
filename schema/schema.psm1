@@ -33,7 +33,12 @@ function Get-Document {
   }
 }
 function Get-Object {
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-Object.md#get-object',
+    PositionalBinding = $true)]
+  [OutputType([Object])]
   param (
+    [Parameter(ValueFromPipeline)]
     [object]$Schema
   )
   $Properties = $Schema.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
