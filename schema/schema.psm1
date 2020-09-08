@@ -65,7 +65,12 @@ function Get-Object {
   }
 }
 function Get-Array {
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-Array.md#get-array',
+    PositionalBinding = $true)]
+  [OutputType([Array])]
   param (
+    [Parameter(ValueFromPipeline)]
     [object]$Schema
   )
   $Properties = $Schema.items.anyOf.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
