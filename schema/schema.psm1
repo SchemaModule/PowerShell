@@ -51,7 +51,7 @@ function Get-Object {
   )
 
   process {
-    Write-Verbose $SchemaDocument;
+    Write-Verbose ($SchemaDocument |Out-String);
     $Properties = $SchemaDocument.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
     Write-Verbose "Setting up output object";
     $Members = @{};
@@ -99,7 +99,7 @@ function Get-Array {
   )
 
   process {
-    Write-Verbose $SchemaDocument;
+    Write-Verbose ($SchemaDocument |Out-String);
     $Properties = $SchemaDocument.items.anyOf.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
     Write-Verbose "Setting up output object";
     $Members = @{};
@@ -148,7 +148,7 @@ function Get-Property {
   )
 
   process {
-    Write-Verbose $SchemaDocument;
+    Write-Verbose ($SchemaDocument |Out-String);
     Write-Verbose $Name;
     if ($Name) {
       Write-Verbose "Return specific Property";
