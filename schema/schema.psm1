@@ -72,10 +72,14 @@ function Get-Object {
         }
         'number' {
           Write-Verbose "Add Number to output object";
-          $Members.Add($Property, [Int16]"")
+          $Members.Add($Property, [int])
+        }
+        'integer' {
+          Write-Verbose "Add Integer to output object";
+          $Members.Add($Property, [decimal])
         }
         'boolean' {
-          Write-Verbose "Add BOOLEAN to output object";
+          Write-Verbose "Add Boolean to output object";
           $Members.Add($Property, [bool])
         }
       }
@@ -116,10 +120,14 @@ function Get-Array {
         }
         'number' {
           Write-Verbose "Add Number to output object";
-          $Members.Add($Property, [Int16]"")
+          $Members.Add($Property, [int])
+        }
+        'integer' {
+          Write-Verbose "Add Integer to output object";
+          $Members.Add($Property, [decimal])
         }
         'boolean' {
-          Write-Verbose "Add BOOLEAN to output object";
+          Write-Verbose "Add Boolean to output object";
           $Members.Add($Property, [bool])
         }
       }
