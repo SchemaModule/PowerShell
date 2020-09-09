@@ -52,6 +52,7 @@ function Get-Object {
   process {
     Write-Verbose $SchemaDocument;
     $Properties = $SchemaDocument.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
+    Write-Verbose "Setting up output object";
     $Members = @{};
     foreach ($Property in $Properties) {
       Write-Verbose "Property: $($Property)";
