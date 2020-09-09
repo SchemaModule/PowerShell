@@ -74,6 +74,10 @@ function Get-Object {
           Write-Verbose "Add Number to output object";
           $Members.Add($Property, [Int16]"")
         }
+        'boolean' {
+          Write-Verbose "Add BOOLEAN to output object";
+          $Members.Add($Property, [bool])
+        }
       }
     }
     Write-Verbose "Return JSON PowerShell object";
@@ -113,6 +117,10 @@ function Get-Array {
         'number' {
           Write-Verbose "Add Number to output object";
           $Members.Add($Property, [Int16]"")
+        }
+        'boolean' {
+          Write-Verbose "Add BOOLEAN to output object";
+          $Members.Add($Property, [bool])
         }
       }
     }
