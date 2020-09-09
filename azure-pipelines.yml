@@ -47,6 +47,6 @@ stages:
       displayName: 'NuGet push'
       inputs:
         command: push
-        packagesToPush: '$(BUILD.REPOSITORY.LOCALPATH)\powershell\schema\*.nupkg;'
+        packagesToPush: '$(BUILD.REPOSITORY.LOCALPATH)\powershell\*.nupkg;'
         nuGetFeedType: external
         publishFeedCredentials: poshGallery
