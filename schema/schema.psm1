@@ -1,3 +1,4 @@
+# .ExternalHelp schema.xml
 function Get-Document {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument',
