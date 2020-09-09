@@ -90,24 +90,32 @@ function Get-Array {
   )
 
   process {
+    Write-Verbose $SchemaDocument;
     $Properties = $SchemaDocument.items.anyOf.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
+    Write-Verbose "Setting up output object";
     $Members = @{};
     foreach ($Property in $Properties) {
+      Write-Verbose "Property: $($Property)";
       switch ($SchemaDocument.items.anyOf.properties.$Property.type) {
         'object' {
+          Write-Verbose "Add Object to output object";
           $Members.Add($Property, (New-Object -TypeName psobject -Property @{}))
         }
         'array' {
+          Write-Verbose "Add Array to output object";
           $Members.Add($Property, @())
         }
         'string' {
+          Write-Verbose "Add String to output object";
           $Members.Add($Property, "")
         }
         'number' {
+          Write-Verbose "Add Number to output object";
           $Members.Add($Property, [Int16]"")
         }
       }
     }
+    Write-Verbose "Return JSON PowerShell object";
     New-Object -TypeName psobject -Property $Members;
   }
 }
