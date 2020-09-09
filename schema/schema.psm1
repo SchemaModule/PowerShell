@@ -9,20 +9,27 @@ function Get-Document {
   )
 
   process {
+    Write-Verbose $Path;
     try {
+      Write-Verbose "Clearing Error Variables";
       $ErrorActionPreference = 'Stop';
       $Error.Clear();
 
+      Write-Verbose "Parsing Path param";
       $Schema = [System.UriBuilder]::new($Path);
+      Write-Verbose $Schema;
 
       switch ($Schema.Scheme) {
         'file' {
+          Write-Verbose "Incoming Filepath";
           Get-Content -Path $Path | ConvertFrom-Json;
         }
         'https' {
+          Write-Verbose "Incoming HTTPs path";
           Invoke-WebRequest -UseBasicParsing -Uri $Path | Select-Object -ExpandProperty Content | ConvertFrom-Json;
         }
         'http' {
+          Write-Verbose "Incoming HTTP path";
           Invoke-WebRequest -UseBasicParsing -Uri $Path | Select-Object -ExpandProperty Content | ConvertFrom-Json;
         }
       }
