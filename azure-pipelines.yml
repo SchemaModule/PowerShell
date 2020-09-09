@@ -34,6 +34,7 @@ stages:
         $toolsPath = "$($WorkingPath)\tools";
         $modulePath = "$($WorkingPath)\powershell";
         Set-Location $toolsPath;
+        Get-Item "$($modulePath)\schema.psd1";
         .\ConvertTo-NuSpec.ps1 -ManifestPath "$($modulePath)\schema.psd1"
       displayName: 'Create nuSpec'
       errorActionPreference: Stop
