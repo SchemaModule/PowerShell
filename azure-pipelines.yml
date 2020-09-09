@@ -34,20 +34,19 @@ stages:
         $toolsPath = "$($WorkingPath)\tools";
         $modulePath = "$($WorkingPath)\powershell";
         Set-Location $toolsPath;
-        Get-ChildItem "$($modulePath)" -Recurse;
-        .\ConvertTo-NuSpec.ps1 -ManifestPath "$($modulePath)\schema.psd1"
+        .\ConvertTo-NuSpec.ps1 -ManifestPath "$($modulePath)\schema\schema.psd1"
       displayName: 'Create nuSpec'
       errorActionPreference: Stop
     - task: NuGetCommand@2
       displayName: 'NuGet pack'
       inputs:
         command: pack
-        packagesToPack: '$(BUILD.REPOSITORY.LOCALPATH)\powershell\schema.nuspec'
+        packagesToPack: '$(BUILD.REPOSITORY.LOCALPATH)\powershell\schema\schema.nuspec'
         packDestination: '$(BUILD.REPOSITORY.LOCALPATH)\powershell'
     - task: NuGetCommand@2
       displayName: 'NuGet push'
       inputs:
         command: push
-        packagesToPush: '$(BUILD.REPOSITORY.LOCALPATH)\powershell\*.nupkg;'
+        packagesToPush: '$(BUILD.REPOSITORY.LOCALPATH)\powershell\schema\*.nupkg;'
         nuGetFeedType: external
         publishFeedCredentials: poshGallery
