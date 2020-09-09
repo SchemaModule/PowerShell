@@ -131,10 +131,14 @@ function Get-Property {
   )
 
   process {
+    Write-Verbose $SchemaDocument;
+    Write-Verbose $Name;
     if ($Name) {
+      Write-Verbose "Return specific Property";
       $SchemaDocument.properties.$Name;
     }
     else {
+      Write-Verbose "Return all properties";
       $SchemaDocument.properties;
     }
   }
