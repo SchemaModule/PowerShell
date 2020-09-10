@@ -104,7 +104,7 @@ PrivateData = @{
         ProjectUri = 'https://github.com/SchemaModule'
 
         # A URL to an icon representing this module.
-        # IconUri = ''
+        IconUri = 'https://github.com/SchemaModule/PowerShell/blob/master/logo.png?raw=true'
 
         # ReleaseNotes of this module
         ReleaseNotes = 'https://github.com/SchemaModule/AzDevOps/PowerShell/master/CHANGELOG.md'

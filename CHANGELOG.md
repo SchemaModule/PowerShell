@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated documentation and external help
 - CHNAGELOG added
 - psakefile added
+- Added JSON logo
 
 ### Changed
 - README
