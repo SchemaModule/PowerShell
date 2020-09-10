@@ -49,4 +49,4 @@ stages:
         command: push
         packagesToPush: '$(BUILD.REPOSITORY.LOCALPATH)\powershell\*.nupkg;'
         nuGetFeedType: external
-        publishFeedCredentials: poshGallery
+        publishFeedCredentials: artifacts
