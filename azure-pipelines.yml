@@ -1,0 +1,52 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+
+pool:
+  vmImage: 'windows-2019'
+
+resources:
+  repositories:
+  - repository: tools
+    type: github
+    name: Azure-Devops-PowerShell-Module/tools
+    endpoint: SchemaModule
+    ref: refs/heads/master
+  - repository: powershell
+    type: github
+    name: SchemaModule/PowerShell
+    endpoint: SchemaModule
+    ref: refs/heads/master
+
+stages:
+- stage: PackageAndDeployment
+  jobs:
+  - job: Packaging
+    displayName: 'nuGet Specfile Creation'
+    steps:
+    - checkout: tools
+    - checkout: powershell
+    - powershell: |
+        $WorkingPath = $pwd;
+        $toolsPath = "$($WorkingPath)\tools";
+        $modulePath = "$($WorkingPath)\powershell";
+        Set-Location $toolsPath;
+        .\ConvertTo-NuSpec.ps1 -ManifestPath "$($modulePath)\schema\schema.psd1"
+      displayName: 'Create nuSpec'
+      errorActionPreference: Stop
+    - task: NuGetCommand@2
+      displayName: 'NuGet pack'
+      inputs:
+        command: pack
+        packagesToPack: '$(BUILD.REPOSITORY.LOCALPATH)\powershell\schema\schema.nuspec'
+        packDestination: '$(BUILD.REPOSITORY.LOCALPATH)\powershell'
+    - task: NuGetCommand@2
+      displayName: 'NuGet push'
+      inputs:
+        command: push
+        packagesToPush: '$(BUILD.REPOSITORY.LOCALPATH)\powershell\*.nupkg;'
+        nuGetFeedType: external
+        publishFeedCredentials: poshGallery
