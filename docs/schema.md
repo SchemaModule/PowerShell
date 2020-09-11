@@ -2,7 +2,7 @@
 Module Name: schema
 Module Guid: b75e69d4-47bc-4ac6-b7d7-df9a36e08bbe
 Download Help Link: https://raw.githubusercontent.com/SchemaModule/PowerShell/dev/cabs/
-Help Version: v1.0.0
+Help Version: 1.0.0
 Locale: en-US
 ---
 
