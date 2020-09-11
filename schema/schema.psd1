@@ -12,7 +12,7 @@
 RootModule = 'schema.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.0'
+ModuleVersion = '1.1.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -117,7 +117,7 @@ PrivateData = @{
 } # End of PrivateData hashtable
 
 # HelpInfo URI of this module
-HelpInfoURI = 'https://raw.githubusercontent.com/SchemaModule/PowerShell/issue-26/cabs/'
+HelpInfoURI = 'https://raw.githubusercontent.com/SchemaModule/PowerShell/master/cabs/'
 
 # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
 DefaultCommandPrefix = 'Schema'
