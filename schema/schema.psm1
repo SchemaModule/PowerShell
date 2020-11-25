@@ -23,7 +23,7 @@ function Get-Document {
       switch ($Schema.Scheme) {
         'file' {
           Write-Verbose "Incoming Filepath";
-          Get-Content -Path $Path | ConvertFrom-Json;
+          Return Get-Content -Path $Path | ConvertFrom-Json;
         }
         'https' {
           Write-Verbose "Incoming HTTPs path";
