@@ -27,12 +27,18 @@ function Get-Document {
         }
         'https' {
           Write-Verbose "Incoming HTTPs path";
-          Invoke-WebRequest -UseBasicParsing -Uri $Path | Select-Object -ExpandProperty Content | ConvertFrom-Json;
+          $Response = Invoke-WebRequest -UseBasicParsing -Uri $Path;
         }
         'http' {
           Write-Verbose "Incoming HTTP path";
-          Invoke-WebRequest -UseBasicParsing -Uri $Path | Select-Object -ExpandProperty Content | ConvertFrom-Json;
+          $Response = Invoke-WebRequest -UseBasicParsing -Uri $Path;
         }
+      }
+      if ($Response.Content.GetType().Name -eq 'Byte[]') {
+        [string]::new($Response.Content) | ConvertFrom-Json;
+      }
+      else {
+        $Response.Content | ConvertFrom-Json
       }
     }
     catch {
@@ -51,7 +57,7 @@ function Get-Object {
   )
 
   process {
-    Write-Verbose ($SchemaDocument |Out-String);
+    Write-Verbose ($SchemaDocument | Out-String);
     $Properties = $SchemaDocument.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
     Write-Verbose "Setting up output object";
     $Members = @{};
@@ -99,7 +105,7 @@ function Get-Array {
   )
 
   process {
-    Write-Verbose ($SchemaDocument |Out-String);
+    Write-Verbose ($SchemaDocument | Out-String);
     $Properties = $SchemaDocument.items.anyOf.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
     Write-Verbose "Setting up output object";
     $Members = @{};
@@ -148,7 +154,7 @@ function Get-Property {
   )
 
   process {
-    Write-Verbose ($SchemaDocument |Out-String);
+    Write-Verbose ($SchemaDocument | Out-String);
     Write-Verbose $Name;
     if ($Name) {
       Write-Verbose "Return specific Property";
