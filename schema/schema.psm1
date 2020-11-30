@@ -166,3 +166,281 @@ function Get-Property {
     }
   }
 }
+
+class jsonString {
+  [ValidateSet('string')]
+  [string]$type = 'string'
+  [string]$id
+  [string]$ref
+  [int]$minLength
+  [int]$maxLength
+  [string]$pattern
+  [string[]]$enum
+  [string]$title
+  [string]$description
+  [string]$default
+  [string[]]$examples = @()
+
+  #
+  # Constructors
+  #
+  jsonString () {}
+  jsonString (
+    [int]$min,
+    [int]$max
+  ) {
+    $this.minLength = $min
+    $this.maxLength = $max
+  }
+  jsonString (
+    [string]$reg
+  ) {
+    $this.pattern = $reg
+  }
+
+  #
+  # Methods
+  #
+  [void]AddExample([string]$example) {
+    $this.examples += $example
+  }
+  [void]AddEnum([string]$enum) {
+    $this.enum += $enum
+  }
+  [object]toJson() {
+    return ($this |Remove-Null |ConvertTo-Json)
+  }
+}
+class jsonInteger {
+  [ValidateSet('integer')]
+  [string]$type = 'integer'
+  [string]$id
+  [string]$ref
+  [int]$minimum
+  [int]$maximum
+  [int]$exclusiveMinimum
+  [int]$exclusiveMaximum
+  [int]$multipleOf
+  [int[]]$enum
+  [string]$title
+  [string]$description
+  [int]$default
+  [int[]]$examples = @()
+
+  #
+  # Constructors
+  #
+  jsonInteger () {}
+  jsonInteger (
+    [int]$min,
+    [int]$max
+  ) {
+    $this.minimum = $min
+    $this.maximum = $max
+  }
+
+  #
+  # Methods
+  #
+  [void]AddExample([int]$example) {
+    $this.examples += $example
+  }
+  [void]AddEnum([int]$enum) {
+    $this.enum += $enum
+  }
+  [object]toJson() {
+    return ($this |Remove-Null |ConvertTo-Json)
+  }
+}
+class jsonNumber {
+  [ValidateSet('number')]
+  [string]$type = 'number'
+  [string]$id
+  [string]$ref
+  [decimal]$minimum
+  [decimal]$maximum
+  [decimal]$exclusiveMinimum
+  [decimal]$exclusiveMaximum
+  [decimal]$multipleOf
+  [string]$title
+  [string]$description
+  [decimal]$default
+  [decimal[]]$examples = @()
+
+  #
+  # Constructors
+  #
+  jsonNumber () {}
+  jsonNumber (
+    [decimal]$min,
+    [decimal]$max
+  ) {
+    $this.minimum = $min
+    $this.maximum = $max
+  }
+
+  #
+  # Methods
+  #
+  [void]AddExample([decimal]$example) {
+    $this.examples += $example
+  }
+  [object]toJson() {
+    return ($this |Remove-Null |ConvertTo-Json)
+  }
+}
+class jsonObject {
+  [ValidateSet('object')]
+  [string]$type = 'object'
+  [string]$id
+  [object]$properties
+  [string[]]$required
+  [bool]$additionalProperties = $false
+  [string]$title
+  [string]$description
+  [object]$default
+
+  #
+  # Constructors
+  #
+
+  #
+  # Methods
+  #
+  [object]AddProperty([object]$property) {
+    $this.properties += $property
+    return $this
+  }
+  [object]toJson() {
+    return ($this |ConvertTo-Json)
+  }
+}
+function New-sObject {
+  param (
+    [ValidateNotNullOrEmpty()]
+    [parameter(Mandatory=$true)]
+    [string]$Id,
+    [object]$Properties,
+    [string[]]$required,
+    [bool]$AdditionalProperties = $false,
+    [string]$Title,
+    [string]$Description,
+    [object]$Default
+  )
+  $obj = [jsonObject]::new()
+  $obj.id = $Id
+  $obj.properties = $Properties
+  $obj.required = $required
+  $obj.additionalProperties = $AdditionalProperties
+  $obj.title = $Title
+  $obj.description = $Description
+  $obj.default = $Default
+
+  return $obj
+}
+function ConvertTo-sObject {
+  param (
+    [object]$object
+  )
+  switch ($object.type) {
+    'object' {
+      $obj = [jsonObject]::new()
+      foreach ($property in $object.psobject.properties.name) {
+        if (!($property -eq 'properties')) {
+          switch ($property) {
+            '$id' {
+              $obj.id = $object.$property
+            }
+            default {
+              $obj.$property = $object.$property
+            }
+          }
+        } else {
+          foreach ($prop in $object.properties.psobject.Properties.Name) {
+            $Elements += New-Property -Name $prop -Value (Get-Element -element $object.properties.$prop)
+          }
+        }
+      }
+    }
+  }
+  $obj.properties += $Elements
+  return $obj
+}
+function New-Property {
+  param (
+    [ValidateNotNullOrEmpty()]
+    [string]$Name,
+    [ValidateSet([jsonNumber],[jsonInteger],[jsonString])]
+    $Value
+  )
+  return (New-Object -TypeName psobject @{$Name=$value})
+}
+function New-Element {
+  param (
+    [ValidateSet('string', 'number', 'integer')]
+    [string]$Type
+  )
+
+  switch ($Type) {
+    'string' {
+      [jsonString]::new()
+    }
+    'number' {
+      [jsonNumber]::new()
+    }
+    'integer' {
+      [jsonInteger]::new()
+    }
+  }
+}
+function Get-Element {
+  param (
+    [object]$element,
+    [switch]$PreserveId
+  )
+
+  switch ($element.type) {
+    'string' {
+      $val = [jsonString]::new()
+    }
+    'number' {
+      $val = [jsonNumber]::new()
+    }
+    'integer' {
+      $val = [jsonInteger]::new()
+    }
+  }
+  foreach ($prop in ($element.psobject.properties.name)) {
+    switch ($prop) {
+      '$id' {
+        if ($PreserveId) {
+          $val.id = $element.$prop
+        }
+      }
+      default {
+        $val.$prop = $element.$prop
+      }
+    }
+  }
+  return $val
+}
+Function Remove-Null {
+  [cmdletbinding()]
+  param(
+      # Object to remove null values from
+      [parameter(ValueFromPipeline,Mandatory)]
+      [object[]]$InputObject,
+      #By default, remove empty strings (""), specify -LeaveEmptyStrings to leave them.
+      [switch]$LeaveEmptyStrings
+  )
+  process {
+      foreach ($obj in $InputObject) {
+        Write-Verbose ($obj.psobject.properties.Name |out-string)
+          $AllProperties = $obj.psobject.properties.Name
+          $NonNulls = $AllProperties |
+              where-object {$null -ne $obj.$PSItem} |
+              where-object {$LeaveEmptyStrings.IsPresent -or -not [string]::IsNullOrEmpty($obj.$PSItem)}
+          $obj | Select-Object -Property $NonNulls
+      }
+  }
+}
