@@ -208,7 +208,7 @@ class jsonString {
     $this.enum += $enum
   }
   [object]toJson() {
-    return ($this |Remove-Null |ConvertTo-Json)
+    return ($this | Remove-Null | ConvertTo-Json)
   }
 }
 class jsonInteger {
@@ -249,7 +249,7 @@ class jsonInteger {
     $this.enum += $enum
   }
   [object]toJson() {
-    return ($this |Remove-Null |ConvertTo-Json)
+    return ($this | Remove-Null | ConvertTo-Json)
   }
 }
 class jsonNumber {
@@ -286,7 +286,7 @@ class jsonNumber {
     $this.examples += $example
   }
   [object]toJson() {
-    return ($this |Remove-Null |ConvertTo-Json)
+    return ($this | Remove-Null | ConvertTo-Json)
   }
 }
 class jsonObject {
@@ -312,7 +312,7 @@ class jsonObject {
     return $this
   }
   [object]toJson() {
-    return ($this |ConvertTo-Json)
+    return ($this | ConvertTo-Json)
   }
 }
 class jsonArray {
@@ -333,13 +333,27 @@ class jsonArray {
     return $this
   }
   [object]toJson() {
-    return ($this |ConvertTo-Json)
+    return ($this | ConvertTo-Json)
+  }
+}
+class jsonBoolean {
+  [ValidateSet('boolean')]
+  [string]$type = 'boolean'
+  [string]$id
+  [string]$title
+  [string]$description
+  [bool]$default
+  #
+  # Methods
+  #
+  [object]toJson() {
+    return ($this | ConvertTo-Json)
   }
 }
 function New-sObject {
   param (
     [ValidateNotNullOrEmpty()]
-    [parameter(Mandatory=$true)]
+    [parameter(Mandatory = $true)]
     [string]$Id,
     [object]$Properties,
     [string[]]$required,
@@ -357,7 +371,7 @@ function New-sObject {
 }
 function New-Array {
   param (
-    [parameter(Mandatory=$true)]
+    [parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
     [string]$id,
     [object]$items,
@@ -365,7 +379,7 @@ function New-Array {
     [string]$title,
     [string]$description,
     [array]$default
-    )
+  )
   $obj = [jsonArray]::new()
 
   foreach ($param in $PSBoundParameters.GetEnumerator()) {
@@ -390,7 +404,8 @@ function ConvertTo-sObject {
               $obj.$property = $object.$property
             }
           }
-        } else {
+        }
+        else {
           foreach ($prop in $object.properties.psobject.Properties.Name) {
             $Elements += New-Property -Name $prop -Value (Get-Element -element $object.properties.$prop)
           }
@@ -420,12 +435,13 @@ function ConvertTo-sArray {
               $obj.$property = $object.$property
             }
           }
-        } else {
+        }
+        else {
           foreach ($prop in $object.items.psobject.Properties.Name) {
             switch ($prop) {
-              {($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf')} {
+              { ($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf') } {
                 Write-Verbose $prop
-                $Elements += New-Property -Name $prop -Value ($object.items.$prop| ForEach-Object {Get-Element -element $_ })
+                $Elements += New-Property -Name $prop -Value ($object.items.$prop | ForEach-Object { Get-Element -element $_ })
               }
             }
           }
@@ -440,24 +456,24 @@ function New-Property {
   param (
     [ValidateNotNullOrEmpty()]
     [string]$Name,
-    [ValidateSet([jsonNumber],[jsonInteger],[jsonString],[jsonObject],[jsonArray])]
+    [ValidateSet([jsonNumber], [jsonInteger], [jsonString], [jsonObject], [jsonArray])]
     $Value,
-    [ValidateSet('allOf','anyOf','oneOf')]
+    [ValidateSet('allOf', 'anyOf', 'oneOf')]
     $Array
   )
   switch ($Array) {
-    {($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf')} {
-      $Property = (New-Object -TypeName psobject @{$Array=@($value)})
+    { ($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf') } {
+      $Property = (New-Object -TypeName psobject @{$Array = @($value) })
     }
     default {
-      $Property = (New-Object -TypeName psobject @{$Name=$value})
+      $Property = (New-Object -TypeName psobject @{$Name = $value })
     }
   }
   return $Property
 }
 function New-Element {
   param (
-    [ValidateSet('string', 'number', 'integer','object')]
+    [ValidateSet('string', 'number', 'integer', 'object')]
     [string]$Type
   )
 
@@ -483,7 +499,7 @@ function Get-Element {
     [switch]$PreserveId
   )
 
-  Write-Verbose ($element |out-string)
+  Write-Verbose ($element | out-string)
   Write-Verbose "ElementType: $($element.type)"
   switch ($element.type) {
     'string' {
@@ -519,9 +535,9 @@ function Get-Element {
       'items' {
         foreach ($property in $element.items.psobject.Properties.Name) {
           switch ($property) {
-            {($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf')} {
+            { ($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf') } {
               Write-Verbose "ArrayProperty: $($property)"
-              $Elements += New-Property -Name $property -Value ($element.items.$property |ForEach-Object {Get-Element -element $_})
+              $Elements += New-Property -Name $property -Value ($element.items.$property | ForEach-Object { Get-Element -element $_ })
             }
           }
         }
@@ -537,20 +553,20 @@ function Get-Element {
 Function Remove-Null {
   [cmdletbinding()]
   param(
-      # Object to remove null values from
-      [parameter(ValueFromPipeline,Mandatory)]
-      [object[]]$InputObject,
-      #By default, remove empty strings (""), specify -LeaveEmptyStrings to leave them.
-      [switch]$LeaveEmptyStrings
+    # Object to remove null values from
+    [parameter(ValueFromPipeline, Mandatory)]
+    [object[]]$InputObject,
+    #By default, remove empty strings (""), specify -LeaveEmptyStrings to leave them.
+    [switch]$LeaveEmptyStrings
   )
   process {
-      foreach ($obj in $InputObject) {
-        Write-Verbose ($obj.psobject.properties.Name |out-string)
-          $AllProperties = $obj.psobject.properties.Name
-          $NonNulls = $AllProperties |
-              where-object {$null -ne $obj.$PSItem} |
-              where-object {$LeaveEmptyStrings.IsPresent -or -not [string]::IsNullOrEmpty($obj.$PSItem)}
-          $obj | Select-Object -Property $NonNulls
-      }
+    foreach ($obj in $InputObject) {
+      Write-Verbose ($obj.psobject.properties.Name | out-string)
+      $AllProperties = $obj.psobject.properties.Name
+      $NonNulls = $AllProperties |
+      where-object { $null -ne $obj.$PSItem } |
+      where-object { $LeaveEmptyStrings.IsPresent -or -not [string]::IsNullOrEmpty($obj.$PSItem) }
+      $obj | Select-Object -Property $NonNulls
+    }
   }
 }
