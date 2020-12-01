@@ -208,7 +208,7 @@ class jsonString {
     $this.enum += $enum
   }
   [object]toJson() {
-    return ($this | Remove-Null | ConvertTo-Json)
+    return ($this |Select-Object *, @{Name='$id';Exp={$_.id}},@{Name='$ref';Exp={$_.ref}} -ExcludeProperty id,ref |Remove-Null |ConvertTo-Json)
   }
 }
 class jsonInteger {
@@ -249,7 +249,7 @@ class jsonInteger {
     $this.enum += $enum
   }
   [object]toJson() {
-    return ($this | Remove-Null | ConvertTo-Json)
+    return ($this |Select-Object *, @{Name='$id';Exp={$_.id}},@{Name='$ref';Exp={$_.ref}} -ExcludeProperty id,ref |Remove-Null |ConvertTo-Json)
   }
 }
 class jsonNumber {
@@ -286,7 +286,7 @@ class jsonNumber {
     $this.examples += $example
   }
   [object]toJson() {
-    return ($this | Remove-Null | ConvertTo-Json)
+    return ($this |Select-Object *, @{Name='$id';Exp={$_.id}},@{Name='$ref';Exp={$_.ref}} -ExcludeProperty id,ref |Remove-Null |ConvertTo-Json)
   }
 }
 class jsonObject {
@@ -312,7 +312,7 @@ class jsonObject {
     return $this
   }
   [object]toJson() {
-    return ($this | ConvertTo-Json)
+    return ($this |Select-Object *, @{Name='$id';Exp={$_.id}},@{Name='$ref';Exp={$_.ref}} -ExcludeProperty id,ref |Remove-Null |ConvertTo-Json)
   }
 }
 class jsonArray {
@@ -333,7 +333,7 @@ class jsonArray {
     return $this
   }
   [object]toJson() {
-    return ($this | ConvertTo-Json)
+    return ($this |Select-Object *, @{Name='$id';Exp={$_.id}},@{Name='$ref';Exp={$_.ref}} -ExcludeProperty id,ref |Remove-Null |ConvertTo-Json)
   }
 }
 class jsonBoolean {
@@ -347,7 +347,7 @@ class jsonBoolean {
   # Methods
   #
   [object]toJson() {
-    return ($this | ConvertTo-Json)
+    return ($this |Select-Object *, @{Name='$id';Exp={$_.id}},@{Name='$ref';Exp={$_.ref}} -ExcludeProperty id,ref |Remove-Null |ConvertTo-Json)
   }
 }
 function New-sObject {
