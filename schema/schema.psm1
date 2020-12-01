@@ -473,7 +473,7 @@ function New-Property {
 }
 function New-Element {
   param (
-    [ValidateSet('string', 'number', 'integer', 'object')]
+    [ValidateSet('string', 'number', 'integer', 'object','boolean')]
     [string]$Type
   )
 
@@ -489,6 +489,9 @@ function New-Element {
     }
     'object' {
       [jsonObject]::new()
+    }
+    'boolean' {
+      [jsonBoolean]::new()
     }
   }
 }
@@ -516,6 +519,9 @@ function Get-Element {
     }
     'array' {
       $val = [jsonArray]::new()
+    }
+    'boolean' {
+      $val = [jsonBoolean]::new()
     }
   }
   foreach ($prop in ($element.psobject.properties.name)) {
