@@ -208,7 +208,7 @@ class jsonString {
     $this.enum += $enum
   }
   [object]toJson() {
-    return ($this |Select-Object *, @{Name='$id';Exp={$_.id}},@{Name='$ref';Exp={$_.ref}} -ExcludeProperty id,ref |Remove-Null |ConvertTo-Json)
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
 }
 class jsonInteger {
@@ -249,7 +249,7 @@ class jsonInteger {
     $this.enum += $enum
   }
   [object]toJson() {
-    return ($this |Select-Object *, @{Name='$id';Exp={$_.id}},@{Name='$ref';Exp={$_.ref}} -ExcludeProperty id,ref |Remove-Null |ConvertTo-Json)
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
 }
 class jsonNumber {
@@ -286,7 +286,7 @@ class jsonNumber {
     $this.examples += $example
   }
   [object]toJson() {
-    return ($this |Select-Object *, @{Name='$id';Exp={$_.id}},@{Name='$ref';Exp={$_.ref}} -ExcludeProperty id,ref |Remove-Null |ConvertTo-Json)
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
 }
 class jsonObject {
@@ -312,7 +312,7 @@ class jsonObject {
     return $this
   }
   [object]toJson() {
-    return ($this |Select-Object *, @{Name='$id';Exp={$_.id}},@{Name='$ref';Exp={$_.ref}} -ExcludeProperty id,ref |Remove-Null |ConvertTo-Json)
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
 }
 class jsonArray {
@@ -333,7 +333,7 @@ class jsonArray {
     return $this
   }
   [object]toJson() {
-    return ($this |Select-Object *, @{Name='$id';Exp={$_.id}},@{Name='$ref';Exp={$_.ref}} -ExcludeProperty id,ref |Remove-Null |ConvertTo-Json)
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
 }
 class jsonBoolean {
@@ -347,7 +347,35 @@ class jsonBoolean {
   # Methods
   #
   [object]toJson() {
-    return ($this |Select-Object *, @{Name='$id';Exp={$_.id}},@{Name='$ref';Exp={$_.ref}} -ExcludeProperty id,ref |Remove-Null |ConvertTo-Json)
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
+  }
+}
+class jsonDocument {
+  [ValidateSet('object')]
+  [string]$type = 'object'
+  [ValidateSet('http://json-schema.org/draft-04/schema#', 'http://json-schema.org/draft-06/schema#', 'http://json-schema.org/draft-07/schema#')]
+  [string]$schema = 'http://json-schema.org/draft-04/schema#'
+  [string]$id
+  [object]$properties
+  [string[]]$required
+  [bool]$additionalProperties = $false
+  [string]$title
+  [string]$description
+  [object]$default
+
+  #
+  # Constructors
+  #
+
+  #
+  # Methods
+  #
+  [object]AddProperty([object]$property) {
+    $this.properties += $property
+    return $this
+  }
+  [object]toJson() {
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
 }
 function New-sObject {
@@ -456,7 +484,7 @@ function New-Property {
   param (
     [ValidateNotNullOrEmpty()]
     [string]$Name,
-    [ValidateSet([jsonNumber], [jsonInteger], [jsonString], [jsonObject], [jsonArray],[jsonBoolean])]
+    [ValidateSet([jsonNumber], [jsonInteger], [jsonString], [jsonObject], [jsonArray], [jsonBoolean])]
     $Value,
     [ValidateSet('allOf', 'anyOf', 'oneOf')]
     $Array
@@ -473,7 +501,7 @@ function New-Property {
 }
 function New-Element {
   param (
-    [ValidateSet('string', 'number', 'integer', 'object','boolean','array')]
+    [ValidateSet('string', 'number', 'integer', 'object', 'boolean', 'array', 'document')]
     [string]$Type
   )
 
@@ -496,6 +524,9 @@ function New-Element {
     'array' {
       [jsonArray]::new()
     }
+    'document' {
+      [jsonDocument]::new()
+    }
   }
 }
 function Get-Element {
@@ -507,24 +538,29 @@ function Get-Element {
 
   Write-Verbose ($element | out-string)
   Write-Verbose "ElementType: $($element.type)"
-  switch ($element.type) {
-    'string' {
-      $val = [jsonString]::new()
-    }
-    'number' {
-      $val = [jsonNumber]::new()
-    }
-    'integer' {
-      $val = [jsonInteger]::new()
-    }
-    'object' {
-      $val = [jsonObject]::new()
-    }
-    'array' {
-      $val = [jsonArray]::new()
-    }
-    'boolean' {
-      $val = [jsonBoolean]::new()
+  if ($element.('$schema')) {
+    $val = New-Element -Type document
+  }
+  else {
+    switch ($element.type) {
+      'string' {
+        $val = New-Element -Type string
+      }
+      'number' {
+        $val = New-Element -Type number
+      }
+      'integer' {
+        $val = New-Element -Type integer
+      }
+      'object' {
+        $val = New-Element -Type object
+      }
+      'array' {
+        $val = New-Element -Type array
+      }
+      'boolean' {
+        $val = New-Element -Type boolean
+      }
     }
   }
   foreach ($prop in ($element.psobject.properties.name)) {
@@ -533,6 +569,14 @@ function Get-Element {
         if ($PreserveId) {
           $val.id = $element.$prop
         }
+      }
+      '$ref' {
+        if ($PreserveId) {
+          $val.ref = $element.$prop
+        }
+      }
+      '$schema' {
+        $val.schema = $element.$prop
       }
       'properties' {
         foreach ($property in $element.properties.psobject.Properties.Name) {
