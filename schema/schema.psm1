@@ -401,11 +401,46 @@ function ConvertTo-sObject {
   $obj.properties += $Elements
   return $obj
 }
+function ConvertTo-sArray {
+  [cmdletbinding()]
+  param (
+    [object]$object
+  )
+  switch ($object.type) {
+    'array' {
+      $obj = [jsonArray]::new()
+      foreach ($property in $object.psobject.properties.name) {
+        if (!($property -eq 'items')) {
+          #Write-Verbose $property
+          switch ($property) {
+            '$id' {
+              $obj.id = $object.$property
+            }
+            default {
+              $obj.$property = $object.$property
+            }
+          }
+        } else {
+          foreach ($prop in $object.items.psobject.Properties.Name) {
+            switch ($prop) {
+              {($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf')} {
+                Write-Verbose $prop
+                $Elements += New-Property -Name $prop -Value ($object.items.$prop| ForEach-Object {Get-Element -element $_ })
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  $obj.items += $Elements
+  return $obj
+}
 function New-Property {
   param (
     [ValidateNotNullOrEmpty()]
     [string]$Name,
-    [ValidateSet([jsonNumber],[jsonInteger],[jsonString],[jsonObject])]
+    [ValidateSet([jsonNumber],[jsonInteger],[jsonString],[jsonObject],[jsonArray])]
     $Value,
     [ValidateSet('allOf','anyOf','oneOf')]
     $Array
@@ -442,11 +477,14 @@ function New-Element {
   }
 }
 function Get-Element {
+  [cmdletbinding()]
   param (
     [object]$element,
     [switch]$PreserveId
   )
 
+  Write-Verbose ($element |out-string)
+  Write-Verbose "ElementType: $($element.type)"
   switch ($element.type) {
     'string' {
       $val = [jsonString]::new()
@@ -457,6 +495,12 @@ function Get-Element {
     'integer' {
       $val = [jsonInteger]::new()
     }
+    'object' {
+      $val = [jsonObject]::new()
+    }
+    'array' {
+      $val = [jsonArray]::new()
+    }
   }
   foreach ($prop in ($element.psobject.properties.name)) {
     switch ($prop) {
@@ -464,6 +508,24 @@ function Get-Element {
         if ($PreserveId) {
           $val.id = $element.$prop
         }
+      }
+      'properties' {
+        foreach ($property in $element.properties.psobject.Properties.Name) {
+          Write-Verbose "ObjectProperty: $($property)"
+          $Elements += New-Property -Name $property -Value (Get-Element -element $element.properties.$property)
+        }
+        $val.properties += $Elements
+      }
+      'items' {
+        foreach ($property in $element.items.psobject.Properties.Name) {
+          switch ($property) {
+            {($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf')} {
+              Write-Verbose "ArrayProperty: $($property)"
+              $Elements += New-Property -Name $property -Value ($element.items.$property |ForEach-Object {Get-Element -element $_})
+            }
+          }
+        }
+        $val.items += $Elements
       }
       default {
         $val.$prop = $element.$prop
