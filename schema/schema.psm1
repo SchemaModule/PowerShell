@@ -481,7 +481,45 @@ class jsonDocument {
   [object]toJson() {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
+  [object]Find([string]$item) {
+    return (find-schema -schema $this -find $item)
+  }
 }
+
+function find-schema {
+  [cmdletbinding()]
+  param (
+    $schema,
+    $find
+  )
+  switch ($schema.type) {
+    'object' {
+      Write-Verbose "object"
+      if ($schema.properties.keys -contains $find) {
+        return $schema.properties.$find
+      } else {
+        $ans = $schema.properties.keys
+        foreach ($a in $ans) {
+          write-verbose $a
+          find-schema -schema ($schema.properties.$a) -find $find
+        }
+      }
+    }
+    'array' {
+      write-verbose "array"
+      if ($schema.items.anyOf.properties.keys -contains $find) {
+        return $schema.items.anyOf.properties.$find
+      } else {
+        $ans = $schema.items.anyOf.properties.keys
+        foreach ($a in $ans) {
+          write-verbose $a
+          find-schema -schema ($schema.items.anyOf.properties.$a) -find $find
+        }
+      }
+    }
+  }
+}
+
 function New-String {
   [CmdletBinding()]
   param (
