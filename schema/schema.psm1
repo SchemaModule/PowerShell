@@ -315,6 +315,27 @@ class jsonObject {
     return ($this |ConvertTo-Json)
   }
 }
+class jsonArray {
+  [ValidateSet('array')]
+  [string]$type = 'array'
+  [string]$id
+  [object]$items
+  [bool]$additionalItems = $false
+  [string]$title
+  [string]$description
+  [array]$default
+
+  #
+  # Methods
+  #
+  [object]AddItem([object]$item) {
+    $this.items += $item
+    return $this
+  }
+  [object]toJson() {
+    return ($this |ConvertTo-Json)
+  }
+}
 function New-sObject {
   param (
     [ValidateNotNullOrEmpty()]
@@ -328,14 +349,28 @@ function New-sObject {
     [object]$Default
   )
   $obj = [jsonObject]::new()
-  $obj.id = $Id
-  $obj.properties = $Properties
-  $obj.required = $required
-  $obj.additionalProperties = $AdditionalProperties
-  $obj.title = $Title
-  $obj.description = $Description
-  $obj.default = $Default
 
+  foreach ($param in $PSBoundParameters.GetEnumerator()) {
+    $obj.($param.Key) = $param.Value
+  }
+  return $obj
+}
+function New-Array {
+  param (
+    [parameter(Mandatory=$true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$id,
+    [object]$items,
+    [bool]$additionalItems = $false,
+    [string]$title,
+    [string]$description,
+    [array]$default
+    )
+  $obj = [jsonArray]::new()
+
+  foreach ($param in $PSBoundParameters.GetEnumerator()) {
+    $obj.($param.Key) = $param.Value
+  }
   return $obj
 }
 function ConvertTo-sObject {
@@ -370,14 +405,24 @@ function New-Property {
   param (
     [ValidateNotNullOrEmpty()]
     [string]$Name,
-    [ValidateSet([jsonNumber],[jsonInteger],[jsonString])]
-    $Value
+    [ValidateSet([jsonNumber],[jsonInteger],[jsonString],[jsonObject])]
+    $Value,
+    [ValidateSet('allOf','anyOf','oneOf')]
+    $Array
   )
-  return (New-Object -TypeName psobject @{$Name=$value})
+  switch ($Array) {
+    {($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf')} {
+      $Property = (New-Object -TypeName psobject @{$Array=@($value)})
+    }
+    default {
+      $Property = (New-Object -TypeName psobject @{$Name=$value})
+    }
+  }
+  return $Property
 }
 function New-Element {
   param (
-    [ValidateSet('string', 'number', 'integer')]
+    [ValidateSet('string', 'number', 'integer','object')]
     [string]$Type
   )
 
@@ -390,6 +435,9 @@ function New-Element {
     }
     'integer' {
       [jsonInteger]::new()
+    }
+    'object' {
+      [jsonObject]::new()
     }
   }
 }
