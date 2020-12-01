@@ -456,7 +456,7 @@ function New-Property {
   param (
     [ValidateNotNullOrEmpty()]
     [string]$Name,
-    [ValidateSet([jsonNumber], [jsonInteger], [jsonString], [jsonObject], [jsonArray])]
+    [ValidateSet([jsonNumber], [jsonInteger], [jsonString], [jsonObject], [jsonArray],[jsonBoolean])]
     $Value,
     [ValidateSet('allOf', 'anyOf', 'oneOf')]
     $Array
@@ -473,7 +473,7 @@ function New-Property {
 }
 function New-Element {
   param (
-    [ValidateSet('string', 'number', 'integer', 'object','boolean')]
+    [ValidateSet('string', 'number', 'integer', 'object','boolean','array')]
     [string]$Type
   )
 
@@ -492,6 +492,9 @@ function New-Element {
     }
     'boolean' {
       [jsonBoolean]::new()
+    }
+    'array' {
+      [jsonArray]::new()
     }
   }
 }
