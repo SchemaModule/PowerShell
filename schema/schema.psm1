@@ -167,6 +167,110 @@ function Get-Property {
   }
 }
 
+function New-sObject {
+  param (
+    [ValidateNotNullOrEmpty()]
+    [parameter(Mandatory = $true)]
+    [string]$Id,
+    [object]$Properties,
+    [string[]]$required,
+    [bool]$AdditionalProperties = $false,
+    [string]$Title,
+    [string]$Description,
+    [object]$Default
+  )
+  $obj = [jsonObject]::new()
+
+  foreach ($param in $PSBoundParameters.GetEnumerator()) {
+    $obj.($param.Key) = $param.Value
+  }
+  return $obj
+}
+function New-Array {
+  param (
+    [parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]$id,
+    [object]$items,
+    [bool]$additionalItems = $false,
+    [string]$title,
+    [string]$description,
+    [array]$default
+  )
+  $obj = [jsonArray]::new()
+
+  foreach ($param in $PSBoundParameters.GetEnumerator()) {
+    $obj.($param.Key) = $param.Value
+  }
+  return $obj
+}
+function ConvertTo-sObject {
+  param (
+    [object]$object
+  )
+  switch ($object.type) {
+    'object' {
+      $obj = [jsonObject]::new()
+      foreach ($property in $object.psobject.properties.name) {
+        if (!($property -eq 'properties')) {
+          switch ($property) {
+            '$id' {
+              $obj.id = $object.$property
+            }
+            default {
+              $obj.$property = $object.$property
+            }
+          }
+        }
+        else {
+          foreach ($prop in $object.properties.psobject.Properties.Name) {
+            $Elements += New-Property -Name $prop -Value (Get-Element -element $object.properties.$prop)
+          }
+        }
+      }
+    }
+  }
+  $obj.properties += $Elements
+  return $obj
+}
+function ConvertTo-sArray {
+  [cmdletbinding()]
+  param (
+    [object]$object
+  )
+  switch ($object.type) {
+    'array' {
+      $obj = [jsonArray]::new()
+      foreach ($property in $object.psobject.properties.name) {
+        if (!($property -eq 'items')) {
+          #Write-Verbose $property
+          switch ($property) {
+            '$id' {
+              $obj.id = $object.$property
+            }
+            default {
+              $obj.$property = $object.$property
+            }
+          }
+        }
+        else {
+          foreach ($prop in $object.items.psobject.Properties.Name) {
+            switch ($prop) {
+              { ($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf') } {
+                Write-Verbose $prop
+                $Elements += New-Property -Name $prop -Value ($object.items.$prop | ForEach-Object { Get-Element -element $_ })
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  $obj.items += $Elements
+  return $obj
+}
+
+
 class jsonString {
   [ValidateSet('string')]
   [string]$type = 'string'
@@ -378,107 +482,129 @@ class jsonDocument {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
 }
-function New-sObject {
+function New-String {
+  [CmdletBinding()]
   param (
-    [ValidateNotNullOrEmpty()]
-    [parameter(Mandatory = $true)]
-    [string]$Id,
-    [object]$Properties,
-    [string[]]$required,
-    [bool]$AdditionalProperties = $false,
-    [string]$Title,
-    [string]$Description,
-    [object]$Default
-  )
-  $obj = [jsonObject]::new()
-
-  foreach ($param in $PSBoundParameters.GetEnumerator()) {
-    $obj.($param.Key) = $param.Value
-  }
-  return $obj
-}
-function New-Array {
-  param (
-    [parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
+    [parameter(Mandatory=$false,ParameterSetName='string')]
     [string]$id,
-    [object]$items,
-    [bool]$additionalItems = $false,
+    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [string]$ref,
+    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [int]$minLength,
+    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [int]$maxLength,
+    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [string]$pattern,
+    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [string[]]$enum,
+    [parameter(Mandatory=$false,ParameterSetName='string')]
     [string]$title,
+    [parameter(Mandatory=$false,ParameterSetName='string')]
     [string]$description,
-    [array]$default
+    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [string]$default,
+    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [string[]]$examples = @()
   )
-  $obj = [jsonArray]::new()
+  Write-Verbose "Creating jsonString object"
+  $jsonString = New-Element -Type string
+  Write-Verbose ($jsonString.GetType())
 
   foreach ($param in $PSBoundParameters.GetEnumerator()) {
-    $obj.($param.Key) = $param.Value
-  }
-  return $obj
-}
-function ConvertTo-sObject {
-  param (
-    [object]$object
-  )
-  switch ($object.type) {
-    'object' {
-      $obj = [jsonObject]::new()
-      foreach ($property in $object.psobject.properties.name) {
-        if (!($property -eq 'properties')) {
-          switch ($property) {
-            '$id' {
-              $obj.id = $object.$property
-            }
-            default {
-              $obj.$property = $object.$property
-            }
-          }
-        }
-        else {
-          foreach ($prop in $object.properties.psobject.Properties.Name) {
-            $Elements += New-Property -Name $prop -Value (Get-Element -element $object.properties.$prop)
-          }
-        }
+    switch ($param) {
+      { ($param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
+      default {
+        Write-Verbose "Setting $($param.Value) on $($param.Key)"
+        $jsonString.($param.Key) = $param.Value
       }
     }
   }
-  $obj.properties += $Elements
-  return $obj
+
+  return $jsonString
 }
-function ConvertTo-sArray {
-  [cmdletbinding()]
+function New-Integer {
+  [CmdletBinding()]
   param (
-    [object]$object
+    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [string]$id,
+    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [string]$ref,
+    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [int]$minimum,
+    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [int]$maximum,
+    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [int]$exclusiveMinimum,
+    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [int]$exclusiveMaximum,
+    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [int]$multipleOf,
+    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [int[]]$enum,
+    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [string]$title,
+    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [string]$description,
+    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [int]$default,
+    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [int[]]$examples = @()
   )
-  switch ($object.type) {
-    'array' {
-      $obj = [jsonArray]::new()
-      foreach ($property in $object.psobject.properties.name) {
-        if (!($property -eq 'items')) {
-          #Write-Verbose $property
-          switch ($property) {
-            '$id' {
-              $obj.id = $object.$property
-            }
-            default {
-              $obj.$property = $object.$property
-            }
-          }
-        }
-        else {
-          foreach ($prop in $object.items.psobject.Properties.Name) {
-            switch ($prop) {
-              { ($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf') } {
-                Write-Verbose $prop
-                $Elements += New-Property -Name $prop -Value ($object.items.$prop | ForEach-Object { Get-Element -element $_ })
-              }
-            }
-          }
-        }
+  Write-Verbose "Creating jsonInteger object"
+  $jsonInteger = New-Element -Type integer
+
+  foreach ($param in $PSBoundParameters.GetEnumerator()) {
+    switch ($param) {
+      { ($param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
+      default {
+        Write-Verbose "Setting $($param.Value) on $($param.Key)"
+        $jsonInteger.($param.Key) = $param.Value
       }
     }
   }
-  $obj.items += $Elements
-  return $obj
+
+  return $jsonInteger
+}
+function New-Number {
+  [CmdletBinding()]
+  param (
+    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [string]$id,
+    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [string]$ref,
+    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [decimal]$minimum,
+    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [decimal]$maximum,
+    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [decimal]$exclusiveMinimum,
+    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [decimal]$exclusiveMaximum,
+    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [decimal]$multipleOf,
+    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [string]$title,
+    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [string]$description,
+    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [decimal]$default,
+    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [decimal[]]$examples = @()
+    )
+  Write-Verbose "Creating jsonNumber object"
+  $jsonNumber = New-Element -Type number
+
+  foreach ($param in $PSBoundParameters.GetEnumerator()) {
+    switch ($param) {
+      { ($param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
+      default {
+        Write-Verbose "Setting $($param.Value) on $($param.Key)"
+        $jsonNumber.($param.Key) = $param.Value
+      }
+    }
+  }
+
+  return $jsonNumber
 }
 function New-Property {
   param (
