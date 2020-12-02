@@ -393,6 +393,20 @@ class jsonNumber {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
 }
+class jsonBoolean {
+  [ValidateSet('boolean')]
+  [string]$type = 'boolean'
+  [string]$id
+  [string]$title
+  [string]$description
+  [bool]$default
+  #
+  # Methods
+  #
+  [object]toJson() {
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
+  }
+}
 class jsonObject {
   [ValidateSet('object')]
   [string]$type = 'object'
@@ -446,20 +460,6 @@ class jsonArray {
     return (Find-Element -Schema $this -Element $item)
   }
 }
-class jsonBoolean {
-  [ValidateSet('boolean')]
-  [string]$type = 'boolean'
-  [string]$id
-  [string]$title
-  [string]$description
-  [bool]$default
-  #
-  # Methods
-  #
-  [object]toJson() {
-    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
-  }
-}
 class jsonDocument {
   [ValidateSet('object')]
   [string]$type = 'object'
@@ -489,40 +489,6 @@ class jsonDocument {
   }
   [object]Find([string]$item) {
     return (Find-Element -Schema $this -Element $item)
-  }
-}
-
-function Find-Element {
-  [cmdletbinding()]
-  param (
-    $Schema,
-    $Element
-  )
-  switch ($Schema.type) {
-    'object' {
-      Write-Verbose "object"
-      if ($Schema.properties.keys -contains $Element) {
-        return $Schema.properties.$Element
-      } else {
-        $keys = $Schema.properties.keys
-        foreach ($key in $keys) {
-          write-verbose $key
-          Find-Element -Schema ($Schema.properties.$key) -Element $Element
-        }
-      }
-    }
-    'array' {
-      write-verbose "array"
-      if ($Schema.items.anyOf.properties.keys -contains $Element) {
-        return $Schema.items.anyOf.properties.$Element
-      } else {
-        $keys = $Schema.items.anyOf.properties.keys
-        foreach ($key in $keys) {
-          write-verbose $key
-          Find-Element -Schema ($Schema.items.anyOf.properties.$key) -Element $Element
-        }
-      }
-    }
   }
 }
 
@@ -772,6 +738,39 @@ function Get-Element {
     }
   }
   return $val
+}
+function Find-Element {
+  [cmdletbinding()]
+  param (
+    $Schema,
+    $Element
+  )
+  switch ($Schema.type) {
+    'object' {
+      Write-Verbose "object"
+      if ($Schema.properties.keys -contains $Element) {
+        return $Schema.properties.$Element
+      } else {
+        $keys = $Schema.properties.keys
+        foreach ($key in $keys) {
+          write-verbose $key
+          Find-Element -Schema ($Schema.properties.$key) -Element $Element
+        }
+      }
+    }
+    'array' {
+      write-verbose "array"
+      if ($Schema.items.anyOf.properties.keys -contains $Element) {
+        return $Schema.items.anyOf.properties.$Element
+      } else {
+        $keys = $Schema.items.anyOf.properties.keys
+        foreach ($key in $keys) {
+          write-verbose $key
+          Find-Element -Schema ($Schema.items.anyOf.properties.$key) -Element $Element
+        }
+      }
+    }
+  }
 }
 Function Remove-Null {
   [cmdletbinding()]
