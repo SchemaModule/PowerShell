@@ -418,6 +418,9 @@ class jsonObject {
   [object]toJson() {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
+  [object]Find([string]$item) {
+    return (find-schema -schema $this -find $item)
+  }
 }
 class jsonArray {
   [ValidateSet('array')]
@@ -438,6 +441,9 @@ class jsonArray {
   }
   [object]toJson() {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
+  }
+  [object]Find([string]$item) {
+    return (find-schema -schema $this -find $item)
   }
 }
 class jsonBoolean {
