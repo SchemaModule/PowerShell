@@ -465,6 +465,7 @@ class jsonDocument {
   [string]$type = 'object'
   [ValidateSet('http://json-schema.org/draft-04/schema#', 'http://json-schema.org/draft-06/schema#', 'http://json-schema.org/draft-07/schema#')]
   [string]$schema = 'http://json-schema.org/draft-04/schema#'
+  [object]$definitions
   [string]$id
   [object]$properties
   [string[]]$required
@@ -700,6 +701,7 @@ function Get-Element {
     }
   }
   foreach ($prop in ($element.psobject.properties.name)) {
+    Write-Verbose $prop
     switch ($prop) {
       '$id' {
         if ($PreserveId) {
