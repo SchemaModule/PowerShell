@@ -496,25 +496,25 @@ class jsonDocument {
 function New-String {
   [CmdletBinding()]
   param (
-    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [string]$id,
-    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [string]$ref,
-    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [int]$minLength,
-    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [int]$maxLength,
-    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [string]$pattern,
-    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [string[]]$enum,
-    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [string]$title,
-    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [string]$description,
-    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [string]$default,
-    [parameter(Mandatory=$false,ParameterSetName='string')]
+    [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [string[]]$examples = @()
   )
   Write-Verbose "Creating jsonString object"
@@ -536,29 +536,29 @@ function New-String {
 function New-Integer {
   [CmdletBinding()]
   param (
-    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [string]$id,
-    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [string]$ref,
-    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [int]$minimum,
-    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [int]$maximum,
-    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [int]$exclusiveMinimum,
-    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [int]$exclusiveMaximum,
-    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [int]$multipleOf,
-    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [int[]]$enum,
-    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [string]$title,
-    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [string]$description,
-    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [int]$default,
-    [parameter(Mandatory=$false,ParameterSetName='integer')]
+    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [int[]]$examples = @()
   )
   Write-Verbose "Creating jsonInteger object"
@@ -579,29 +579,29 @@ function New-Integer {
 function New-Number {
   [CmdletBinding()]
   param (
-    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [string]$id,
-    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [string]$ref,
-    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [decimal]$minimum,
-    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [decimal]$maximum,
-    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [decimal]$exclusiveMinimum,
-    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [decimal]$exclusiveMaximum,
-    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [decimal]$multipleOf,
-    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [string]$title,
-    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [string]$description,
-    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [decimal]$default,
-    [parameter(Mandatory=$false,ParameterSetName='number')]
+    [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [decimal[]]$examples = @()
-    )
+  )
   Write-Verbose "Creating jsonNumber object"
   $jsonNumber = New-Element -Type number
 
@@ -676,6 +676,7 @@ function Get-Element {
   Write-Verbose ($element | out-string)
   Write-Verbose "ElementType: $($element.type)"
   if ($element.('$schema')) {
+    write-verbose "found schema object"
     $val = New-Element -Type document
   }
   else {
@@ -744,31 +745,96 @@ function Get-Element {
 function Find-Element {
   [cmdletbinding()]
   param (
+    [parameter(Mandatory = $true, ParameterSetName = 'name')]
+    [parameter(Mandatory = $true, ParameterSetName = 'type')]
+    [parameter(Mandatory = $true, ParameterSetName = 'path')]
     $Schema,
-    $Element
+    [parameter(Mandatory = $false, ParameterSetName = 'name')]
+    $Element,
+    [parameter(Mandatory = $false, ParameterSetName = 'type')]
+    [ValidateSet('jsonString', 'jsonNumber', 'jsonInteger', 'jsonObject', 'jsonBoolean', 'jsonArray', 'jsonDocument')]
+    $ElementType,
+    [parameter(Mandatory = $false, ParameterSetName = 'path')]
+    $ElementPath
   )
-  switch ($Schema.type) {
-    'object' {
-      Write-Verbose "object"
-      if ($Schema.properties.keys -contains $Element) {
-        return $Schema.properties.$Element
-      } else {
-        $keys = $Schema.properties.keys
-        foreach ($key in $keys) {
-          write-verbose $key
-          Find-Element -Schema ($Schema.properties.$key) -Element $Element
+  switch ($PSCmdlet.ParameterSetName) {
+    'name' {
+      switch ($Schema.type) {
+        'object' {
+          Write-Verbose "object"
+          if ($Schema.properties.keys -contains $Element) {
+            return $Schema.properties.$Element
+          }
+          else {
+            $keys = $Schema.properties.keys
+            foreach ($key in $keys) {
+              write-verbose $key
+              Find-Element -Schema ($Schema.properties.$key) -Element $Element
+            }
+          }
+        }
+        'array' {
+          write-verbose "array"
+          if ($Schema.items.anyOf.properties.keys -contains $Element) {
+            return $Schema.items.anyOf.properties.$Element
+          }
+          else {
+            $keys = $Schema.items.anyOf.properties.keys
+            foreach ($key in $keys) {
+              write-verbose $key
+              Find-Element -Schema ($Schema.items.anyOf.properties.$key) -Element $Element
+            }
+          }
         }
       }
     }
-    'array' {
-      write-verbose "array"
-      if ($Schema.items.anyOf.properties.keys -contains $Element) {
-        return $Schema.items.anyOf.properties.$Element
-      } else {
-        $keys = $Schema.items.anyOf.properties.keys
-        foreach ($key in $keys) {
-          write-verbose $key
-          Find-Element -Schema ($Schema.items.anyOf.properties.$key) -Element $Element
+    'type' {
+      if ($schema.GetType().Name -eq $ElementType) {
+        return $Schema
+      }
+      else {
+        switch ($Schema.type) {
+          'object' {
+            $keys = $Schema.properties.keys
+            foreach ($key in $keys) {
+              Find-Element -Schema ($Schema.properties.$key) -ElementType $ElementType
+            }
+          }
+          'array' {
+            $keys = $Schema.items.anyOf.properties.keys
+            foreach ($key in $keys) {
+              write-verbose $key
+              Find-Element -Schema ($Schema.items.anyOf.properties.$key) -ElementType $ElementType
+            }
+          }
+        }
+      }
+    }
+    'path' {
+      write-verbose "Incoming from parameter $($ElementPath)"
+      [System.Collections.ArrayList]$items = $ElementPath.Split("/")
+      if ($items[0] -eq "") { $items.RemoveAt(0) }
+      write-verbose "Items in collection $($Items.count)"
+      write-verbose "Resource $($Items[0])"
+      $NewPath = ([string]::Join("/", $items[1..$items.Count]))
+      write-verbose "Outgoing to parameter $($NewPath)"
+      if ([string]::IsNullOrEmpty($NewPath)) {
+        switch ($schema.type) {
+          'object' {
+            return $Schema.properties.($items[0])
+          }
+          'array' {
+            return $Schema.items.anyOf.properties.($items[0])
+          }
+        }
+      }
+      write-verbose "Working on $($Schema.type)"
+      switch ($Schema.type) {
+        'object' {
+          Find-Element -Schema ($Schema.properties.($items[0])) -ElementPath $NewPath
+        }
+        'array' {
+          Find-Element -Schema ($Schema.items.anyof.properties.($items[0])) -ElementPath $NewPath
         }
       }
     }
