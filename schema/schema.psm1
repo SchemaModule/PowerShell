@@ -419,7 +419,7 @@ class jsonObject {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
   [object]Find([string]$item) {
-    return (find-schema -schema $this -find $item)
+    return (Find-Element -Schema $this -Element $item)
   }
 }
 class jsonArray {
@@ -443,7 +443,7 @@ class jsonArray {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
   [object]Find([string]$item) {
-    return (find-schema -schema $this -find $item)
+    return (Find-Element -Schema $this -Element $item)
   }
 }
 class jsonBoolean {
@@ -488,38 +488,38 @@ class jsonDocument {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
   [object]Find([string]$item) {
-    return (find-schema -schema $this -find $item)
+    return (Find-Element -Schema $this -Element $item)
   }
 }
 
-function find-schema {
+function Find-Element {
   [cmdletbinding()]
   param (
-    $schema,
-    $find
+    $Schema,
+    $Element
   )
-  switch ($schema.type) {
+  switch ($Schema.type) {
     'object' {
       Write-Verbose "object"
-      if ($schema.properties.keys -contains $find) {
-        return $schema.properties.$find
+      if ($Schema.properties.keys -contains $Element) {
+        return $Schema.properties.$Element
       } else {
-        $ans = $schema.properties.keys
-        foreach ($a in $ans) {
-          write-verbose $a
-          find-schema -schema ($schema.properties.$a) -find $find
+        $keys = $Schema.properties.keys
+        foreach ($key in $keys) {
+          write-verbose $key
+          Find-Element -Schema ($Schema.properties.$key) -Element $Element
         }
       }
     }
     'array' {
       write-verbose "array"
-      if ($schema.items.anyOf.properties.keys -contains $find) {
-        return $schema.items.anyOf.properties.$find
+      if ($Schema.items.anyOf.properties.keys -contains $Element) {
+        return $Schema.items.anyOf.properties.$Element
       } else {
-        $ans = $schema.items.anyOf.properties.keys
-        foreach ($a in $ans) {
-          write-verbose $a
-          find-schema -schema ($schema.items.anyOf.properties.$a) -find $find
+        $keys = $Schema.items.anyOf.properties.keys
+        foreach ($key in $keys) {
+          write-verbose $key
+          Find-Element -Schema ($Schema.items.anyOf.properties.$key) -Element $Element
         }
       }
     }
