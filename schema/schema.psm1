@@ -433,7 +433,7 @@ class jsonObject {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
   [object]Find([string]$item) {
-    return (Find-Element -Schema $this -Element $item)
+    return (Find-Element -Schema $this -ElementName $item)
   }
 }
 class jsonArray {
@@ -457,7 +457,7 @@ class jsonArray {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
   [object]Find([string]$item) {
-    return (Find-Element -Schema $this -Element $item)
+    return (Find-Element -Schema $this -ElementName $item)
   }
 }
 class jsonDocument {
@@ -489,7 +489,7 @@ class jsonDocument {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
   [object]Find([string]$item) {
-    return (Find-Element -Schema $this -Element $item)
+    return (Find-Element -Schema $this -ElementName $item)
   }
 }
 
@@ -750,7 +750,7 @@ function Find-Element {
     [parameter(Mandatory = $true, ParameterSetName = 'path')]
     $Schema,
     [parameter(Mandatory = $false, ParameterSetName = 'name')]
-    $Element,
+    $ElementNam,
     [parameter(Mandatory = $false, ParameterSetName = 'type')]
     [ValidateSet('jsonString', 'jsonNumber', 'jsonInteger', 'jsonObject', 'jsonBoolean', 'jsonArray', 'jsonDocument')]
     $ElementType,
