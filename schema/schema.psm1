@@ -871,7 +871,7 @@ function Find-Element {
             $keys = $Schema.items.anyOf.properties.keys
             foreach ($key in $keys) {
               write-verbose $key
-              Find-Element -Schema ($Schema.items.anyOf.properties.$key) -Element $Element
+              Find-Element -Schema ($Schema.items.anyOf.properties.$key) -ElementName $Element
             }
           }
         }
