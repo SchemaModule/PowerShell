@@ -271,7 +271,7 @@ function ConvertTo-sArray {
 }
 
 
-class jsonString {
+class schemaString {
   [ValidateSet('string')]
   [string]$type = 'string'
   [string]$id
@@ -288,15 +288,15 @@ class jsonString {
   #
   # Constructors
   #
-  jsonString () {}
-  jsonString (
+  schemaString () {}
+  schemaString (
     [int]$min,
     [int]$max
   ) {
     $this.minLength = $min
     $this.maxLength = $max
   }
-  jsonString (
+  schemaString (
     [string]$reg
   ) {
     $this.pattern = $reg
@@ -315,7 +315,7 @@ class jsonString {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
 }
-class jsonInteger {
+class schemaInteger {
   [ValidateSet('integer')]
   [string]$type = 'integer'
   [string]$id
@@ -334,8 +334,8 @@ class jsonInteger {
   #
   # Constructors
   #
-  jsonInteger () {}
-  jsonInteger (
+  schemaInteger () {}
+  schemaInteger (
     [int]$min,
     [int]$max
   ) {
@@ -356,7 +356,7 @@ class jsonInteger {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
 }
-class jsonNumber {
+class schemaNumber {
   [ValidateSet('number')]
   [string]$type = 'number'
   [string]$id
@@ -374,8 +374,8 @@ class jsonNumber {
   #
   # Constructors
   #
-  jsonNumber () {}
-  jsonNumber (
+  schemaNumber () {}
+  schemaNumber (
     [decimal]$min,
     [decimal]$max
   ) {
@@ -393,7 +393,7 @@ class jsonNumber {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
 }
-class jsonBoolean {
+class schemaBoolean {
   [ValidateSet('boolean')]
   [string]$type = 'boolean'
   [string]$id
@@ -407,7 +407,7 @@ class jsonBoolean {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
 }
-class jsonObject {
+class schemaObject {
   [ValidateSet('object')]
   [string]$type = 'object'
   [string]$id
@@ -436,7 +436,7 @@ class jsonObject {
     return (Find-Element -Schema $this -ElementName $item)
   }
 }
-class jsonArray {
+class schemaArray {
   [ValidateSet('array')]
   [string]$type = 'array'
   [string]$id
@@ -460,7 +460,7 @@ class jsonArray {
     return (Find-Element -Schema $this -ElementName $item)
   }
 }
-class jsonDocument {
+class schemaDocument {
   [ValidateSet('object')]
   [string]$type = 'object'
   [ValidateSet('http://json-schema.org/draft-04/schema#', 'http://json-schema.org/draft-06/schema#', 'http://json-schema.org/draft-07/schema#')]
@@ -517,21 +517,21 @@ function New-String {
     [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [string[]]$examples = @()
   )
-  Write-Verbose "Creating jsonString object"
-  $jsonString = New-Element -Type string
-  Write-Verbose ($jsonString.GetType())
+  Write-Verbose "Creating schemaString object"
+  $schemaString = New-Element -Type string
+  Write-Verbose ($schemaString.GetType())
 
   foreach ($param in $PSBoundParameters.GetEnumerator()) {
     switch ($param) {
       { ($param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
       default {
         Write-Verbose "Setting $($param.Value) on $($param.Key)"
-        $jsonString.($param.Key) = $param.Value
+        $schemaString.($param.Key) = $param.Value
       }
     }
   }
 
-  return $jsonString
+  return $schemaString
 }
 function New-Integer {
   [CmdletBinding()]
@@ -561,20 +561,20 @@ function New-Integer {
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [int[]]$examples = @()
   )
-  Write-Verbose "Creating jsonInteger object"
-  $jsonInteger = New-Element -Type integer
+  Write-Verbose "Creating schemaInteger object"
+  $schemaInteger = New-Element -Type integer
 
   foreach ($param in $PSBoundParameters.GetEnumerator()) {
     switch ($param) {
       { ($param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
       default {
         Write-Verbose "Setting $($param.Value) on $($param.Key)"
-        $jsonInteger.($param.Key) = $param.Value
+        $schemaInteger.($param.Key) = $param.Value
       }
     }
   }
 
-  return $jsonInteger
+  return $schemaInteger
 }
 function New-Number {
   [CmdletBinding()]
@@ -602,26 +602,26 @@ function New-Number {
     [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [decimal[]]$examples = @()
   )
-  Write-Verbose "Creating jsonNumber object"
-  $jsonNumber = New-Element -Type number
+  Write-Verbose "Creating schemaNumber object"
+  $schemaNumber = New-Element -Type number
 
   foreach ($param in $PSBoundParameters.GetEnumerator()) {
     switch ($param) {
       { ($param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
       default {
         Write-Verbose "Setting $($param.Value) on $($param.Key)"
-        $jsonNumber.($param.Key) = $param.Value
+        $schemaNumber.($param.Key) = $param.Value
       }
     }
   }
 
-  return $jsonNumber
+  return $schemaNumber
 }
 function New-Property {
   param (
     [ValidateNotNullOrEmpty()]
     [string]$Name,
-    [ValidateSet([jsonNumber], [jsonInteger], [jsonString], [jsonObject], [jsonArray], [jsonBoolean])]
+    [ValidateSet([schemaNumber], [schemaInteger], [schemaString], [schemaObject], [schemaArray], [schemaBoolean])]
     $Value,
     [ValidateSet('allOf', 'anyOf', 'oneOf')]
     $Array
@@ -644,25 +644,25 @@ function New-Element {
 
   switch ($Type) {
     'string' {
-      [jsonString]::new()
+      [schemaString]::new()
     }
     'number' {
-      [jsonNumber]::new()
+      [schemaNumber]::new()
     }
     'integer' {
-      [jsonInteger]::new()
+      [schemaInteger]::new()
     }
     'object' {
-      [jsonObject]::new()
+      [schemaObject]::new()
     }
     'boolean' {
-      [jsonBoolean]::new()
+      [schemaBoolean]::new()
     }
     'array' {
-      [jsonArray]::new()
+      [schemaArray]::new()
     }
     'document' {
-      [jsonDocument]::new()
+      [schemaDocument]::new()
     }
   }
 }
@@ -752,7 +752,7 @@ function Find-Element {
     [parameter(Mandatory = $false, ParameterSetName = 'name')]
     $ElementNam,
     [parameter(Mandatory = $false, ParameterSetName = 'type')]
-    [ValidateSet('jsonString', 'jsonNumber', 'jsonInteger', 'jsonObject', 'jsonBoolean', 'jsonArray', 'jsonDocument')]
+    [ValidateSet('schemaString', 'schemaNumber', 'schemaInteger', 'schemaObject', 'schemaBoolean', 'schemaArray', 'schemaDocument')]
     $ElementType,
     [parameter(Mandatory = $false, ParameterSetName = 'path')]
     $ElementPath
