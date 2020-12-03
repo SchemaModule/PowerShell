@@ -865,7 +865,7 @@ function Find-Element {
         'array' {
           write-verbose "array"
           if ($Schema.items.anyOf.properties.keys -contains $ElementName) {
-            return $Schema.items.anyOf.properties.$Element
+            return $Schema.items.anyOf.properties.$ElementName
           }
           else {
             $keys = $Schema.items.anyOf.properties.keys
