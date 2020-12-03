@@ -839,7 +839,7 @@ function Find-Element {
     [parameter(Mandatory = $true, ParameterSetName = 'path')]
     $Schema,
     [parameter(Mandatory = $false, ParameterSetName = 'name')]
-    $ElementNam,
+    $ElementName,
     [parameter(Mandatory = $false, ParameterSetName = 'type')]
     [ValidateSet('schemaString', 'schemaNumber', 'schemaInteger', 'schemaObject', 'schemaBoolean', 'schemaArray', 'schemaDocument')]
     $ElementType,
@@ -858,7 +858,7 @@ function Find-Element {
             $keys = $Schema.properties.keys
             foreach ($key in $keys) {
               write-verbose $key
-              Find-Element -Schema ($Schema.properties.$key) -Element $Element
+              Find-Element -Schema ($Schema.properties.$key) -ElementName $Element
             }
           }
         }
