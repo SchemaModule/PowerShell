@@ -23,7 +23,7 @@ function Get-Document {
       switch ($Schema.Scheme) {
         'file' {
           Write-Verbose "Incoming Filepath";
-          Return Get-Content -Path $Path | ConvertFrom-Json;
+          Return (Get-Element -element (Get-Content -Path $Path | ConvertFrom-Json));
         }
         'https' {
           Write-Verbose "Incoming HTTPs path";
@@ -38,7 +38,7 @@ function Get-Document {
         [string]::new($Response.Content) | ConvertFrom-Json;
       }
       else {
-        $Response.Content | ConvertFrom-Json
+        Return (Get-Element -element ($Response.Content | ConvertFrom-Json));
       }
     }
     catch {
@@ -166,109 +166,6 @@ function Get-Property {
     }
   }
 }
-
-# function New-sObject {
-#   param (
-#     [ValidateNotNullOrEmpty()]
-#     [parameter(Mandatory = $true)]
-#     [string]$Id,
-#     [object]$Properties,
-#     [string[]]$required,
-#     [bool]$AdditionalProperties = $false,
-#     [string]$Title,
-#     [string]$Description,
-#     [object]$Default
-#   )
-#   $obj = [jsonObject]::new()
-
-#   foreach ($param in $PSBoundParameters.GetEnumerator()) {
-#     $obj.($param.Key) = $param.Value
-#   }
-#   return $obj
-# }
-# function New-Array {
-#   param (
-#     [parameter(Mandatory = $true)]
-#     [ValidateNotNullOrEmpty()]
-#     [string]$id,
-#     [object]$items,
-#     [bool]$additionalItems = $false,
-#     [string]$title,
-#     [string]$description,
-#     [array]$default
-#   )
-#   $obj = [jsonArray]::new()
-
-#   foreach ($param in $PSBoundParameters.GetEnumerator()) {
-#     $obj.($param.Key) = $param.Value
-#   }
-#   return $obj
-# }
-# function ConvertTo-sObject {
-#   param (
-#     [object]$object
-#   )
-#   switch ($object.type) {
-#     'object' {
-#       $obj = [jsonObject]::new()
-#       foreach ($property in $object.psobject.properties.name) {
-#         if (!($property -eq 'properties')) {
-#           switch ($property) {
-#             '$id' {
-#               $obj.id = $object.$property
-#             }
-#             default {
-#               $obj.$property = $object.$property
-#             }
-#           }
-#         }
-#         else {
-#           foreach ($prop in $object.properties.psobject.Properties.Name) {
-#             $Elements += New-Property -Name $prop -Value (Get-Element -element $object.properties.$prop)
-#           }
-#         }
-#       }
-#     }
-#   }
-#   $obj.properties += $Elements
-#   return $obj
-# }
-# function ConvertTo-sArray {
-#   [cmdletbinding()]
-#   param (
-#     [object]$object
-#   )
-#   switch ($object.type) {
-#     'array' {
-#       $obj = [jsonArray]::new()
-#       foreach ($property in $object.psobject.properties.name) {
-#         if (!($property -eq 'items')) {
-#           #Write-Verbose $property
-#           switch ($property) {
-#             '$id' {
-#               $obj.id = $object.$property
-#             }
-#             default {
-#               $obj.$property = $object.$property
-#             }
-#           }
-#         }
-#         else {
-#           foreach ($prop in $object.items.psobject.Properties.Name) {
-#             switch ($prop) {
-#               { ($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf') } {
-#                 Write-Verbose $prop
-#                 $Elements += New-Property -Name $prop -Value ($object.items.$prop | ForEach-Object { Get-Element -element $_ })
-#               }
-#             }
-#           }
-#         }
-#       }
-#     }
-#   }
-#   $obj.items += $Elements
-#   return $obj
-# }
 
 
 class schemaString {
@@ -417,6 +314,7 @@ class schemaObject {
   [string]$title
   [string]$description
   [object]$default
+  [object[]]$enum
 
   #
   # Constructors
@@ -820,6 +718,12 @@ function Get-Element {
               Write-Verbose "ArrayProperty: $($property)"
               $Elements += New-Property -Name $property -Value ($element.items.$property | ForEach-Object { Get-Element -element $_ })
             }
+            'properties' {
+              Write-Verbose "Found object $($property)"
+              if ($element.items.$property.type -eq 'object') {
+                $Elements += New-Property -Value ($element.items.$property.properties |ForEach-Object { Get-Element -element $_}) -Array oneOf
+              }
+            }
           }
         }
         $val.items += $Elements
@@ -830,6 +734,15 @@ function Get-Element {
     }
   }
   return $val
+}
+function Get-Definition {
+  [CmdletBinding()]
+  param (
+    [System.Uri]$Reference
+  )
+  $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/')+1,($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/'))-1)
+  $Definition = Get-Document -Path $Reference.AbsoluteUri
+  return (Get-Element -element ($Definition.definitions.($DefinitionName)))
 }
 function Find-Element {
   [cmdletbinding()]
