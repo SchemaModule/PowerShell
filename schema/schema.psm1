@@ -851,27 +851,27 @@ function Find-Element {
       switch ($Schema.type) {
         'object' {
           Write-Verbose "object"
-          if ($Schema.properties.keys -contains $Element) {
-            return $Schema.properties.$Element
+          if ($Schema.properties.keys -contains $ElementName) {
+            return $Schema.properties.$ElementName
           }
           else {
             $keys = $Schema.properties.keys
             foreach ($key in $keys) {
               write-verbose $key
-              Find-Element -Schema ($Schema.properties.$key) -ElementName $Element
+              Find-Element -Schema ($Schema.properties.$key) -ElementName $ElementName
             }
           }
         }
         'array' {
           write-verbose "array"
-          if ($Schema.items.anyOf.properties.keys -contains $Element) {
+          if ($Schema.items.anyOf.properties.keys -contains $ElementName) {
             return $Schema.items.anyOf.properties.$Element
           }
           else {
             $keys = $Schema.items.anyOf.properties.keys
             foreach ($key in $keys) {
               write-verbose $key
-              Find-Element -Schema ($Schema.items.anyOf.properties.$key) -ElementName $Element
+              Find-Element -Schema ($Schema.items.anyOf.properties.$key) -ElementName $ElementName
             }
           }
         }
