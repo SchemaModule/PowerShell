@@ -38,7 +38,7 @@ function Get-Document {
         [string]::new($Response.Content) | ConvertFrom-Json;
       }
       else {
-        Return (Get-Element -element ($Response.Content | ConvertFrom-Json));
+        Return (ConvertTo-Element -object ($Response.Content | ConvertFrom-Json));
       }
     }
     catch {
@@ -745,7 +745,7 @@ function Get-Definition {
   )
   $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/') + 1, ($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/')) - 1)
   $Definition = Get-Document -Path $Reference.AbsoluteUri
-  return (Get-Element -element ($Definition.definitions.($DefinitionName)))
+  return (ConvertTo-Element -object ($Definition.definitions.($DefinitionName)))
 }
 function ConvertTo-Element {
   [CmdletBinding()]
@@ -754,6 +754,7 @@ function ConvertTo-Element {
   )
   switch ($object.type) {
     'string' {
+      write-verbose "Creating schemaString object"
       $Result = New-Element -Type string
       foreach ($prop in $object.psobject.properties.name) {
         if ($prop -eq '$id') {
@@ -765,6 +766,7 @@ function ConvertTo-Element {
       }
     }
     'integer' {
+      write-verbose "Creating schemaInteger object"
       $Result = New-Element -Type integer
       foreach ($prop in $object.psobject.properties.name) {
         if ($prop -eq '$id') {
@@ -776,6 +778,7 @@ function ConvertTo-Element {
       }
     }
     'number' {
+      write-verbose "Creating schemaNumber object"
       $Result = New-Element -Type number
       foreach ($prop in $object.psobject.properties.name) {
         if ($prop -eq '$id') {
@@ -787,6 +790,7 @@ function ConvertTo-Element {
       }
     }
     'boolean' {
+      write-verbose "Creating schemaBoolean object"
       $Result = New-Element -Type boolean
       foreach ($prop in $object.psobject.properties.name) {
         if ($prop -eq '$id') {
@@ -799,12 +803,15 @@ function ConvertTo-Element {
     }
     'object' {
       if ($object.psobject.properties.name.Contains('$schema')) {
+        write-verbose "Creating schemaDcoument object"
         $Result = New-Element -Type document
       } else {
+        write-verbose "Creating schemaObject object"
         $Result = New-Element -Type object
       }
       foreach ($prop in $object.psobject.properties.name) {
         if ($prop -eq '$id') {
+          Write-Verbose "Found `$id property"
           $Result.id = $object.$prop
         }
         elseif ($prop -eq 'properties') {
@@ -813,6 +820,7 @@ function ConvertTo-Element {
           }
         }
         elseif ($prop -eq '$schema') {
+          write-verbose "Found `$schema property"
           $Result.schema = $object.$prop
         }
         else {
@@ -821,9 +829,11 @@ function ConvertTo-Element {
       }
     }
     'array' {
+      write-verbose "Creating schemaArray object"
       $Result = New-Element -Type array
       foreach ($prop in $object.psobject.properties.name) {
         if ($prop -eq '$id') {
+          Write-Verbose "Found `$id property"
           $Result.id = $object.$prop
         }
         elseif ($prop -eq 'items') {
@@ -832,9 +842,10 @@ function ConvertTo-Element {
             $Result.items += (New-Property -Array oneOf -Value (ConvertTo-Element -object $object.items))
           } else {
             foreach ($oprop in $object.items.psobject.properties.name) {
-              $Result.items += ((New-Property -Name $oprop -Value (ConvertTo-Element -object $object.items.($oprop))))
+              Write-Verbose "Found valid array object"
+              Write-Verbose $oprop
+              $Result.items += ($object.items.oneOf.GetEnumerator() |ForEach-Object {((New-Property -Name $oprop -Value (ConvertTo-Element -object $_) -Array $oprop))})
             }
-
           }
         }
         else {
