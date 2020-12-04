@@ -297,6 +297,7 @@ class schemaBoolean {
   [string]$title
   [string]$description
   [bool]$default
+  [bool[]]$enum
   #
   # Methods
   #
@@ -521,7 +522,7 @@ function New-sObject {
     [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet('schemaString','schemaInteger','schemaNumber')]
+    [ValidateSet('schemaString', 'schemaInteger', 'schemaNumber')]
     [string]$type,
     [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
@@ -539,7 +540,7 @@ function New-sObject {
     [string]$pattern,
     [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [ValidateSet([string[]],[int[]])]
+    [ValidateSet([string[]], [int[]])]
     $enum,
     [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
@@ -552,32 +553,32 @@ function New-sObject {
     [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([string],[int],[decimal])]
+    [ValidateSet([string], [int], [decimal])]
     $default,
     [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([string[]],[int[]],[decimal[]])]
+    [ValidateSet([string[]], [int[]], [decimal[]])]
     $examples = @(),
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([int],[decimal])]
+    [ValidateSet([int], [decimal])]
     $minimum,
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([int],[decimal])]
+    [ValidateSet([int], [decimal])]
     $maximum,
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([int],[decimal])]
+    [ValidateSet([int], [decimal])]
     $exclusiveMinimum,
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([int],[decimal])]
+    [ValidateSet([int], [decimal])]
     $exclusiveMaximum,
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([int],[decimal])]
+    [ValidateSet([int], [decimal])]
     $multipleOf
   )
   switch ($PSCmdlet.ParameterSetName) {
@@ -697,9 +698,8 @@ function Get-Element {
         }
       }
       '$ref' {
-        if ($PreserveId) {
-          $val.ref = $element.$prop
-        }
+        Write-Verbose "Found reference to follow"
+        $val = Get-Definition -Reference $element.$prop
       }
       '$schema' {
         $val.schema = $element.$prop
@@ -716,12 +716,15 @@ function Get-Element {
           switch ($property) {
             { ($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf') } {
               Write-Verbose "ArrayProperty: $($property)"
-              $Elements += New-Property -Name $property -Value ($element.items.$property | ForEach-Object { Get-Element -element $_ })
+              Write-Verbose "FART"
+              $Elements += New-Property -Name $property -Value ($element.items.$property | ForEach-Object { Get-Element -element $_ -Verbose })
             }
-            'properties' {
+            'properties1' {
               Write-Verbose "Found object $($property)"
-              if ($element.items.$property.type -eq 'object') {
-                $Elements += New-Property -Value ($element.items.$property.properties |ForEach-Object { Get-Element -element $_}) -Array oneOf
+              Write-Verbose "POOP"
+              if ($element.items.type -eq 'object') {
+                write-verbose "inside item array object loop"
+                $Elements += New-Property -Value ($element.items.$property.items | ForEach-Object { Get-Element -element $_ -Verbose }) -Array oneOf
               }
             }
           }
@@ -740,9 +743,112 @@ function Get-Definition {
   param (
     [System.Uri]$Reference
   )
-  $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/')+1,($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/'))-1)
+  $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/') + 1, ($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/')) - 1)
   $Definition = Get-Document -Path $Reference.AbsoluteUri
   return (Get-Element -element ($Definition.definitions.($DefinitionName)))
+}
+function ConvertTo-Element {
+  [CmdletBinding()]
+  param (
+    [object]$object
+  )
+  switch ($object.type) {
+    'string' {
+      $Result = New-Element -Type string
+      foreach ($prop in $object.psobject.properties.name) {
+        if ($prop -eq '$id') {
+          $Result.id = $object.$prop
+        }
+        else {
+          $Result.$prop = $object.$prop
+        }
+      }
+    }
+    'integer' {
+      $Result = New-Element -Type integer
+      foreach ($prop in $object.psobject.properties.name) {
+        if ($prop -eq '$id') {
+          $Result.id = $object.$prop
+        }
+        else {
+          $Result.$prop = $object.$prop
+        }
+      }
+    }
+    'number' {
+      $Result = New-Element -Type number
+      foreach ($prop in $object.psobject.properties.name) {
+        if ($prop -eq '$id') {
+          $Result.id = $object.$prop
+        }
+        else {
+          $Result.$prop = $object.$prop
+        }
+      }
+    }
+    'boolean' {
+      $Result = New-Element -Type boolean
+      foreach ($prop in $object.psobject.properties.name) {
+        if ($prop -eq '$id') {
+          $Result.id = $object.$prop
+        }
+        else {
+          $Result.$prop = $object.$prop
+        }
+      }
+    }
+    'object' {
+      if ($object.psobject.properties.name.Contains('$schema')) {
+        $Result = New-Element -Type document
+      } else {
+        $Result = New-Element -Type object
+      }
+      foreach ($prop in $object.psobject.properties.name) {
+        if ($prop -eq '$id') {
+          $Result.id = $object.$prop
+        }
+        elseif ($prop -eq 'properties') {
+          foreach ($oprop in $object.properties.psobject.properties.name) {
+            $Result.properties += ((New-Property -Name $oprop -Value (ConvertTo-Element -object $object.properties.($oprop))))
+          }
+        }
+        elseif ($prop -eq '$schema') {
+          $Result.schema = $object.$prop
+        }
+        else {
+          $Result.$prop = $object.$prop
+        }
+      }
+    }
+    'array' {
+      $Result = New-Element -Type array
+      foreach ($prop in $object.psobject.properties.name) {
+        if ($prop -eq '$id') {
+          $Result.id = $object.$prop
+        }
+        elseif ($prop -eq 'items') {
+          if ($object.items.psobject.properties.name.contains('properties')){
+            Write-Verbose "Found invalid nested object"
+            $Result.items += (New-Property -Array oneOf -Value (ConvertTo-Element -object $object.items))
+          } else {
+            foreach ($oprop in $object.items.psobject.properties.name) {
+              $Result.items += ((New-Property -Name $oprop -Value (ConvertTo-Element -object $object.items.($oprop))))
+            }
+
+          }
+        }
+        else {
+          $Result.$prop = $object.$prop
+        }
+      }
+    }
+    default {
+      if ($object.('$ref')) {
+        $Result = Get-Definition -Reference $object.('$ref')
+      }
+    }
+  }
+  return $Result
 }
 function Find-Element {
   [cmdletbinding()]
