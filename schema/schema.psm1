@@ -23,7 +23,7 @@ function Get-Document {
       switch ($Schema.Scheme) {
         'file' {
           Write-Verbose "Incoming Filepath";
-          Return (Get-Element -element (Get-Content -Path $Path | ConvertFrom-Json));
+          Return (ConvertTo-Element -object (Get-Content -Path $Path | ConvertFrom-Json));
         }
         'https' {
           Write-Verbose "Incoming HTTPs path";
@@ -653,90 +653,6 @@ function New-Element {
       [schemaDocument]::new()
     }
   }
-}
-function Get-Element {
-  [cmdletbinding()]
-  param (
-    [object]$element,
-    [switch]$PreserveId
-  )
-
-  Write-Verbose ($element | out-string)
-  Write-Verbose "ElementType: $($element.type)"
-  if ($element.('$schema')) {
-    write-verbose "found schema object"
-    $val = New-Element -Type document
-  }
-  else {
-    switch ($element.type) {
-      'string' {
-        $val = New-Element -Type string
-      }
-      'number' {
-        $val = New-Element -Type number
-      }
-      'integer' {
-        $val = New-Element -Type integer
-      }
-      'object' {
-        $val = New-Element -Type object
-      }
-      'array' {
-        $val = New-Element -Type array
-      }
-      'boolean' {
-        $val = New-Element -Type boolean
-      }
-    }
-  }
-  foreach ($prop in ($element.psobject.properties.name)) {
-    Write-Verbose $prop
-    switch ($prop) {
-      '$id' {
-        if ($PreserveId) {
-          $val.id = $element.$prop
-        }
-      }
-      '$ref' {
-        Write-Verbose "Found reference to follow"
-        $val = Get-Definition -Reference $element.$prop
-      }
-      '$schema' {
-        $val.schema = $element.$prop
-      }
-      'properties' {
-        foreach ($property in $element.properties.psobject.Properties.Name) {
-          Write-Verbose "ObjectProperty: $($property)"
-          $Elements += New-Property -Name $property -Value (Get-Element -element $element.properties.$property)
-        }
-        $val.properties += $Elements
-      }
-      'items' {
-        foreach ($property in $element.items.psobject.Properties.Name) {
-          switch ($property) {
-            { ($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf') } {
-              Write-Verbose "ArrayProperty: $($property)"
-              Write-Verbose "FART"
-              $Elements += New-Property -Name $property -Value ($element.items.$property | ForEach-Object { Get-Element -element $_ -Verbose })
-            }
-            'properties1' {
-              Write-Verbose "Found object $($property)"
-              Write-Verbose "POOP"
-              if ($element.items.type -eq 'object') {
-                write-verbose "inside item array object loop"
-                $Elements += New-Property -Value ($element.items.$property.items | ForEach-Object { Get-Element -element $_ -Verbose }) -Array oneOf
-              }
-            }
-          }
-        }
-        $val.items += $Elements
-      }
-      default {
-        $val.$prop = $element.$prop
-      }
-    }
-  }
-  return $val
 }
 function Get-Definition {
   [CmdletBinding()]
