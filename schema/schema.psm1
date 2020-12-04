@@ -663,6 +663,13 @@ function Get-Definition {
   $Definition = Get-Document -Path $Reference.AbsoluteUri
   return (ConvertTo-Element -object ($Definition.definitions.($DefinitionName)))
 }
+function Get-Reference {
+  [CmdletBinding()]
+  param (
+    [System.Uri]$Reference
+  )
+  return (Get-Document -Path $Reference.AbsoluteUri)
+}
 function ConvertTo-Element {
   [CmdletBinding()]
   param (
@@ -727,11 +734,12 @@ function ConvertTo-Element {
       }
       foreach ($prop in $object.psobject.properties.name) {
         if ($prop -eq '$id') {
-          Write-Verbose "Found `$id property"
+          Write-Verbose $object.$prop
           $Result.id = $object.$prop
         }
         elseif ($prop -eq 'properties') {
           foreach ($oprop in $object.properties.psobject.properties.name) {
+            write-verbose $oprop
             $Result.properties += ((New-Property -Name $oprop -Value (ConvertTo-Element -object $object.properties.($oprop))))
           }
         }
@@ -749,7 +757,7 @@ function ConvertTo-Element {
       $Result = New-Element -Type array
       foreach ($prop in $object.psobject.properties.name) {
         if ($prop -eq '$id') {
-          Write-Verbose "Found `$id property"
+          Write-Verbose $object.$prop
           $Result.id = $object.$prop
         }
         elseif ($prop -eq 'items') {
@@ -758,9 +766,12 @@ function ConvertTo-Element {
             $Result.items += (New-Property -Array oneOf -Value (ConvertTo-Element -object $object.items))
           } else {
             foreach ($oprop in $object.items.psobject.properties.name) {
-              Write-Verbose "Found valid array object"
-              Write-Verbose $oprop
-              $Result.items += ($object.items.oneOf.GetEnumerator() |ForEach-Object {((New-Property -Name $oprop -Value (ConvertTo-Element -object $_) -Array $oprop))})
+              if (!($oprop -eq '$id')) {
+                write-verbose ($object.items.psobject.properties.name |out-string)
+                Write-Verbose "Found valid array object"
+                Write-Verbose $oprop
+                $Result.items += ($object.items.$oprop.GetEnumerator() |ForEach-Object {((New-Property -Name $oprop -Value (ConvertTo-Element -object $_) -Array $oprop))})
+              }
             }
           }
         }
@@ -771,7 +782,11 @@ function ConvertTo-Element {
     }
     default {
       if ($object.('$ref')) {
-        $Result = Get-Definition -Reference $object.('$ref')
+        if ($object.('$ref').contains('definitions')) {
+          $Result = Get-Definition -Reference $object.('$ref')
+        } else {
+          $Result = Get-Reference -Reference $object.('$ref')
+        }
       }
     }
   }
