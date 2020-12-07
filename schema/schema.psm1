@@ -6,7 +6,8 @@ function Get-Document {
   [OutputType([Object])]
   param (
     [Parameter(ValueFromPipeline)]
-    [string]$Path
+    [string]$Path,
+    [switch]$force
   )
 
   process {
@@ -27,18 +28,12 @@ function Get-Document {
         }
         'https' {
           Write-Verbose "Incoming HTTPs path";
-          $Response = Invoke-WebRequest -UseBasicParsing -Uri $Path;
+          Return (ConvertTo-Element -object (Invoke-WebRequest -UseBasicParsing -Uri $Path |ConvertFrom-Json));
         }
         'http' {
           Write-Verbose "Incoming HTTP path";
-          $Response = Invoke-WebRequest -UseBasicParsing -Uri $Path;
+          Return (ConvertTo-Element -object (Invoke-WebRequest -UseBasicParsing -Uri $Path |ConvertFrom-Json));
         }
-      }
-      if ($Response.Content.GetType().Name -eq 'Byte[]') {
-        [string]::new($Response.Content) | ConvertFrom-Json;
-      }
-      else {
-        Return (ConvertTo-Element -object ($Response.Content | ConvertFrom-Json));
       }
     }
     catch {
