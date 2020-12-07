@@ -206,6 +206,9 @@ class schemaString {
   [object]toJson() {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
+  [object]toString() {
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref)
+  }
 }
 class schemaInteger {
   [ValidateSet('integer')]
@@ -247,6 +250,9 @@ class schemaInteger {
   [object]toJson() {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
+  [object]toString() {
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref)
+  }
 }
 class schemaNumber {
   [ValidateSet('number')]
@@ -284,6 +290,9 @@ class schemaNumber {
   [object]toJson() {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
   }
+  [object]toString() {
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref)
+  }
 }
 class schemaBoolean {
   [ValidateSet('boolean')]
@@ -298,6 +307,9 @@ class schemaBoolean {
   #
   [object]toJson() {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | Remove-Null | ConvertTo-Json)
+  }
+  [object]toString() {
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref)
   }
 }
 class schemaObject {
@@ -329,6 +341,9 @@ class schemaObject {
   [object]Find([string]$item) {
     return (Find-Element -Schema $this -ElementName $item)
   }
+  [object]toString() {
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id)
+  }
 }
 class schemaArray {
   [ValidateSet('array')]
@@ -352,6 +367,9 @@ class schemaArray {
   }
   [object]Find([string]$item) {
     return (Find-Element -Schema $this -ElementName $item)
+  }
+  [object]toString() {
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id)
   }
 }
 class schemaDocument {
@@ -384,6 +402,9 @@ class schemaDocument {
   }
   [object]Find([string]$item) {
     return (Find-Element -Schema $this -ElementName $item)
+  }
+  [object]toString() {
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } }, @{Name = '$definitions'; Exp = { $_.definitions } } -ExcludeProperty id,schema,definitions)
   }
 }
 
@@ -904,4 +925,44 @@ Function Remove-Null {
       $obj | Select-Object -Property $NonNulls
     }
   }
+}
+function Format-Document([Parameter(Mandatory, ValueFromPipeline)][String] $json) {
+  $indent = 0;
+  ($json -Split '\n' |
+    ForEach-Object {
+      if ($_ -match '[\}\]]') {
+        # This line contains  ] or }, decrement the indentation level
+        $indent--
+      }
+      $line = (' ' * $indent * 2) + $_.TrimStart().Replace(':  ', ': ')
+      if ($_ -match '[\{\[]') {
+        # This line contains [ or {, increment the indentation level
+        $indent++
+      }
+      if ($line.contains('"schema"')) {
+        if (!($line.contains('null'))) {
+          $line.Replace('"schema"', '"$schema"')
+        }
+      }
+      elseif ($line.contains('"definitions"')) {
+        if (!($line.contains('null'))) {
+          $line.Replace('"definitions"', '"$definitions"')
+        }
+      }
+      elseif ($line.contains('"id": ')) {
+        if (!($line.contains('null'))) {
+          $line.Replace('"id": "', '"$id": ')
+        }
+      }
+      elseif ($line.contains('"ref"')) {
+        if (!($line.contains('null'))) {
+          $line.Replace('"ref"', '"$ref"')
+        }
+      }
+      elseif ($line.contains('null')) {
+      }
+      else {
+        $line
+      }
+    }) -Join "`n"
 }
