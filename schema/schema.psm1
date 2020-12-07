@@ -940,26 +940,16 @@ function Format-Document([Parameter(Mandatory, ValueFromPipeline)][String] $json
         $indent++
       }
       if ($line.contains('"schema"')) {
-        if (!($line.contains('null'))) {
           $line.Replace('"schema"', '"$schema"')
-        }
       }
       elseif ($line.contains('"definitions"')) {
-        if (!($line.contains('null'))) {
           $line.Replace('"definitions"', '"$definitions"')
-        }
       }
       elseif ($line.contains('"id": ')) {
-        if (!($line.contains('null'))) {
           $line.Replace('"id": "', '"$id": "')
-        }
       }
       elseif ($line.contains('"ref"')) {
-        if (!($line.contains('null'))) {
           $line.Replace('"ref"', '"$ref"')
-        }
-      }
-      elseif ($line.contains('null')) {
       }
       else {
         $line
