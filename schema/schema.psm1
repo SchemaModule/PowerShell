@@ -951,7 +951,7 @@ function Format-Document([Parameter(Mandatory, ValueFromPipeline)][String] $json
       }
       elseif ($line.contains('"id": ')) {
         if (!($line.contains('null'))) {
-          $line.Replace('"id": "', '"$id": ')
+          $line.Replace('"id": "', '"$id": "')
         }
       }
       elseif ($line.contains('"ref"')) {
