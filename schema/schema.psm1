@@ -404,6 +404,15 @@ class schemaArray {
   [object]toString() {
     return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id)
   }
+  [array]toArray() {
+    [array]$retVal = @();
+    foreach ($item in $this.items) {
+      foreach ($key in $this.items.keys) {
+        $retVal += $item.$key.toObject()
+      }
+    }
+    return $retVal
+  }
 }
 class schemaDocument {
   [ValidateSet('object')]
