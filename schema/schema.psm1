@@ -101,7 +101,7 @@ function Get-Array {
 
   process {
     Write-Verbose ($SchemaDocument | Out-String);
-    $Properties = $SchemaDocument.items.anyOf.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
+    $Properties = $SchemaDocument.items.anyOf.properties.keys ;#| Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
     Write-Verbose "Setting up output object";
     $Members = @{};
     foreach ($Property in $Properties) {
