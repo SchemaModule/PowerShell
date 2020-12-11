@@ -344,6 +344,39 @@ class schemaObject {
   [object]toString() {
     return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id)
   }
+  [object]toObject() {
+    [object]$retVal = New-Object object;
+    if ($this.required) {
+      foreach ($req in $this.required) {
+        switch ($this.properties.$req.type) {
+          'object' {
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $req -Value @{}
+          }
+          'array' {
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $req -Value @()
+          }
+          default {
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $req -Value $null
+          }
+        }
+      }
+    } else {
+      foreach ($item in $this.properties.keys) {
+        switch ($this.properties.$item.type) {
+          'object' {
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value @{}
+          }
+          'array' {
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value @()
+          }
+          default {
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $null
+          }
+        }
+      }
+    }
+    return $retVal
+  }
 }
 class schemaArray {
   [ValidateSet('array')]
@@ -425,7 +458,7 @@ class schemaDocument {
         }
       }
     } else {
-      foreach ($item in $this.properties) {
+      foreach ($item in $this.properties.keys) {
         switch ($this.properties.$item.type) {
           'object' {
             Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value @{}
