@@ -53,7 +53,7 @@ function Get-Object {
 
   process {
     Write-Verbose ($SchemaDocument | Out-String);
-    $Properties = $SchemaDocument.properties | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
+    $Properties = $SchemaDocument.properties.keys;
     Write-Verbose "Setting up output object";
     $Members = @{};
     foreach ($Property in $Properties) {
@@ -73,11 +73,11 @@ function Get-Object {
         }
         'number' {
           Write-Verbose "Add Number to output object";
-          $Members.Add($Property, [int])
+          $Members.Add($Property, [int]0)
         }
         'integer' {
           Write-Verbose "Add Integer to output object";
-          $Members.Add($Property, [decimal])
+          $Members.Add($Property, [decimal]0)
         }
         'boolean' {
           Write-Verbose "Add Boolean to output object";
@@ -101,7 +101,7 @@ function Get-Array {
 
   process {
     Write-Verbose ($SchemaDocument | Out-String);
-    $Properties = $SchemaDocument.items.anyOf.properties.keys ;#| Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name;
+    $Properties = $SchemaDocument.items.anyOf.properties.keys;
     Write-Verbose "Setting up output object";
     $Members = @{};
     foreach ($Property in $Properties) {
