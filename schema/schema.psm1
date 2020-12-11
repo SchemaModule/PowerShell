@@ -137,31 +137,6 @@ function Get-Array {
     New-Object -TypeName psobject -Property $Members;
   }
 }
-function Get-Property {
-  [CmdletBinding(
-    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-Property.md#get-property',
-    PositionalBinding = $true)]
-  [OutputType([Object])]
-  param (
-    [Parameter(ValueFromPipeline)]
-    [object]$SchemaDocument,
-    [string]$Name
-  )
-
-  process {
-    Write-Verbose ($SchemaDocument | Out-String);
-    Write-Verbose $Name;
-    if ($Name) {
-      Write-Verbose "Return specific Property";
-      $SchemaDocument.properties.$Name;
-    }
-    else {
-      Write-Verbose "Return all properties";
-      $SchemaDocument.properties;
-    }
-  }
-}
-
 
 class schemaString {
   [ValidateSet('string')]
