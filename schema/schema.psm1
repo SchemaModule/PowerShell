@@ -377,6 +377,22 @@ class schemaObject {
     }
     return $retVal
   }
+  [object]toObject([string]$PropertyName) {
+    [object]$retVal = New-Object object;
+    if ($this.properties.Contains($PropertyName)) {
+      Add-Member -InputObject $retVal -MemberType NoteProperty -Name $PropertyName -Value ($this.GetProperty($PropertyName).toObject())
+    } else {
+      throw "$($PropertyName) not found in collection $($this.properties.keys |out-string)"
+    }
+    return $retVal
+  }
+  [object]GetProperty([string]$PropertyName) {
+    if ($this.properties.Contains($PropertyName)) {
+      return ($this.properties.$PropertyName)
+    } else {
+      throw "$($PropertyName) not found in collection $($this.properties.keys |out-string)"
+    }
+  }
 }
 class schemaArray {
   [ValidateSet('array')]
