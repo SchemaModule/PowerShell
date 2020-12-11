@@ -1024,3 +1024,63 @@ function Format-Document([Parameter(Mandatory, ValueFromPipeline)][String] $json
       }
     }) -Join "`n"
 }
+
+function getobject {
+  [cmdletbinding()]
+  param (
+    $document,
+    $depth
+  )
+  [object]$retVal = New-Object object;
+
+  if ($depth -ne 1) {
+    Write-Verbose "getobject: Incoming: $($depth)"
+    $depth = if ($depth -gt 1) { $depth -1} else {$depth}
+    Write-Verbose "getobject: Calculated: $($depth)"
+    foreach ($item in $document.properties.keys) {
+      switch ($document.properties.$item.type) {
+        'object' {
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value (getobject -document $document.properties.$item -depth $depth)
+        }
+        'array' {
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value (getarray -document $document.properties.$item -depth $depth)
+        }
+        'string' {
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value ""
+        }
+        'number' {
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value ([decimal]0)
+        }
+        'integer' {
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value ([int]0)
+        }
+        'boolean' {
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $false
+        }
+        default {
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $null
+        }
+      }
+    }
+  }
+  return $retVal
+}
+function getarray {
+  [cmdletbinding()]
+  param (
+    $document,
+    $depth
+  )
+  [array]$retVal = @();
+  if ($depth -ne 1) {
+    Write-Verbose "getarray: Incoming: $($depth)"
+    $depth = if ($depth -gt 1) { $depth -1} else {$depth}
+    Write-Verbose "getarray: Calculated: $($depth)"
+    foreach ($item in $document.items) {
+      foreach ($key in $document.items.keys) {
+        $retVal += (getobject -document $item.$key -depth $depth)
+      }
+    }
+  }
+  return $retVal
+}
