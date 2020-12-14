@@ -320,42 +320,24 @@ class schemaObject {
     return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id)
   }
   [object]toObject() {
-    [object]$retVal = New-Object object;
-    if ($this.required) {
-      foreach ($req in $this.required) {
-        switch ($this.properties.$req.type) {
-          'object' {
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $req -Value @{}
-          }
-          'array' {
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $req -Value @()
-          }
-          default {
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $req -Value $null
-          }
-        }
-      }
-    } else {
-      foreach ($item in $this.properties.keys) {
-        switch ($this.properties.$item.type) {
-          'object' {
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value @{}
-          }
-          'array' {
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value @()
-          }
-          default {
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $null
-          }
-        }
-      }
-    }
-    return $retVal
+    return (ConvertFrom-Object -document $this)
+  }
+  [object]toObject([int]$Depth) {
+    return (ConvertFrom-Object -document $this -depth $Depth)
   }
   [object]toObject([string]$PropertyName) {
     [object]$retVal = New-Object object;
     if ($this.properties.Contains($PropertyName)) {
-      Add-Member -InputObject $retVal -MemberType NoteProperty -Name $PropertyName -Value ($this.GetProperty($PropertyName).toObject())
+      Add-Member -InputObject $retVal -MemberType NoteProperty -Name $PropertyName -Value (ConvertFrom-Object -document ($this.GetProperty($PropertyName)))
+    } else {
+      throw "$($PropertyName) not found in collection $($this.properties.keys |out-string)"
+    }
+    return $retVal
+  }
+  [object]toObject([string]$PropertyName,[int]$Depth) {
+    [object]$retVal = New-Object object;
+    if ($this.properties.Contains($PropertyName)) {
+      Add-Member -InputObject $retVal -MemberType NoteProperty -Name $PropertyName -Value (ConvertFrom-Object -document ($this.GetProperty($PropertyName)) -depth $Depth)
     } else {
       throw "$($PropertyName) not found in collection $($this.properties.keys |out-string)"
     }
@@ -396,13 +378,7 @@ class schemaArray {
     return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id)
   }
   [array]toArray() {
-    [array]$retVal = @();
-    foreach ($item in $this.items) {
-      foreach ($key in $this.items.keys) {
-        $retVal += $item.$key.toObject()
-      }
-    }
-    return $retVal
+    return (ConvertFrom-Array -document $this)
   }
 }
 class schemaDocument {
@@ -440,39 +416,10 @@ class schemaDocument {
     return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } }, @{Name = '$definitions'; Exp = { $_.definitions } } -ExcludeProperty id,schema,definitions)
   }
   [object]toObject() {
-    [object]$retVal = New-Object object;
-    Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$schema' -Value $this.schema;
-    Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$id' -Value $this.id;
-    if ($this.required) {
-      foreach ($req in $this.required) {
-        switch ($this.properties.$req.type) {
-          'object' {
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $req -Value @{}
-          }
-          'array' {
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $req -Value @()
-          }
-          default {
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $req -Value $null
-          }
-        }
-      }
-    } else {
-      foreach ($item in $this.properties.keys) {
-        switch ($this.properties.$item.type) {
-          'object' {
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value @{}
-          }
-          'array' {
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value @()
-          }
-          default {
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $null
-          }
-        }
-      }
-    }
-    return $retVal
+    return (ConvertFrom-Object -document $this)
+  }
+  [object]toObject([int]$Depth) {
+    return (ConvertFrom-Object -document $this -depth $Depth)
   }
 }
 
@@ -1025,7 +972,7 @@ function Format-Document([Parameter(Mandatory, ValueFromPipeline)][String] $json
     }) -Join "`n"
 }
 
-function getobject {
+function ConvertFrom-Object {
   [cmdletbinding()]
   param (
     $document,
@@ -1034,16 +981,24 @@ function getobject {
   [object]$retVal = New-Object object;
 
   if ($depth -ne 1) {
-    Write-Verbose "getobject: Incoming: $($depth)"
+    Write-Verbose "ConvertFrom-Object: Incoming: $($depth)"
     $depth = if ($depth -gt 1) { $depth -1} else {$depth}
-    Write-Verbose "getobject: Calculated: $($depth)"
+    Write-Verbose "ConvertFrom-Object: Calculated: $($depth)"
     foreach ($item in $document.properties.keys) {
+      if ($document.schema) {
+        Write-Verbose "ConvertFrom-Object: Found: $($item)"
+        Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$schema' -Value $document.schema;
+          if ($document.id) {
+            Write-Verbose "ConvertFrom-Object: Found: $($item)"
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$id' -Value $document.id -force;
+          }
+        }
       switch ($document.properties.$item.type) {
         'object' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value (getobject -document $document.properties.$item -depth $depth)
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value (ConvertFrom-Object -document $document.properties.$item -depth $depth)
         }
         'array' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value (getarray -document $document.properties.$item -depth $depth)
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value @(ConvertFrom-Array -document $document.properties.$item -depth $depth)
         }
         'string' {
           Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value ""
@@ -1065,7 +1020,7 @@ function getobject {
   }
   return $retVal
 }
-function getarray {
+function ConvertFrom-Array {
   [cmdletbinding()]
   param (
     $document,
@@ -1073,12 +1028,12 @@ function getarray {
   )
   [array]$retVal = @();
   if ($depth -ne 1) {
-    Write-Verbose "getarray: Incoming: $($depth)"
+    Write-Verbose "ConvertFrom-Array: Incoming: $($depth)"
     $depth = if ($depth -gt 1) { $depth -1} else {$depth}
-    Write-Verbose "getarray: Calculated: $($depth)"
+    Write-Verbose "ConvertFrom-Array: Calculated: $($depth)"
     foreach ($item in $document.items) {
       foreach ($key in $document.items.keys) {
-        $retVal += (getobject -document $item.$key -depth $depth)
+        $retVal += (ConvertFrom-Object -document $item.$key -depth $depth)
       }
     }
   }
