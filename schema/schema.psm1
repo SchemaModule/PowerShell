@@ -351,6 +351,17 @@ class schemaDocument {
     }
   }
 }
+class schemaProperty {
+  [string]$Name
+  [ValidateSet([schemaDocument], [schemaNumber], [schemaInteger], [schemaString], [schemaObject], [schemaArray], [schemaBoolean])]
+  $value
+
+  schemaProperty () {}
+  schemaProperty ([string]$Name, $value) {
+    $this.Name = $Name
+    $this.value = $value
+  }
+}
 
 function New-String {
   [CmdletBinding()]
@@ -476,120 +487,33 @@ function New-Number {
 
   return $schemaNumber
 }
-function New-Object {
-  [CmdletBinding()]
-  param (
-    [parameter(Mandatory = $false, ParameterSetName = 'string')]
-    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet('schemaString', 'schemaInteger', 'schemaNumber')]
-    [string]$type,
-    [parameter(Mandatory = $false, ParameterSetName = 'string')]
-    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [string]$id,
-    [parameter(Mandatory = $false, ParameterSetName = 'string')]
-    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [string]$ref,
-    [parameter(Mandatory = $false, ParameterSetName = 'string')]
-    [int]$minLength,
-    [parameter(Mandatory = $false, ParameterSetName = 'string')]
-    [int]$maxLength,
-    [parameter(Mandatory = $false, ParameterSetName = 'string')]
-    [string]$pattern,
-    [parameter(Mandatory = $false, ParameterSetName = 'string')]
-    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [ValidateSet([string[]], [int[]])]
-    $enum,
-    [parameter(Mandatory = $false, ParameterSetName = 'string')]
-    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [string]$title,
-    [parameter(Mandatory = $false, ParameterSetName = 'string')]
-    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [string]$description,
-    [parameter(Mandatory = $false, ParameterSetName = 'string')]
-    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([string], [int], [decimal])]
-    $default,
-    [parameter(Mandatory = $false, ParameterSetName = 'string')]
-    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([string[]], [int[]], [decimal[]])]
-    $examples = @(),
-    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([int], [decimal])]
-    $minimum,
-    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([int], [decimal])]
-    $maximum,
-    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([int], [decimal])]
-    $exclusiveMinimum,
-    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([int], [decimal])]
-    $exclusiveMaximum,
-    [parameter(Mandatory = $false, ParameterSetName = 'integer')]
-    [parameter(Mandatory = $false, ParameterSetName = 'number')]
-    [ValidateSet([int], [decimal])]
-    $multipleOf
-  )
-  switch ($PSCmdlet.ParameterSetName) {
-    'string' {
-      $schemaObject = New-SchemaElement -Type string
-    }
-    'integer' {
-      $schemaObject = New-SchemaElement -Type integer
-    }
-    'number' {
-      $schemaObject = New-SchemaElement -Type number
-    }
-  }
-
-  foreach ($param in $PSBoundParameters.GetEnumerator()) {
-    switch ($param) {
-      { ($param.Key -eq 'type' -or $param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
-      default {
-        Write-Verbose "Setting $($param.Value) on $($param.Key)"
-        $schemaObject.($param.Key) = $param.Value
-      }
-    }
-  }
-
-  return $schemaObject
-}
 function New-Property {
+  [CmdletBinding()]
   param (
     [ValidateNotNullOrEmpty()]
     [string]$Name,
-    [ValidateSet([schemaNumber], [schemaInteger], [schemaString], [schemaObject], [schemaArray], [schemaBoolean])]
+
+    [ValidateSet([schemaDocument], [schemaNumber], [schemaInteger], [schemaString], [schemaObject], [schemaArray], [schemaBoolean])]
     $Value,
+
     [ValidateSet('allOf', 'anyOf', 'oneOf')]
     $Array
   )
-  switch ($Array) {
-    { ($_ -eq 'allOf' -or $_ -eq 'anyOf' -or $_ -eq 'oneOf') } {
-      $Property = (New-Object -TypeName psobject @{$Array = @($value) })
-    }
-    default {
-      $Property = (New-Object -TypeName psobject @{$Name = $value })
-    }
+  if ($Array) {
+    $Property = (New-Object -TypeName psobject -Property @{$Array = @($value) })
+  } else {
+    $Property = (New-Object -TypeName psobject @{$Name = $value })
   }
   return $Property
 }
 function New-Element {
+  [CmdletBinding()]
   param (
     [ValidateSet('string', 'number', 'integer', 'object', 'boolean', 'array', 'document')]
     [string]$Type
   )
 
+  write-verbose "Creating new schema$($type)"
   switch ($Type) {
     'string' {
       [schemaString]::new()
@@ -635,17 +559,20 @@ function ConvertTo-Element {
   param (
     [object]$object
   )
+  write-verbose ($object |Out-String)
   switch ($object.type) {
     'string' {
       write-verbose "Creating schemaString object"
       $Result = New-SchemaElement -Type string
       foreach ($prop in $object.psobject.properties.name) {
+        write-verbose $prop
         if ($prop -eq '$id') {
           $Result.id = $object.$prop
         }
         else {
           $Result.$prop = $object.$prop
         }
+        write-verbose ($Result |out-String)
       }
     }
     'integer' {
@@ -700,7 +627,7 @@ function ConvertTo-Element {
         elseif ($prop -eq 'properties') {
           foreach ($oprop in $object.properties.psobject.properties.name) {
             write-verbose $oprop
-            $Result.properties += ((New-SchemaProperty -Name $oprop -Value (ConvertTo-SchemaElement -object $object.properties.($oprop))))
+            $Result.properties += (( New-SchemaProperty -Name $oprop -Value ( ConvertTo-SchemaElement -object ($object.properties.($oprop)) ) ))
           }
         }
         elseif ($prop -eq '$schema') {
