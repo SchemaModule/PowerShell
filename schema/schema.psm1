@@ -40,7 +40,7 @@ class schemaString {
     $this.enum += $enum
   }
   [object]ToString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref)
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref |ConvertTo-Json)
   }
 }
 class schemaInteger {
@@ -80,8 +80,8 @@ class schemaInteger {
   [void]AddEnum([int]$enum) {
     $this.enum += $enum
   }
-  [object]toString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref)
+  [object]ToString() {
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref |ConvertTo-Json)
   }
 }
 class schemaNumber {
@@ -117,8 +117,8 @@ class schemaNumber {
   [void]AddExample([decimal]$example) {
     $this.examples += $example
   }
-  [object]toString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref)
+  [object]ToString() {
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref |ConvertTo-Json)
   }
 }
 class schemaBoolean {
@@ -132,8 +132,8 @@ class schemaBoolean {
   #
   # Methods
   #
-  [object]toString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref)
+  [object]ToString() {
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref |ConvertTo-Json)
   }
 }
 class schemaObject {
@@ -162,8 +162,8 @@ class schemaObject {
   [object]Find([string]$item) {
     return (Find-SchemaElement -Schema $this -ElementName $item)
   }
-  [object]toString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id)
+  [object]ToString() {
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id |ConvertTo-Json)
   }
   [object]toObject() {
     return (ConvertFrom-SchemaObject -document $this)
@@ -217,8 +217,8 @@ class schemaArray {
   [object]Find([string]$item) {
     return (Find-SchemaElement -Schema $this -ElementName $item)
   }
-  [object]toString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id)
+  [object]ToString() {
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id |ConvertTo-Json)
   }
   [array]toArray() {
     return (ConvertFrom-SchemaArray -document $this)
@@ -252,8 +252,8 @@ class schemaDocument {
   [object]Find([string]$item) {
     return (Find-SchemaElement -Schema $this -ElementName $item)
   }
-  [object]toString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } }, @{Name = '$definitions'; Exp = { $_.definitions } } -ExcludeProperty id,schema,definitions)
+  [object]ToString() {
+    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } }, @{Name = '$definitions'; Exp = { $_.definitions } } -ExcludeProperty id,schema,definitions |ConvertTo-Json)
   }
   [object]toObject() {
     return (ConvertFrom-SchemaObject -document $this)
