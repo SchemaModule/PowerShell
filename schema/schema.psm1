@@ -350,8 +350,22 @@ function Get-Document {
     }
   }
 }
-
-
+function Get-Definition {
+  [CmdletBinding()]
+  param (
+    [System.Uri]$Reference
+  )
+  $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/') + 1, ($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/')) - 1)
+  $Definition = Get-SchemaDocument -Path $Reference.AbsoluteUri
+  return (ConvertTo-SchemaElement -object ($Definition.definitions.($DefinitionName)))
+}
+function Get-Reference {
+  [CmdletBinding()]
+  param (
+    [System.Uri]$Reference
+  )
+  return (Get-SchemaDocument -Path $Reference.AbsoluteUri)
+}
 function New-String {
   [CmdletBinding()]
   param (
@@ -527,21 +541,103 @@ function New-Element {
     }
   }
 }
-function Get-Definition {
-  [CmdletBinding()]
+function Find-Element {
+  [cmdletbinding()]
   param (
-    [System.Uri]$Reference
+    [parameter(Mandatory = $true, ParameterSetName = 'name')]
+    [parameter(Mandatory = $true, ParameterSetName = 'type')]
+    [parameter(Mandatory = $true, ParameterSetName = 'path')]
+    $Schema,
+    [parameter(Mandatory = $false, ParameterSetName = 'name')]
+    $ElementName,
+    [parameter(Mandatory = $false, ParameterSetName = 'type')]
+    [ValidateSet('schemaString', 'schemaNumber', 'schemaInteger', 'schemaObject', 'schemaBoolean', 'schemaArray', 'schemaDocument')]
+    $ElementType,
+    [parameter(Mandatory = $false, ParameterSetName = 'path')]
+    $ElementPath
   )
-  $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/') + 1, ($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/')) - 1)
-  $Definition = Get-SchemaDocument -Path $Reference.AbsoluteUri
-  return (ConvertTo-SchemaElement -object ($Definition.definitions.($DefinitionName)))
-}
-function Get-Reference {
-  [CmdletBinding()]
-  param (
-    [System.Uri]$Reference
-  )
-  return (Get-SchemaDocument -Path $Reference.AbsoluteUri)
+  switch ($PSCmdlet.ParameterSetName) {
+    'name' {
+      switch ($Schema.type) {
+        'object' {
+          Write-Verbose "object"
+          if ($Schema.properties.keys -contains $ElementName) {
+            return $Schema.properties.$ElementName
+          }
+          else {
+            $keys = $Schema.properties.keys
+            foreach ($key in $keys) {
+              write-verbose $key
+              Find-SchemaElement -Schema ($Schema.properties.$key) -ElementName $ElementName
+            }
+          }
+        }
+        'array' {
+          write-verbose "array"
+          if ($Schema.items.anyOf.properties.keys -contains $ElementName) {
+            return $Schema.items.anyOf.properties.$ElementName
+          }
+          else {
+            $keys = $Schema.items.anyOf.properties.keys
+            foreach ($key in $keys) {
+              write-verbose $key
+              Find-SchemaElement -Schema ($Schema.items.anyOf.properties.$key) -ElementName $ElementName
+            }
+          }
+        }
+      }
+    }
+    'type' {
+      if ($schema.GetType().Name -eq $ElementType) {
+        return $Schema
+      }
+      else {
+        switch ($Schema.type) {
+          'object' {
+            $keys = $Schema.properties.keys
+            foreach ($key in $keys) {
+              Find-SchemaElement -Schema ($Schema.properties.$key) -ElementType $ElementType
+            }
+          }
+          'array' {
+            $keys = $Schema.items.anyOf.properties.keys
+            foreach ($key in $keys) {
+              write-verbose $key
+              Find-SchemaElement -Schema ($Schema.items.anyOf.properties.$key) -ElementType $ElementType
+            }
+          }
+        }
+      }
+    }
+    'path' {
+      write-verbose "Incoming from parameter $($ElementPath)"
+      [System.Collections.ArrayList]$items = $ElementPath.Split("/")
+      if ($items[0] -eq "") { $items.RemoveAt(0) }
+      write-verbose "Items in collection $($Items.count)"
+      write-verbose "Resource $($Items[0])"
+      $NewPath = ([string]::Join("/", $items[1..$items.Count]))
+      write-verbose "Outgoing to parameter $($NewPath)"
+      if ([string]::IsNullOrEmpty($NewPath)) {
+        switch ($schema.type) {
+          'object' {
+            return $Schema.properties.($items[0])
+          }
+          'array' {
+            return $Schema.items.anyOf.properties.($items[0])
+          }
+        }
+      }
+      write-verbose "Working on $($Schema.type)"
+      switch ($Schema.type) {
+        'object' {
+          Find-SchemaElement -Schema ($Schema.properties.($items[0])) -ElementPath $NewPath
+        }
+        'array' {
+          Find-SchemaElement -Schema ($Schema.items.anyof.properties.($items[0])) -ElementPath $NewPath
+        }
+      }
+    }
+  }
 }
 function ConvertTo-Element {
   [CmdletBinding()]
@@ -668,154 +764,6 @@ function ConvertTo-Element {
   }
   return $Result
 }
-function Find-Element {
-  [cmdletbinding()]
-  param (
-    [parameter(Mandatory = $true, ParameterSetName = 'name')]
-    [parameter(Mandatory = $true, ParameterSetName = 'type')]
-    [parameter(Mandatory = $true, ParameterSetName = 'path')]
-    $Schema,
-    [parameter(Mandatory = $false, ParameterSetName = 'name')]
-    $ElementName,
-    [parameter(Mandatory = $false, ParameterSetName = 'type')]
-    [ValidateSet('schemaString', 'schemaNumber', 'schemaInteger', 'schemaObject', 'schemaBoolean', 'schemaArray', 'schemaDocument')]
-    $ElementType,
-    [parameter(Mandatory = $false, ParameterSetName = 'path')]
-    $ElementPath
-  )
-  switch ($PSCmdlet.ParameterSetName) {
-    'name' {
-      switch ($Schema.type) {
-        'object' {
-          Write-Verbose "object"
-          if ($Schema.properties.keys -contains $ElementName) {
-            return $Schema.properties.$ElementName
-          }
-          else {
-            $keys = $Schema.properties.keys
-            foreach ($key in $keys) {
-              write-verbose $key
-              Find-SchemaElement -Schema ($Schema.properties.$key) -ElementName $ElementName
-            }
-          }
-        }
-        'array' {
-          write-verbose "array"
-          if ($Schema.items.anyOf.properties.keys -contains $ElementName) {
-            return $Schema.items.anyOf.properties.$ElementName
-          }
-          else {
-            $keys = $Schema.items.anyOf.properties.keys
-            foreach ($key in $keys) {
-              write-verbose $key
-              Find-SchemaElement -Schema ($Schema.items.anyOf.properties.$key) -ElementName $ElementName
-            }
-          }
-        }
-      }
-    }
-    'type' {
-      if ($schema.GetType().Name -eq $ElementType) {
-        return $Schema
-      }
-      else {
-        switch ($Schema.type) {
-          'object' {
-            $keys = $Schema.properties.keys
-            foreach ($key in $keys) {
-              Find-SchemaElement -Schema ($Schema.properties.$key) -ElementType $ElementType
-            }
-          }
-          'array' {
-            $keys = $Schema.items.anyOf.properties.keys
-            foreach ($key in $keys) {
-              write-verbose $key
-              Find-SchemaElement -Schema ($Schema.items.anyOf.properties.$key) -ElementType $ElementType
-            }
-          }
-        }
-      }
-    }
-    'path' {
-      write-verbose "Incoming from parameter $($ElementPath)"
-      [System.Collections.ArrayList]$items = $ElementPath.Split("/")
-      if ($items[0] -eq "") { $items.RemoveAt(0) }
-      write-verbose "Items in collection $($Items.count)"
-      write-verbose "Resource $($Items[0])"
-      $NewPath = ([string]::Join("/", $items[1..$items.Count]))
-      write-verbose "Outgoing to parameter $($NewPath)"
-      if ([string]::IsNullOrEmpty($NewPath)) {
-        switch ($schema.type) {
-          'object' {
-            return $Schema.properties.($items[0])
-          }
-          'array' {
-            return $Schema.items.anyOf.properties.($items[0])
-          }
-        }
-      }
-      write-verbose "Working on $($Schema.type)"
-      switch ($Schema.type) {
-        'object' {
-          Find-SchemaElement -Schema ($Schema.properties.($items[0])) -ElementPath $NewPath
-        }
-        'array' {
-          Find-SchemaElement -Schema ($Schema.items.anyof.properties.($items[0])) -ElementPath $NewPath
-        }
-      }
-    }
-  }
-}
-Function Remove-Null {
-  [cmdletbinding()]
-  param(
-    # Object to remove null values from
-    [parameter(ValueFromPipeline, Mandatory)]
-    [object[]]$InputObject,
-    #By default, remove empty strings (""), specify -LeaveEmptyStrings to leave them.
-    [switch]$LeaveEmptyStrings
-  )
-  process {
-    foreach ($obj in $InputObject) {
-      Write-Verbose ($obj.psobject.properties.Name | out-string)
-      $AllProperties = $obj.psobject.properties.Name
-      $NonNulls = $AllProperties |
-      where-object { $null -ne $obj.$PSItem } |
-      where-object { $LeaveEmptyStrings.IsPresent -or -not [string]::IsNullOrEmpty($obj.$PSItem) }
-      $obj | Select-Object -Property $NonNulls
-    }
-  }
-}
-function Format-Document([Parameter(Mandatory, ValueFromPipeline)][String] $json) {
-  $indent = 0;
-  ($json -Split '\n' |
-    ForEach-Object {
-      if ($_ -match '[\}\]]') {
-        # This line contains  ] or }, decrement the indentation level
-        $indent--
-      }
-      $line = (' ' * $indent * 2) + $_.TrimStart().Replace(':  ', ': ')
-      if ($_ -match '[\{\[]') {
-        # This line contains [ or {, increment the indentation level
-        $indent++
-      }
-      if ($line.contains('"schema"')) {
-          $line.Replace('"schema"', '"$schema"')
-      }
-      elseif ($line.contains('"definitions"')) {
-          $line.Replace('"definitions"', '"$definitions"')
-      }
-      elseif ($line.contains('"id": ')) {
-          $line.Replace('"id": "', '"$id": "')
-      }
-      elseif ($line.contains('"ref"')) {
-          $line.Replace('"ref"', '"$ref"')
-      }
-      else {
-        $line
-      }
-    }) -Join "`n"
-}
 function ConvertFrom-Object {
   [cmdletbinding()]
   param (
@@ -882,4 +830,54 @@ function ConvertFrom-Array {
     }
   }
   return $retVal
+}
+function Format-Document([Parameter(Mandatory, ValueFromPipeline)][String] $json) {
+  $indent = 0;
+  ($json -Split '\n' |
+    ForEach-Object {
+      if ($_ -match '[\}\]]') {
+        # This line contains  ] or }, decrement the indentation level
+        $indent--
+      }
+      $line = (' ' * $indent * 2) + $_.TrimStart().Replace(':  ', ': ')
+      if ($_ -match '[\{\[]') {
+        # This line contains [ or {, increment the indentation level
+        $indent++
+      }
+      if ($line.contains('"schema"')) {
+          $line.Replace('"schema"', '"$schema"')
+      }
+      elseif ($line.contains('"definitions"')) {
+          $line.Replace('"definitions"', '"$definitions"')
+      }
+      elseif ($line.contains('"id": ')) {
+          $line.Replace('"id": "', '"$id": "')
+      }
+      elseif ($line.contains('"ref"')) {
+          $line.Replace('"ref"', '"$ref"')
+      }
+      else {
+        $line
+      }
+    }) -Join "`n"
+}
+Function Remove-Null {
+  [cmdletbinding()]
+  param(
+    # Object to remove null values from
+    [parameter(ValueFromPipeline, Mandatory)]
+    [object[]]$InputObject,
+    #By default, remove empty strings (""), specify -LeaveEmptyStrings to leave them.
+    [switch]$LeaveEmptyStrings
+  )
+  process {
+    foreach ($obj in $InputObject) {
+      Write-Verbose ($obj.psobject.properties.Name | out-string)
+      $AllProperties = $obj.psobject.properties.Name
+      $NonNulls = $AllProperties |
+      where-object { $null -ne $obj.$PSItem } |
+      where-object { $LeaveEmptyStrings.IsPresent -or -not [string]::IsNullOrEmpty($obj.$PSItem) }
+      $obj | Select-Object -Property $NonNulls
+    }
+  }
 }
