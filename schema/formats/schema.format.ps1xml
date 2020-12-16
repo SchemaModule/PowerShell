@@ -5,6 +5,9 @@
       <Name>schemaString</Name>
       <ViewSelectedBy>
         <TypeName>schemaString</TypeName>
+        <TypeName>schemaInteger</TypeName>
+        <TypeName>schemaNumber</TypeName>
+        <TypeName>schemaBoolean</TypeName>
       </ViewSelectedBy>
       <ListControl>
         <ListEntries>
@@ -32,125 +35,8 @@
       <Name>schemaString</Name>
       <ViewSelectedBy>
         <TypeName>schemaString</TypeName>
-      </ViewSelectedBy>
-      <TableControl>
-        <TableHeaders>
-          <TableColumnHeader>
-            <Label>$id</Label>
-          </TableColumnHeader>
-          <TableColumnHeader>
-            <Label>title</Label>
-          </TableColumnHeader>
-          <TableColumnHeader>
-            <Label>description</Label>
-          </TableColumnHeader>
-          <TableColumnHeader>
-            <Label>default</Label>
-          </TableColumnHeader>
-        </TableHeaders>
-        <TableRowEntries>
-          <TableRowEntry>
-            <TableColumnItems>
-              <TableColumnItem>
-                <ScriptBlock>$_.id</ScriptBlock>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>title</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>description</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>default</PropertyName>
-              </TableColumnItem>
-            </TableColumnItems>
-          </TableRowEntry>
-        </TableRowEntries>
-      </TableControl>
-    </View>
-    <View>
-      <Name>schemaInteger</Name>
-      <ViewSelectedBy>
         <TypeName>schemaInteger</TypeName>
-      </ViewSelectedBy>
-      <TableControl>
-        <TableHeaders>
-          <TableColumnHeader>
-            <Label>$id</Label>
-          </TableColumnHeader>
-          <TableColumnHeader>
-            <Label>title</Label>
-          </TableColumnHeader>
-          <TableColumnHeader>
-            <Label>description</Label>
-          </TableColumnHeader>
-          <TableColumnHeader>
-            <Label>default</Label>
-          </TableColumnHeader>
-        </TableHeaders>
-        <TableRowEntries>
-          <TableRowEntry>
-            <TableColumnItems>
-              <TableColumnItem>
-                <ScriptBlock>$_.id</ScriptBlock>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>title</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>description</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>default</PropertyName>
-              </TableColumnItem>
-            </TableColumnItems>
-          </TableRowEntry>
-        </TableRowEntries>
-      </TableControl>
-    </View>
-    <View>
-      <Name>schemaNumber</Name>
-      <ViewSelectedBy>
         <TypeName>schemaNumber</TypeName>
-      </ViewSelectedBy>
-      <TableControl>
-        <TableHeaders>
-          <TableColumnHeader>
-            <Label>$id</Label>
-          </TableColumnHeader>
-          <TableColumnHeader>
-            <Label>title</Label>
-          </TableColumnHeader>
-          <TableColumnHeader>
-            <Label>description</Label>
-          </TableColumnHeader>
-          <TableColumnHeader>
-            <Label>default</Label>
-          </TableColumnHeader>
-        </TableHeaders>
-        <TableRowEntries>
-          <TableRowEntry>
-            <TableColumnItems>
-              <TableColumnItem>
-                <ScriptBlock>$_.id</ScriptBlock>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>title</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>description</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>default</PropertyName>
-              </TableColumnItem>
-            </TableColumnItems>
-          </TableRowEntry>
-        </TableRowEntries>
-      </TableControl>
-    </View>
-    <View>
-      <Name>schemaBoolean</Name>
-      <ViewSelectedBy>
         <TypeName>schemaBoolean</TypeName>
       </ViewSelectedBy>
       <TableControl>
