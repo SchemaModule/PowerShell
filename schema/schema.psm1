@@ -165,13 +165,13 @@ class schemaObject {
   [object]ToString() {
     return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id |ConvertTo-Json)
   }
-  [object]toObject() {
+  [object]ToObject() {
     return (ConvertFrom-SchemaObject -document $this)
   }
-  [object]toObject([int]$Depth) {
+  [object]ToObject([int]$Depth) {
     return (ConvertFrom-SchemaObject -document $this -depth $Depth)
   }
-  [object]toObject([string]$PropertyName) {
+  [object]ToObject([string]$PropertyName) {
     [object]$retVal = New-Object object;
     if ($this.properties.Contains($PropertyName)) {
       Add-Member -InputObject $retVal -MemberType NoteProperty -Name $PropertyName -Value (ConvertFrom-SchemaObject -document ($this.GetProperty($PropertyName)))
@@ -180,7 +180,7 @@ class schemaObject {
     }
     return $retVal
   }
-  [object]toObject([string]$PropertyName,[int]$Depth) {
+  [object]ToObject([string]$PropertyName,[int]$Depth) {
     [object]$retVal = New-Object object;
     if ($this.properties.Contains($PropertyName)) {
       Add-Member -InputObject $retVal -MemberType NoteProperty -Name $PropertyName -Value (ConvertFrom-SchemaObject -document ($this.GetProperty($PropertyName)) -depth $Depth)
@@ -255,13 +255,13 @@ class schemaDocument {
   [object]ToString() {
     return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } }, @{Name = '$definitions'; Exp = { $_.definitions } } -ExcludeProperty id,schema,definitions |ConvertTo-Json)
   }
-  [object]toObject() {
+  [object]ToObject() {
     return (ConvertFrom-SchemaObject -document $this)
   }
-  [object]toObject([int]$Depth) {
+  [object]ToObject([int]$Depth) {
     return (ConvertFrom-SchemaObject -document $this -depth $Depth)
   }
-  [object]toObject([string]$PropertyName) {
+  [object]ToObject([string]$PropertyName) {
     [object]$retVal = New-Object object;
     if ($this.properties.Contains($PropertyName)) {
       Add-Member -InputObject $retVal -MemberType NoteProperty -Name $PropertyName -Value (ConvertFrom-SchemaObject -document ($this.GetProperty($PropertyName)))
@@ -270,7 +270,7 @@ class schemaDocument {
     }
     return $retVal
   }
-  [object]toObject([string]$PropertyName,[int]$Depth) {
+  [object]ToObject([string]$PropertyName,[int]$Depth) {
     [object]$retVal = New-Object object;
     if ($this.properties.Contains($PropertyName)) {
       Add-Member -InputObject $retVal -MemberType NoteProperty -Name $PropertyName -Value (ConvertFrom-SchemaObject -document ($this.GetProperty($PropertyName)) -depth $Depth)
