@@ -186,6 +186,9 @@
             <Label>$schema</Label>
           </TableColumnHeader>
           <TableColumnHeader>
+            <Label>$definitions</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
             <Label>title</Label>
           </TableColumnHeader>
           <TableColumnHeader>
@@ -209,6 +212,9 @@
               </TableColumnItem>
               <TableColumnItem>
                 <ScriptBlock>$_.schema</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$_.definitions</ScriptBlock>
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>title</PropertyName>
