@@ -1,47 +1,4 @@
 # .ExternalHelp schema.xml
-function Get-Document {
-  [CmdletBinding(
-    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument',
-    PositionalBinding = $true)]
-  [OutputType([Object])]
-  param (
-    [Parameter(ValueFromPipeline)]
-    [string]$Path,
-    [switch]$force
-  )
-
-  process {
-    Write-Verbose $Path;
-    try {
-      Write-Verbose "Clearing Error Variables";
-      $ErrorActionPreference = 'Stop';
-      $Error.Clear();
-
-      Write-Verbose "Parsing Path param";
-      $Schema = [System.UriBuilder]::new($Path);
-      Write-Verbose $Schema;
-
-      switch ($Schema.Scheme) {
-        'file' {
-          Write-Verbose "Incoming Filepath";
-          Return (ConvertTo-SchemaElement -object (Get-Content -Path $Path | ConvertFrom-Json));
-        }
-        'https' {
-          Write-Verbose "Incoming HTTPs path";
-          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path |ConvertFrom-Json));
-        }
-        'http' {
-          Write-Verbose "Incoming HTTP path";
-          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path |ConvertFrom-Json));
-        }
-      }
-    }
-    catch {
-      throw $_;
-    }
-  }
-}
-
 class schemaString {
   [ValidateSet('string')]
   [string]$type = 'string'
@@ -351,17 +308,49 @@ class schemaDocument {
     }
   }
 }
-class schemaProperty {
-  [string]$Name
-  [ValidateSet([schemaDocument], [schemaNumber], [schemaInteger], [schemaString], [schemaObject], [schemaArray], [schemaBoolean])]
-  $value
+function Get-Document {
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument',
+    PositionalBinding = $true)]
+  [OutputType([Object])]
+  param (
+    [Parameter(ValueFromPipeline)]
+    [string]$Path,
+    [switch]$force
+  )
 
-  schemaProperty () {}
-  schemaProperty ([string]$Name, $value) {
-    $this.Name = $Name
-    $this.value = $value
+  process {
+    Write-Verbose $Path;
+    try {
+      Write-Verbose "Clearing Error Variables";
+      $ErrorActionPreference = 'Stop';
+      $Error.Clear();
+
+      Write-Verbose "Parsing Path param";
+      $Schema = [System.UriBuilder]::new($Path);
+      Write-Verbose $Schema;
+
+      switch ($Schema.Scheme) {
+        'file' {
+          Write-Verbose "Incoming Filepath";
+          Return (ConvertTo-SchemaElement -object (Get-Content -Path $Path | ConvertFrom-Json));
+        }
+        'https' {
+          Write-Verbose "Incoming HTTPs path";
+          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path |ConvertFrom-Json));
+        }
+        'http' {
+          Write-Verbose "Incoming HTTP path";
+          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path |ConvertFrom-Json));
+        }
+      }
+    }
+    catch {
+      throw $_;
+    }
   }
 }
+
 
 function New-String {
   [CmdletBinding()]
@@ -827,7 +816,6 @@ function Format-Document([Parameter(Mandatory, ValueFromPipeline)][String] $json
       }
     }) -Join "`n"
 }
-
 function ConvertFrom-Object {
   [cmdletbinding()]
   param (
