@@ -291,11 +291,10 @@ function Get-Document {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument',
     PositionalBinding = $true)]
-  [OutputType([Object])]
+  [OutputType([schemaDocument])]
   param (
     [Parameter(ValueFromPipeline)]
-    [string]$Path,
-    [switch]$force
+    [string]$Path
   )
 
   process {
