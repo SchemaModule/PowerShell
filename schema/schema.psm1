@@ -329,23 +329,38 @@ function Get-Document {
   }
 }
 function Get-Definition {
-  [CmdletBinding()]
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDefinition.md#get-schemadefinition',
+    PositionalBinding = $true)]
+  [OutputType([schemaDocument],[schemaString],[schemaIntenger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
   param (
+    [Parameter(ValueFromPipeline)]
     [System.Uri]$Reference
   )
-  $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/') + 1, ($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/')) - 1)
-  $Definition = Get-SchemaDocument -Path $Reference.AbsoluteUri
-  return (ConvertTo-SchemaElement -object ($Definition.definitions.($DefinitionName)))
+  process {
+    $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/') + 1, ($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/')) - 1)
+    $Definition = Get-SchemaDocument -Path $Reference.AbsoluteUri
+    return (ConvertTo-SchemaElement -object ($Definition.definitions.($DefinitionName)))
+  }
 }
 function Get-Reference {
-  [CmdletBinding()]
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaReference.md#get-schemareference',
+    PositionalBinding = $true)]
+    [OutputType([schemaDocument],[schemaString],[schemaIntenger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
   param (
+    [Parameter(ValueFromPipeline)]
     [System.Uri]$Reference
   )
-  return (Get-SchemaDocument -Path $Reference.AbsoluteUri)
+  process {
+    return (Get-SchemaDocument -Path $Reference.AbsoluteUri)
+  }
 }
 function New-String {
-  [CmdletBinding()]
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaString.md#new-schemastring',
+    PositionalBinding = $true)]
+    [OutputType([schemaString])]
   param (
     [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [string]$id,
@@ -385,7 +400,10 @@ function New-String {
   return $schemaString
 }
 function New-Integer {
-  [CmdletBinding()]
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaInteger.md#new-schemainteger',
+    PositionalBinding = $true)]
+    [OutputType([schemaInteger])]
   param (
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [string]$id,
@@ -428,7 +446,10 @@ function New-Integer {
   return $schemaInteger
 }
 function New-Number {
-  [CmdletBinding()]
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaNumber.md#new-schemanumber',
+    PositionalBinding = $true)]
+    [OutputType([schemaNumber])]
   param (
     [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [string]$id,
@@ -469,7 +490,10 @@ function New-Number {
   return $schemaNumber
 }
 function New-Property {
-  [CmdletBinding()]
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaProperty.md#new-schemaproperty',
+    PositionalBinding = $true)]
+    [OutputType([hashtable])]
   param (
     [ValidateNotNullOrEmpty()]
     [string]$Name,
@@ -488,7 +512,10 @@ function New-Property {
   return $Property
 }
 function New-Element {
-  [CmdletBinding()]
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaElement.md#new-schemaelement',
+    PositionalBinding = $true)]
+    [OutputType([schemaDocument],[schemaString],[schemaIntenger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
   param (
     [ValidateSet('string', 'number', 'integer', 'object', 'boolean', 'array', 'document')]
     [string]$Type
@@ -520,7 +547,10 @@ function New-Element {
   }
 }
 function Find-Element {
-  [cmdletbinding()]
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Find-SchemaElement.md#find-schemaelement',
+    PositionalBinding = $true)]
+    [OutputType([schemaDocument],[schemaString],[schemaIntenger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
   param (
     [parameter(Mandatory = $true, ParameterSetName = 'name')]
     [parameter(Mandatory = $true, ParameterSetName = 'type')]
@@ -618,7 +648,10 @@ function Find-Element {
   }
 }
 function ConvertTo-Element {
-  [CmdletBinding()]
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaElement.md#convertto-schemaelement',
+    PositionalBinding = $true)]
+    [OutputType([schemaDocument],[schemaString],[schemaIntenger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
   param (
     [object]$object
   )
@@ -743,7 +776,10 @@ function ConvertTo-Element {
   return $Result
 }
 function ConvertFrom-Object {
-  [cmdletbinding()]
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaObject.md#convertfrom-schemaobject',
+    PositionalBinding = $true)]
+    [OutputType([object])]
   param (
     $document,
     $depth
@@ -791,7 +827,10 @@ function ConvertFrom-Object {
   return $retVal
 }
 function ConvertFrom-Array {
-  [cmdletbinding()]
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaArray.md#convertfrom-schemaarray',
+    PositionalBinding = $true)]
+    [OutputType([array])]
   param (
     $document,
     $depth
@@ -809,7 +848,15 @@ function ConvertFrom-Array {
   }
   return $retVal
 }
-function Format-Document([Parameter(Mandatory, ValueFromPipeline)][String] $json) {
+function Format-Document {
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadodcument',
+    PositionalBinding = $true)]
+    [OutputType([string])]
+  param (
+    [Parameter(Mandatory, ValueFromPipeline)]
+    [String] $json
+    )
   $indent = 0;
   ($json -Split '\n' |
     ForEach-Object {
