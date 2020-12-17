@@ -11,15 +11,42 @@ Locale: en-US
 A PowerShell Module for working with JSON Schema documents
 
 ## schema Cmdlets
-### [Get-SchemaArray](Get-SchemaArray.md)
-This function returns the object from an array within the Json Schema.
+### [ConvertFrom-SchemaArray](ConvertFrom-SchemaArray.md)
+{{ Fill in the Synopsis }}
+
+### [ConvertFrom-SchemaObject](ConvertFrom-SchemaObject.md)
+{{ Fill in the Synopsis }}
+
+### [ConvertFrom-SchemaObject](ConvertFrom-SchemaObject.md)
+{{ Fill in the Synopsis }}
+
+### [ConvertFrom-SchemaObject](ConvertFrom-SchemaObject.md)
+{{ Fill in the Synopsis }}
+
+### [Format-SchemaDocument](Format-SchemaDocument.md)
+{{ Fill in the Synopsis }}
+
+### [Format-SchemaDocument](Format-SchemaDocument.md)
+{{ Fill in the Synopsis }}
 
 ### [Get-SchemaDocument](Get-SchemaDocument.md)
 This function will return a PowerShell object of the input Schema.
 
-### [Get-SchemaObject](Get-SchemaObject.md)
-This function returns an object from the Json Schema.
+### [Get-SchemaDocument](Get-SchemaDocument.md)
+This function will return a PowerShell object of the input Schema.
 
-### [Get-SchemaProperty](Get-SchemaProperty.md)
-This function returns one ore more properties from a Json Schema object.
+### [Get-SchemaDocument](Get-SchemaDocument.md)
+This function will return a PowerShell object of the input Schema.
+
+### [New-SchemaInteger](New-SchemaInteger.md)
+{{ Fill in the Synopsis }}
+
+### [New-SchemaNumber](New-SchemaNumber.md)
+{{ Fill in the Synopsis }}
+
+### [New-SchemaProperty](New-SchemaProperty.md)
+{{ Fill in the Synopsis }}
+
+### [New-SchemaString](New-SchemaString.md)
+{{ Fill in the Synopsis }}
 
