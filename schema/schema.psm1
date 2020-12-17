@@ -886,23 +886,3 @@ function Format-Document {
       }
     }) -Join "`n"
 }
-Function Remove-Null {
-  [cmdletbinding()]
-  param(
-    # Object to remove null values from
-    [parameter(ValueFromPipeline, Mandatory)]
-    [object[]]$InputObject,
-    #By default, remove empty strings (""), specify -LeaveEmptyStrings to leave them.
-    [switch]$LeaveEmptyStrings
-  )
-  process {
-    foreach ($obj in $InputObject) {
-      Write-Verbose ($obj.psobject.properties.Name | out-string)
-      $AllProperties = $obj.psobject.properties.Name
-      $NonNulls = $AllProperties |
-      where-object { $null -ne $obj.$PSItem } |
-      where-object { $LeaveEmptyStrings.IsPresent -or -not [string]::IsNullOrEmpty($obj.$PSItem) }
-      $obj | Select-Object -Property $NonNulls
-    }
-  }
-}
