@@ -847,7 +847,7 @@ function ConvertFrom-Array {
     [parameter(Mandatory = $true, Position = 0)]
     $Array,
     [parameter(Mandatory = $false, Position = 1)]
-    $Depth
+    [int]$Depth
   )
   if ($Array.type -eq 'array') {
     [array]$retVal = @();
