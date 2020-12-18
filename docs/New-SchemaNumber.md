@@ -36,7 +36,7 @@ PS C:\> {{ Add example code here }}
 {{ Fill default Description }}
 
 ```yaml
-Type: Decimal
+Type: System.Decimal
 Parameter Sets: (All)
 Aliases:
 
@@ -51,7 +51,7 @@ Accept wildcard characters: False
 {{ Fill description Description }}
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -66,7 +66,7 @@ Accept wildcard characters: False
 {{ Fill examples Description }}
 
 ```yaml
-Type: Decimal[]
+Type: System.Decimal[]
 Parameter Sets: (All)
 Aliases:
 
@@ -81,7 +81,7 @@ Accept wildcard characters: False
 {{ Fill exclusiveMaximum Description }}
 
 ```yaml
-Type: Decimal
+Type: System.Decimal
 Parameter Sets: (All)
 Aliases:
 
@@ -96,7 +96,7 @@ Accept wildcard characters: False
 {{ Fill exclusiveMinimum Description }}
 
 ```yaml
-Type: Decimal
+Type: System.Decimal
 Parameter Sets: (All)
 Aliases:
 
@@ -111,7 +111,7 @@ Accept wildcard characters: False
 {{ Fill id Description }}
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -126,7 +126,7 @@ Accept wildcard characters: False
 {{ Fill maximum Description }}
 
 ```yaml
-Type: Decimal
+Type: System.Decimal
 Parameter Sets: (All)
 Aliases:
 
@@ -141,7 +141,7 @@ Accept wildcard characters: False
 {{ Fill minimum Description }}
 
 ```yaml
-Type: Decimal
+Type: System.Decimal
 Parameter Sets: (All)
 Aliases:
 
@@ -156,7 +156,7 @@ Accept wildcard characters: False
 {{ Fill multipleOf Description }}
 
 ```yaml
-Type: Decimal
+Type: System.Decimal
 Parameter Sets: (All)
 Aliases:
 
@@ -171,7 +171,7 @@ Accept wildcard characters: False
 {{ Fill ref Description }}
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -186,7 +186,7 @@ Accept wildcard characters: False
 {{ Fill title Description }}
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 

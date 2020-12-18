@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-ConvertFrom-SchemaObject [[-document] <Object>] [[-depth] <Object>] [<CommonParameters>]
+ConvertFrom-SchemaObject [[-Object] <Object>] [[-Depth] <Object>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,11 +30,11 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -depth
+### -Depth
 {{ Fill depth Description }}
 
 ```yaml
-Type: Object
+Type: System.Object
 Parameter Sets: (All)
 Aliases:
 
@@ -45,11 +45,11 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -document
-{{ Fill document Description }}
+### -Object
+{{ Fill Object Description }}
 
 ```yaml
-Type: Object
+Type: System.Object
 Parameter Sets: (All)
 Aliases:
 

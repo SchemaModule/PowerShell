@@ -34,7 +34,7 @@ PS C:\> {{ Add example code here }}
 {{ Fill Array Description }}
 
 ```yaml
-Type: Object
+Type: System.Object
 Parameter Sets: (All)
 Aliases:
 Accepted values: allOf, anyOf, oneOf
@@ -50,7 +50,7 @@ Accept wildcard characters: False
 {{ Fill Name Description }}
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -65,7 +65,7 @@ Accept wildcard characters: False
 {{ Fill Value Description }}
 
 ```yaml
-Type: Object
+Type: System.Object
 Parameter Sets: (All)
 Aliases:
 Accepted values: schemaDocument, schemaNumber, schemaInteger, schemaString, schemaObject, schemaArray, schemaBoolean

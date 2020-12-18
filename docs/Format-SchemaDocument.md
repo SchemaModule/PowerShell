@@ -34,7 +34,7 @@ PS C:\> {{ Add example code here }}
 {{ Fill json Description }}
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 

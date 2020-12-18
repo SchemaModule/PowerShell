@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-ConvertFrom-SchemaArray [[-document] <Object>] [[-depth] <Object>] [<CommonParameters>]
+ConvertFrom-SchemaArray [[-Array] <Object>] [[-Depth] <Object>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,31 +30,31 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -depth
-{{ Fill depth Description }}
+### -Array
+{{ Fill Array Description }}
 
 ```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -document
-{{ Fill document Description }}
-
-```yaml
-Type: Object
+Type: System.Object
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Depth
+{{ Fill depth Description }}
+
+```yaml
+Type: System.Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

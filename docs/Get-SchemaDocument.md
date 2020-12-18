@@ -63,7 +63,7 @@ This example passes a json schema file into the function.
 This can be a filepath or URL, the function does light validation on the input.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
