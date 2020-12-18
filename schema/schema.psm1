@@ -807,19 +807,19 @@ function ConvertFrom-Object {
           Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value @(ConvertFrom-SchemaArray -Array $Object.properties.$item -depth $Depth)
         }
         'string' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value ""
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
         }
         'number' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value ([decimal]0)
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
         }
         'integer' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value ([int]0)
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
         }
         'boolean' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $false
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
         }
         default {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $null
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
         }
       }
     }
@@ -841,7 +841,9 @@ function ConvertFrom-Array {
     $Depth = if ($Depth -gt 1) { $Depth -1} else {$Depth}
     Write-Verbose "ConvertFrom-Array: Calculated: $($Depth)"
     foreach ($item in $Array.items) {
-      foreach ($key in $Array.items.keys) {
+      Write-Verbose "ConvertFrom-Array: Found: $($item |Out-string)"
+      foreach ($key in $item.psobject.Properties.name) {
+        Write-Verbose "ConvertFrom-Array: Found: $($key)"
         $retVal += (ConvertFrom-SchemaObject -Object $item.$key -depth $Depth)
       }
     }
