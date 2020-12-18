@@ -332,7 +332,7 @@ function Get-Definition {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDefinition.md#get-schemadefinition',
     PositionalBinding = $true)]
-  [OutputType([schemaDocument],[schemaString],[schemaIntenger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
+  [OutputType([schemaDocument],[schemaString],[schemaInteger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
   param (
     [Parameter(ValueFromPipeline)]
     [System.Uri]$Reference
@@ -347,7 +347,7 @@ function Get-Reference {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaReference.md#get-schemareference',
     PositionalBinding = $true)]
-    [OutputType([schemaDocument],[schemaString],[schemaIntenger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
+    [OutputType([schemaDocument],[schemaString],[schemaInteger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
   param (
     [Parameter(ValueFromPipeline)]
     [System.Uri]$Reference
@@ -515,7 +515,7 @@ function New-Element {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaElement.md#new-schemaelement',
     PositionalBinding = $true)]
-    [OutputType([schemaDocument],[schemaString],[schemaIntenger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
+    [OutputType([schemaDocument],[schemaString],[schemaInteger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
   param (
     [ValidateSet('string', 'number', 'integer', 'object', 'boolean', 'array', 'document')]
     [string]$Type
@@ -550,7 +550,7 @@ function Find-Element {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Find-SchemaElement.md#find-schemaelement',
     PositionalBinding = $true)]
-    [OutputType([schemaDocument],[schemaString],[schemaIntenger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
+    [OutputType([schemaDocument],[schemaString],[schemaInteger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
   param (
     [parameter(Mandatory = $true, ParameterSetName = 'name')]
     [parameter(Mandatory = $true, ParameterSetName = 'type')]
@@ -651,7 +651,7 @@ function ConvertTo-Element {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaElement.md#convertto-schemaelement',
     PositionalBinding = $true)]
-    [OutputType([schemaDocument],[schemaString],[schemaIntenger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
+    [OutputType([schemaDocument],[schemaString],[schemaInteger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
   param (
     [object]$Object
   )
