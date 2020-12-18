@@ -784,47 +784,48 @@ function ConvertFrom-Object {
     $Object,
     $Depth
   )
-  [object]$retVal = New-Object object;
-
-  if ($Depth -ne 1) {
-    Write-Verbose "ConvertFrom-Object: Incoming: $($Depth)"
-    $Depth = if ($Depth -gt 1) { $Depth -1} else {$Depth}
-    Write-Verbose "ConvertFrom-Object: Calculated: $($Depth)"
-    foreach ($item in $Object.properties.keys) {
-      if ($Object.schema) {
-        Write-Verbose "ConvertFrom-Object: Found: $($item)"
-        Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$schema' -Value $Object.schema;
-          if ($Object.id) {
-            Write-Verbose "ConvertFrom-Object: Found: $($item)"
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$id' -Value $Object.id -force;
+  if ($Object.type -eq 'object') {
+    [object]$retVal = New-Object object;
+    if ($Depth -ne 1) {
+      Write-Verbose "ConvertFrom-Object: Incoming: $($Depth)"
+      $Depth = if ($Depth -gt 1) { $Depth -1} else {$Depth}
+      Write-Verbose "ConvertFrom-Object: Calculated: $($Depth)"
+      foreach ($item in $Object.properties.keys) {
+        if ($Object.schema) {
+          Write-Verbose "ConvertFrom-Object: Found: $($item)"
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$schema' -Value $Object.schema;
+            if ($Object.id) {
+              Write-Verbose "ConvertFrom-Object: Found: $($item)"
+              Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$id' -Value $Object.id -force;
+            }
           }
-        }
-      switch ($Object.properties.$item.type) {
-        'object' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value (ConvertFrom-SchemaObject -Object $Object.properties.$item -depth $Depth)
-        }
-        'array' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value @(ConvertFrom-SchemaArray -Array $Object.properties.$item -depth $Depth)
-        }
-        'string' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
-        }
-        'number' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
-        }
-        'integer' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
-        }
-        'boolean' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
-        }
-        default {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
+        switch ($Object.properties.$item.type) {
+          'object' {
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value (ConvertFrom-SchemaObject -Object $Object.properties.$item -depth $Depth)
+          }
+          'array' {
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value @(ConvertFrom-SchemaArray -Array $Object.properties.$item -depth $Depth)
+          }
+          'string' {
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
+          }
+          'number' {
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
+          }
+          'integer' {
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
+          }
+          'boolean' {
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
+          }
+          default {
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value $Object.properties.$item.default
+          }
         }
       }
     }
+    return $retVal
   }
-  return $retVal
 }
 function ConvertFrom-Array {
   [CmdletBinding(
