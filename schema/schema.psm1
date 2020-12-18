@@ -521,7 +521,7 @@ function New-Element {
     [string]$Type
   )
 
-  write-verbose "Creating new schema$($type)"
+  write-verbose "Creating new schema$($Type)"
   switch ($Type) {
     'string' {
       [schemaString]::new()
@@ -653,20 +653,20 @@ function ConvertTo-Element {
     PositionalBinding = $true)]
     [OutputType([schemaDocument],[schemaString],[schemaIntenger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
   param (
-    [object]$object
+    [object]$Object
   )
-  write-verbose ($object |Out-String)
-  switch ($object.type) {
+  write-verbose ($Object |Out-String)
+  switch ($Object.type) {
     'string' {
       write-verbose "Creating schemaString object"
       $Result = New-SchemaElement -Type string
-      foreach ($prop in $object.psobject.properties.name) {
+      foreach ($prop in $Object.psobject.properties.name) {
         write-verbose $prop
         if ($prop -eq '$id') {
-          $Result.id = $object.$prop
+          $Result.id = $Object.$prop
         }
         else {
-          $Result.$prop = $object.$prop
+          $Result.$prop = $Object.$prop
         }
         write-verbose ($Result |out-String)
       }
@@ -674,101 +674,101 @@ function ConvertTo-Element {
     'integer' {
       write-verbose "Creating schemaInteger object"
       $Result = New-SchemaElement -Type integer
-      foreach ($prop in $object.psobject.properties.name) {
+      foreach ($prop in $Object.psobject.properties.name) {
         if ($prop -eq '$id') {
-          $Result.id = $object.$prop
+          $Result.id = $Object.$prop
         }
         else {
-          $Result.$prop = $object.$prop
+          $Result.$prop = $Object.$prop
         }
       }
     }
     'number' {
       write-verbose "Creating schemaNumber object"
       $Result = New-SchemaElement -Type number
-      foreach ($prop in $object.psobject.properties.name) {
+      foreach ($prop in $Object.psobject.properties.name) {
         if ($prop -eq '$id') {
-          $Result.id = $object.$prop
+          $Result.id = $Object.$prop
         }
         else {
-          $Result.$prop = $object.$prop
+          $Result.$prop = $Object.$prop
         }
       }
     }
     'boolean' {
       write-verbose "Creating schemaBoolean object"
       $Result = New-SchemaElement -Type boolean
-      foreach ($prop in $object.psobject.properties.name) {
+      foreach ($prop in $Object.psobject.properties.name) {
         if ($prop -eq '$id') {
-          $Result.id = $object.$prop
+          $Result.id = $Object.$prop
         }
         else {
-          $Result.$prop = $object.$prop
+          $Result.$prop = $Object.$prop
         }
       }
     }
     'object' {
-      if ($object.psobject.properties.name.Contains('$schema')) {
+      if ($Object.psobject.properties.name.Contains('$schema')) {
         write-verbose "Creating schemaDcoument object"
         $Result = New-SchemaElement -Type document
       } else {
         write-verbose "Creating schemaObject object"
         $Result = New-SchemaElement -Type object
       }
-      foreach ($prop in $object.psobject.properties.name) {
+      foreach ($prop in $Object.psobject.properties.name) {
         if ($prop -eq '$id') {
-          Write-Verbose $object.$prop
-          $Result.id = $object.$prop
+          Write-Verbose $Object.$prop
+          $Result.id = $Object.$prop
         }
         elseif ($prop -eq 'properties') {
-          foreach ($oprop in $object.properties.psobject.properties.name) {
+          foreach ($oprop in $Object.properties.psobject.properties.name) {
             write-verbose $oprop
-            $Result.properties += (( New-SchemaProperty -Name $oprop -Value ( ConvertTo-SchemaElement -object ($object.properties.($oprop)) ) ))
+            $Result.properties += (( New-SchemaProperty -Name $oprop -Value ( ConvertTo-SchemaElement -object ($Object.properties.($oprop)) ) ))
           }
         }
         elseif ($prop -eq '$schema') {
           write-verbose "Found `$schema property"
-          $Result.schema = $object.$prop
+          $Result.schema = $Object.$prop
         }
         else {
-          $Result.$prop = $object.$prop
+          $Result.$prop = $Object.$prop
         }
       }
     }
     'array' {
       write-verbose "Creating schemaArray object"
       $Result = New-SchemaElement -Type array
-      foreach ($prop in $object.psobject.properties.name) {
+      foreach ($prop in $Object.psobject.properties.name) {
         if ($prop -eq '$id') {
-          Write-Verbose $object.$prop
-          $Result.id = $object.$prop
+          Write-Verbose $Object.$prop
+          $Result.id = $Object.$prop
         }
         elseif ($prop -eq 'items') {
-          if ($object.items.psobject.properties.name.contains('properties')){
+          if ($Object.items.psobject.properties.name.contains('properties')){
             Write-Verbose "Found invalid nested object"
-            $Result.items += (New-SchemaProperty -Array oneOf -Value (ConvertTo-SchemaElement -object $object.items))
+            $Result.items += (New-SchemaProperty -Array oneOf -Value (ConvertTo-SchemaElement -object $Object.items))
           } else {
-            foreach ($oprop in $object.items.psobject.properties.name) {
+            foreach ($oprop in $Object.items.psobject.properties.name) {
               if (!($oprop -eq '$id')) {
-                write-verbose ($object.items.psobject.properties.name |out-string)
+                write-verbose ($Object.items.psobject.properties.name |out-string)
                 Write-Verbose "Found valid array object"
                 Write-Verbose $oprop
-                $Result.items += ($object.items.$oprop.GetEnumerator() |ForEach-Object {((New-SchemaProperty -Name $oprop -Value (ConvertTo-SchemaElement -object $_) -Array $oprop))})
+                $Result.items += ($Object.items.$oprop.GetEnumerator() |ForEach-Object {((New-SchemaProperty -Name $oprop -Value (ConvertTo-SchemaElement -object $_) -Array $oprop))})
               }
             }
           }
         }
         else {
-          $Result.$prop = $object.$prop
+          $Result.$prop = $Object.$prop
         }
       }
     }
     default {
-      if ($object.('$ref')) {
-        if ($object.('$ref').contains('definitions')) {
-          $Result = Get-SchemaDefinition -Reference $object.('$ref')
+      if ($Object.('$ref')) {
+        if ($Object.('$ref').contains('definitions')) {
+          $Result = Get-SchemaDefinition -Reference $Object.('$ref')
         } else {
-          $Result = Get-SchemaReference -Reference $object.('$ref')
+          $Result = Get-SchemaReference -Reference $Object.('$ref')
         }
       }
     }
@@ -781,30 +781,30 @@ function ConvertFrom-Object {
     PositionalBinding = $true)]
     [OutputType([object])]
   param (
-    $document,
-    $depth
+    $Object,
+    $Depth
   )
   [object]$retVal = New-Object object;
 
-  if ($depth -ne 1) {
-    Write-Verbose "ConvertFrom-Object: Incoming: $($depth)"
-    $depth = if ($depth -gt 1) { $depth -1} else {$depth}
-    Write-Verbose "ConvertFrom-Object: Calculated: $($depth)"
-    foreach ($item in $document.properties.keys) {
-      if ($document.schema) {
+  if ($Depth -ne 1) {
+    Write-Verbose "ConvertFrom-Object: Incoming: $($Depth)"
+    $Depth = if ($Depth -gt 1) { $Depth -1} else {$Depth}
+    Write-Verbose "ConvertFrom-Object: Calculated: $($Depth)"
+    foreach ($item in $Object.properties.keys) {
+      if ($Object.schema) {
         Write-Verbose "ConvertFrom-Object: Found: $($item)"
-        Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$schema' -Value $document.schema;
-          if ($document.id) {
+        Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$schema' -Value $Object.schema;
+          if ($Object.id) {
             Write-Verbose "ConvertFrom-Object: Found: $($item)"
-            Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$id' -Value $document.id -force;
+            Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$id' -Value $Object.id -force;
           }
         }
-      switch ($document.properties.$item.type) {
+      switch ($Object.properties.$item.type) {
         'object' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value (ConvertFrom-SchemaObject -document $document.properties.$item -depth $depth)
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value (ConvertFrom-SchemaObject -document $Object.properties.$item -depth $Depth)
         }
         'array' {
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value @(ConvertFrom-SchemaArray -document $document.properties.$item -depth $depth)
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value @(ConvertFrom-SchemaArray -document $Object.properties.$item -depth $Depth)
         }
         'string' {
           Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value ""
@@ -832,17 +832,17 @@ function ConvertFrom-Array {
     PositionalBinding = $true)]
     [OutputType([array])]
   param (
-    $document,
-    $depth
+    $Array,
+    $Depth
   )
   [array]$retVal = @();
-  if ($depth -ne 1) {
-    Write-Verbose "ConvertFrom-Array: Incoming: $($depth)"
-    $depth = if ($depth -gt 1) { $depth -1} else {$depth}
-    Write-Verbose "ConvertFrom-Array: Calculated: $($depth)"
-    foreach ($item in $document.items) {
-      foreach ($key in $document.items.keys) {
-        $retVal += (ConvertFrom-SchemaObject -document $item.$key -depth $depth)
+  if ($Depth -ne 1) {
+    Write-Verbose "ConvertFrom-Array: Incoming: $($Depth)"
+    $Depth = if ($Depth -gt 1) { $Depth -1} else {$Depth}
+    Write-Verbose "ConvertFrom-Array: Calculated: $($Depth)"
+    foreach ($item in $Array.items) {
+      foreach ($key in $Array.items.keys) {
+        $retVal += (ConvertFrom-SchemaObject -document $item.$key -depth $Depth)
       }
     }
   }
