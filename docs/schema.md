@@ -13,7 +13,7 @@ A PowerShell Module for working with JSON Schema documents
 ## schema Cmdlets
 ### [ConvertFrom-SchemaArray](ConvertFrom-SchemaArray.md)
 This function takes the schemaArray object and converts it into a PowerShell array
-that can nicely output as a JSON string.
+that can be nicely output as a JSON string.
 
 ### [ConvertFrom-SchemaObject](ConvertFrom-SchemaObject.md)
 {{ Fill in the Synopsis }}

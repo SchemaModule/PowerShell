@@ -9,7 +9,7 @@ schema: 2.0.0
 
 ## SYNOPSIS
 This function takes the schemaArray object and converts it into a PowerShell array
-that can nicely output as a JSON string.
+that can be nicely output as a JSON string.
 
 ## SYNTAX
 
@@ -115,4 +115,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 [ConvertFrom-SchemaArray](https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaArray.md#convertfrom-schemaarray)
 
-[JSON Schema Array] (https://json-schema.org/understanding-json-schema/reference/array.html)
+[JSON Schema Array](https://json-schema.org/understanding-json-schema/reference/array.html)
