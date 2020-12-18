@@ -835,20 +835,22 @@ function ConvertFrom-Array {
     $Array,
     $Depth
   )
-  [array]$retVal = @();
-  if ($Depth -ne 1) {
-    Write-Verbose "ConvertFrom-Array: Incoming: $($Depth)"
-    $Depth = if ($Depth -gt 1) { $Depth -1} else {$Depth}
-    Write-Verbose "ConvertFrom-Array: Calculated: $($Depth)"
-    foreach ($item in $Array.items) {
-      Write-Verbose "ConvertFrom-Array: Found: $($item |Out-string)"
-      foreach ($key in $item.psobject.Properties.name) {
-        Write-Verbose "ConvertFrom-Array: Found: $($key)"
-        $retVal += (ConvertFrom-SchemaObject -Object $item.$key -depth $Depth)
+  if ($Array.type -eq 'array') {
+    [array]$retVal = @();
+    if ($Depth -ne 1) {
+      Write-Verbose "ConvertFrom-Array: Incoming: $($Depth)"
+      $Depth = if ($Depth -gt 1) { $Depth -1} else {$Depth}
+      Write-Verbose "ConvertFrom-Array: Calculated: $($Depth)"
+      foreach ($item in $Array.items) {
+        Write-Verbose "ConvertFrom-Array: Found: $($item |Out-string)"
+        foreach ($key in $item.psobject.Properties.name) {
+          Write-Verbose "ConvertFrom-Array: Found: $($key)"
+          $retVal += (ConvertFrom-SchemaObject -Object $item.$key -depth $Depth)
+        }
       }
     }
+    return $retVal
   }
-  return $retVal
 }
 function Format-Document {
   [CmdletBinding(
