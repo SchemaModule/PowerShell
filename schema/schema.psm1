@@ -223,7 +223,7 @@ class schemaArray {
   [object]ToString() {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id | ConvertTo-Json)
   }
-  [array]toArray() {
+  [array]ToArray() {
     return (ConvertFrom-SchemaArray -Array $this)
   }
 }
