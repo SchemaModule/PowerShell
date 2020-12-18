@@ -844,7 +844,9 @@ function ConvertFrom-Array {
     PositionalBinding = $true)]
   [OutputType([array])]
   param (
+    [parameter(Mandatory = $true, Position = 0)]
     $Array,
+    [parameter(Mandatory = $false, Position = 1)]
     $Depth
   )
   if ($Array.type -eq 'array') {
