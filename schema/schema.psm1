@@ -40,7 +40,7 @@ class schemaString {
     $this.enum += $enum
   }
   [object]ToString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref |ConvertTo-Json)
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | ConvertTo-Json)
   }
 }
 class schemaInteger {
@@ -81,7 +81,7 @@ class schemaInteger {
     $this.enum += $enum
   }
   [object]ToString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref |ConvertTo-Json)
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | ConvertTo-Json)
   }
 }
 class schemaNumber {
@@ -118,7 +118,7 @@ class schemaNumber {
     $this.examples += $example
   }
   [object]ToString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref |ConvertTo-Json)
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | ConvertTo-Json)
   }
 }
 class schemaBoolean {
@@ -133,7 +133,7 @@ class schemaBoolean {
   # Methods
   #
   [object]ToString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref |ConvertTo-Json)
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$ref'; Exp = { $_.ref } } -ExcludeProperty id, ref | ConvertTo-Json)
   }
 }
 class schemaObject {
@@ -163,7 +163,7 @@ class schemaObject {
     return (Find-SchemaElement -Schema $this -ElementName $item)
   }
   [object]ToString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id |ConvertTo-Json)
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id | ConvertTo-Json)
   }
   [object]ToObject() {
     return (ConvertFrom-SchemaObject -Object $this)
@@ -175,16 +175,18 @@ class schemaObject {
     [object]$retVal = New-Object object;
     if ($this.properties.Contains($PropertyName)) {
       Add-Member -InputObject $retVal -MemberType NoteProperty -Name $PropertyName -Value (ConvertFrom-SchemaObject -Object ($this.GetProperty($PropertyName)))
-    } else {
+    }
+    else {
       throw "$($PropertyName) not found in collection $($this.properties.keys |Out-String)"
     }
     return $retVal
   }
-  [object]ToObject([string]$PropertyName,[int]$Depth) {
+  [object]ToObject([string]$PropertyName, [int]$Depth) {
     [object]$retVal = New-Object object;
     if ($this.properties.Contains($PropertyName)) {
       Add-Member -InputObject $retVal -MemberType NoteProperty -Name $PropertyName -Value (ConvertFrom-SchemaObject -Object ($this.GetProperty($PropertyName)) -depth $Depth)
-    } else {
+    }
+    else {
       throw "$($PropertyName) not found in collection $($this.properties.keys |Out-String)"
     }
     return $retVal
@@ -192,7 +194,8 @@ class schemaObject {
   [object]GetProperty([string]$PropertyName) {
     if ($this.properties.Contains($PropertyName)) {
       return ($this.properties.$PropertyName)
-    } else {
+    }
+    else {
       throw "$($PropertyName) not found in collection $($this.properties.keys |Out-String)"
     }
   }
@@ -218,7 +221,7 @@ class schemaArray {
     return (Find-SchemaElement -Schema $this -ElementName $item)
   }
   [object]ToString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id |ConvertTo-Json)
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } } -ExcludeProperty id | ConvertTo-Json)
   }
   [array]toArray() {
     return (ConvertFrom-SchemaArray -Array $this)
@@ -253,7 +256,7 @@ class schemaDocument {
     return (Find-SchemaElement -Schema $this -ElementName $item)
   }
   [object]ToString() {
-    return ($this |Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } }, @{Name = '$definitions'; Exp = { $_.definitions } } -ExcludeProperty id,schema,definitions |ConvertTo-Json)
+    return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } }, @{Name = '$definitions'; Exp = { $_.definitions } } -ExcludeProperty id, schema, definitions | ConvertTo-Json)
   }
   [object]ToObject() {
     return (ConvertFrom-SchemaObject -Object $this)
@@ -265,16 +268,18 @@ class schemaDocument {
     [object]$retVal = New-Object object;
     if ($this.properties.Contains($PropertyName)) {
       Add-Member -InputObject $retVal -MemberType NoteProperty -Name $PropertyName -Value (ConvertFrom-SchemaObject -Object ($this.GetProperty($PropertyName)))
-    } else {
+    }
+    else {
       throw "$($PropertyName) not found in collection $($this.properties.keys |Out-String)"
     }
     return $retVal
   }
-  [object]ToObject([string]$PropertyName,[int]$Depth) {
+  [object]ToObject([string]$PropertyName, [int]$Depth) {
     [object]$retVal = New-Object object;
     if ($this.properties.Contains($PropertyName)) {
       Add-Member -InputObject $retVal -MemberType NoteProperty -Name $PropertyName -Value (ConvertFrom-SchemaObject -Object ($this.GetProperty($PropertyName)) -depth $Depth)
-    } else {
+    }
+    else {
       throw "$($PropertyName) not found in collection $($this.properties.keys |Out-String)"
     }
     return $retVal
@@ -282,7 +287,8 @@ class schemaDocument {
   [object]GetProperty([string]$PropertyName) {
     if ($this.properties.Contains($PropertyName)) {
       return ($this.properties.$PropertyName)
-    } else {
+    }
+    else {
       throw "$($PropertyName) not found in collection $($this.properties.keys |Out-String)"
     }
   }
@@ -315,11 +321,11 @@ function Get-Document {
         }
         'https' {
           Write-Verbose "Incoming HTTPs path";
-          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path |ConvertFrom-Json));
+          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json));
         }
         'http' {
           Write-Verbose "Incoming HTTP path";
-          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path |ConvertFrom-Json));
+          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json));
         }
       }
     }
@@ -332,7 +338,7 @@ function Get-Definition {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDefinition.md#get-schemadefinition',
     PositionalBinding = $true)]
-  [OutputType([schemaDocument],[schemaString],[schemaInteger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
+  [OutputType([schemaDocument], [schemaString], [schemaInteger], [schemaNumber], [schemaBoolean], [schemaObject], [schemaArray])]
   param (
     [Parameter(ValueFromPipeline)]
     [System.Uri]$Reference
@@ -347,7 +353,7 @@ function Get-Reference {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaReference.md#get-schemareference',
     PositionalBinding = $true)]
-    [OutputType([schemaDocument],[schemaString],[schemaInteger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
+  [OutputType([schemaDocument], [schemaString], [schemaInteger], [schemaNumber], [schemaBoolean], [schemaObject], [schemaArray])]
   param (
     [Parameter(ValueFromPipeline)]
     [System.Uri]$Reference
@@ -360,7 +366,7 @@ function New-String {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaString.md#new-schemastring',
     PositionalBinding = $true)]
-    [OutputType([schemaString])]
+  [OutputType([schemaString])]
   param (
     [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [string]$id,
@@ -403,7 +409,7 @@ function New-Integer {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaInteger.md#new-schemainteger',
     PositionalBinding = $true)]
-    [OutputType([schemaInteger])]
+  [OutputType([schemaInteger])]
   param (
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [string]$id,
@@ -449,7 +455,7 @@ function New-Number {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaNumber.md#new-schemanumber',
     PositionalBinding = $true)]
-    [OutputType([schemaNumber])]
+  [OutputType([schemaNumber])]
   param (
     [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [string]$id,
@@ -493,7 +499,7 @@ function New-Property {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaProperty.md#new-schemaproperty',
     PositionalBinding = $true)]
-    [OutputType([hashtable])]
+  [OutputType([hashtable])]
   param (
     [ValidateNotNullOrEmpty()]
     [string]$Name,
@@ -506,7 +512,8 @@ function New-Property {
   )
   if ($Array) {
     $Property = (New-Object -TypeName psobject -Property @{$Array = @($value) })
-  } else {
+  }
+  else {
     $Property = (New-Object -TypeName psobject @{$Name = $value })
   }
   return $Property
@@ -515,7 +522,7 @@ function New-Element {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaElement.md#new-schemaelement',
     PositionalBinding = $true)]
-    [OutputType([schemaDocument],[schemaString],[schemaInteger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
+  [OutputType([schemaDocument], [schemaString], [schemaInteger], [schemaNumber], [schemaBoolean], [schemaObject], [schemaArray])]
   param (
     [ValidateSet('string', 'number', 'integer', 'object', 'boolean', 'array', 'document')]
     [string]$Type
@@ -550,7 +557,7 @@ function Find-Element {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Find-SchemaElement.md#find-schemaelement',
     PositionalBinding = $true)]
-    [OutputType([schemaDocument],[schemaString],[schemaInteger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
+  [OutputType([schemaDocument], [schemaString], [schemaInteger], [schemaNumber], [schemaBoolean], [schemaObject], [schemaArray])]
   param (
     [parameter(Mandatory = $true, ParameterSetName = 'name')]
     [parameter(Mandatory = $true, ParameterSetName = 'type')]
@@ -651,11 +658,11 @@ function ConvertTo-Element {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaElement.md#convertto-schemaelement',
     PositionalBinding = $true)]
-    [OutputType([schemaDocument],[schemaString],[schemaInteger],[schemaNumber],[schemaBoolean],[schemaObject],[schemaArray])]
+  [OutputType([schemaDocument], [schemaString], [schemaInteger], [schemaNumber], [schemaBoolean], [schemaObject], [schemaArray])]
   param (
     [object]$Object
   )
-  write-verbose ($Object |Out-String)
+  write-verbose ($Object | Out-String)
   switch ($Object.type) {
     'string' {
       write-verbose "Creating schemaString object"
@@ -668,7 +675,7 @@ function ConvertTo-Element {
         else {
           $Result.$prop = $Object.$prop
         }
-        write-verbose ($Result |out-String)
+        write-verbose ($Result | out-String)
       }
     }
     'integer' {
@@ -711,7 +718,8 @@ function ConvertTo-Element {
       if ($Object.psobject.properties.name.Contains('$schema')) {
         write-verbose "Creating schemaDcoument object"
         $Result = New-SchemaElement -Type document
-      } else {
+      }
+      else {
         write-verbose "Creating schemaObject object"
         $Result = New-SchemaElement -Type object
       }
@@ -744,16 +752,17 @@ function ConvertTo-Element {
           $Result.id = $Object.$prop
         }
         elseif ($prop -eq 'items') {
-          if ($Object.items.psobject.properties.name.contains('properties')){
+          if ($Object.items.psobject.properties.name.contains('properties')) {
             Write-Verbose "Found invalid nested object"
             $Result.items += (New-SchemaProperty -Array oneOf -Value (ConvertTo-SchemaElement -object $Object.items))
-          } else {
+          }
+          else {
             foreach ($oprop in $Object.items.psobject.properties.name) {
               if (!($oprop -eq '$id')) {
-                write-verbose ($Object.items.psobject.properties.name |out-string)
+                write-verbose ($Object.items.psobject.properties.name | out-string)
                 Write-Verbose "Found valid array object"
                 Write-Verbose $oprop
-                $Result.items += ($Object.items.$oprop.GetEnumerator() |ForEach-Object {((New-SchemaProperty -Name $oprop -Value (ConvertTo-SchemaElement -object $_) -Array $oprop))})
+                $Result.items += ($Object.items.$oprop.GetEnumerator() | ForEach-Object { ((New-SchemaProperty -Name $oprop -Value (ConvertTo-SchemaElement -object $_) -Array $oprop)) })
               }
             }
           }
@@ -767,7 +776,8 @@ function ConvertTo-Element {
       if ($Object.('$ref')) {
         if ($Object.('$ref').contains('definitions')) {
           $Result = Get-SchemaDefinition -Reference $Object.('$ref')
-        } else {
+        }
+        else {
           $Result = Get-SchemaReference -Reference $Object.('$ref')
         }
       }
@@ -779,7 +789,7 @@ function ConvertFrom-Object {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaObject.md#convertfrom-schemaobject',
     PositionalBinding = $true)]
-    [OutputType([object])]
+  [OutputType([object])]
   param (
     $Object,
     $Depth
@@ -788,17 +798,18 @@ function ConvertFrom-Object {
     [object]$retVal = New-Object object;
     if ($Depth -ne 1) {
       Write-Verbose "ConvertFrom-Object: Incoming: $($Depth)"
-      $Depth = if ($Depth -gt 1) { $Depth -1} else {$Depth}
+      $Depth = if ($Depth -gt 1) { $Depth - 1 } else { $Depth }
       Write-Verbose "ConvertFrom-Object: Calculated: $($Depth)"
+      if ($Object.schema) {
+        Write-Verbose "ConvertFrom-Object: Found: $($Object.schema)"
+        Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$schema' -Value $Object.schema;
+        if ($Object.id) {
+          Write-Verbose "ConvertFrom-Object: Found: $($Object.id)"
+          Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$id' -Value $Object.id -force;
+        }
+      }
       foreach ($item in $Object.properties.keys) {
-        if ($Object.schema) {
-          Write-Verbose "ConvertFrom-Object: Found: $($item)"
-          Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$schema' -Value $Object.schema;
-            if ($Object.id) {
-              Write-Verbose "ConvertFrom-Object: Found: $($item)"
-              Add-Member -InputObject $retVal -MemberType NoteProperty -Name '$id' -Value $Object.id -force;
-            }
-          }
+        Write-Verbose "ConvertFrom-Object: Found: $($item)"
         switch ($Object.properties.$item.type) {
           'object' {
             Add-Member -InputObject $retVal -MemberType NoteProperty -Name $item -Value (ConvertFrom-SchemaObject -Object $Object.properties.$item -depth $Depth)
@@ -831,7 +842,7 @@ function ConvertFrom-Array {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaArray.md#convertfrom-schemaarray',
     PositionalBinding = $true)]
-    [OutputType([array])]
+  [OutputType([array])]
   param (
     $Array,
     $Depth
@@ -840,7 +851,7 @@ function ConvertFrom-Array {
     [array]$retVal = @();
     if ($Depth -ne 1) {
       Write-Verbose "ConvertFrom-Array: Incoming: $($Depth)"
-      $Depth = if ($Depth -gt 1) { $Depth -1} else {$Depth}
+      $Depth = if ($Depth -gt 1) { $Depth - 1 } else { $Depth }
       Write-Verbose "ConvertFrom-Array: Calculated: $($Depth)"
       foreach ($item in $Array.items) {
         Write-Verbose "ConvertFrom-Array: Found: $($item |Out-string)"
@@ -857,11 +868,11 @@ function Format-Document {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadodcument',
     PositionalBinding = $true)]
-    [OutputType([string])]
+  [OutputType([string])]
   param (
     [Parameter(Mandatory, ValueFromPipeline)]
     [String] $json
-    )
+  )
   $indent = 0;
   ($json -Split '\n' |
     ForEach-Object {
@@ -875,16 +886,16 @@ function Format-Document {
         $indent++
       }
       if ($line.contains('"schema"')) {
-          $line.Replace('"schema"', '"$schema"')
+        $line.Replace('"schema"', '"$schema"')
       }
       elseif ($line.contains('"definitions"')) {
-          $line.Replace('"definitions"', '"$definitions"')
+        $line.Replace('"definitions"', '"$definitions"')
       }
       elseif ($line.contains('"id": ')) {
-          $line.Replace('"id": "', '"$id": "')
+        $line.Replace('"id": "', '"$id": "')
       }
       elseif ($line.contains('"ref"')) {
-          $line.Replace('"ref"', '"$ref"')
+        $line.Replace('"ref"', '"$ref"')
       }
       else {
         $line
