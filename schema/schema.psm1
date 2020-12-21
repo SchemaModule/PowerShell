@@ -871,7 +871,7 @@ function ConvertFrom-Array {
 }
 function Format-Document {
   [CmdletBinding(
-    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadodcument',
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadocument',
     PositionalBinding = $true)]
   [OutputType([string])]
   param (
