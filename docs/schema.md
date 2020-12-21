@@ -40,7 +40,7 @@ This function will return a schemaDocument object of the input Schema.
 A function to follow the ref keyword and return the referenced schema
 
 ### [New-SchemaElement](New-SchemaElement.md)
-{{ Fill in the Description }}
+A function to create new SchemaModule objects
 
 ### [New-SchemaInteger](New-SchemaInteger.md)
 {{ Fill in the Description }}
