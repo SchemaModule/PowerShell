@@ -28,7 +28,7 @@ This function provides the ability to find objects within the JSON schema either
 by Name, by Type or by a Path.
 
 ### [Format-SchemaDocument](Format-SchemaDocument.md)
-{{ Fill in the Description }}
+A simple schema linter
 
 ### [Get-SchemaDefinition](Get-SchemaDefinition.md)
 {{ Fill in the Description }}

@@ -1,14 +1,14 @@
 ---
 external help file: schema-help.xml
 Module Name: schema
-online version: https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadodcument
+online version: https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadocument
 schema: 2.0.0
 ---
 
 # Format-SchemaDocument
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+A simple schema linter
 
 ## SYNTAX
 
@@ -17,21 +17,53 @@ Format-SchemaDocument [-json] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+A simple schema linter to output classes into a format that the schema definition
+would expect. Limitations of PowerShell prevent property names from starting
+with '$' so the linter updates values like id,schema,definitions,references to
+be pre-fixed with a '$'.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+$Schema |ConvertTo-Json -Depth 1 |Format-SchemaDocument
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": true,
+  "$definitions": null,
+  "$id": "http://example.com/example.json",
+  "properties": {
+    "width": "schemaString",
+    "depth": "schemaString",
+    "closet": "schemaBoolean",
+    "room": "schemaString",
+    "contents": "schemaArray",
+    "exterioraccess": "schemaBoolean"
+  },
+  "required": [
+    "room",
+    "width",
+    "depth",
+    "closet",
+    "exterioraccess",
+    "contents"
+  ],
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": {
+
+  }
+}
 ```
 
-{{ Add example description here }}
+This example shows how to use this function, we have restricted the
+ConvertTo-Json Cmdlet to a depth of 1 to keep this help readable.
 
 ## PARAMETERS
 
 ### -json
-{{ Fill json Description }}
+This is a json string object to be formatted.
 
 ```yaml
 Type: System.String
@@ -60,5 +92,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadodcument](https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadodcument)
+[Format-SchemaDocument](https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadocument)
 
