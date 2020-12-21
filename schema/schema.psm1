@@ -660,6 +660,7 @@ function ConvertTo-Element {
     PositionalBinding = $true)]
   [OutputType([schemaDocument], [schemaString], [schemaInteger], [schemaNumber], [schemaBoolean], [schemaObject], [schemaArray])]
   param (
+    [parameter(Mandatory = $true, Position = 0)]
     [object]$Object
   )
   write-verbose ($Object | Out-String)

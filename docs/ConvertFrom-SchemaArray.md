@@ -14,7 +14,7 @@ that can be nicely output as a JSON string.
 ## SYNTAX
 
 ```
-ConvertFrom-SchemaArray [[-Array] <Object>] [[-Depth] <Object>] [<CommonParameters>]
+ConvertFrom-SchemaArray [-Array] <Object> [[-Depth] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -14,7 +14,7 @@ that can be nicely output as a JSON string.
 ## SYNTAX
 
 ```
-ConvertFrom-SchemaObject [[-Object] <Object>] [[-Depth] <Object>] [<CommonParameters>]
+ConvertFrom-SchemaObject [-Object] <Object> [[-Depth] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -128,4 +128,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 [ConvertFrom-SchemaObject](https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaObject.md#convertfrom-schemaobject)
 
-[JSON Schema Array](https://json-schema.org/understanding-json-schema/reference/array.html)
+[JSON Schema Object](https://json-schema.org/understanding-json-schema/reference/object.html)

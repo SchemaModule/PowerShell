@@ -19,6 +19,10 @@ that can be nicely output as a JSON string.
 This function takes the schemaObject object and converts it into a PowerShell object
 that can be nicely output as a JSON string.
 
+### [ConvertTo-SchemaElement](ConvertTo-SchemaElement.md)
+This function takes the output of ConvertFrom-Json CmdLet and converts it into
+SchemaModule classes.
+
 ### [Format-SchemaDocument](Format-SchemaDocument.md)
 {{ Fill in the Synopsis }}
 

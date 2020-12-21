@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-ConvertFrom-SchemaObject [[-Object] <Object>] [[-Depth] <Object>] [<CommonParameters>]
+ConvertFrom-SchemaObject [-Object] <Object> [[-Depth] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -34,7 +34,7 @@ PS C:\> {{ Add example code here }}
 {{ Fill depth Description }}
 
 ```yaml
-Type: System.Object
+Type: System.Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -53,7 +53,7 @@ Type: System.Object
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 0
 Default value: None
 Accept pipeline input: False
