@@ -19,7 +19,7 @@ ConvertFrom-SchemaArray [[-Array] <Object>] [[-Depth] <Object>] [<CommonParamete
 
 ## DESCRIPTION
 This function takes the schemaArray object and converts it into a PowerShell array
-that can nicely output as a JSON string. This function is useful when you need
+that can be nicely output as a JSON string. This function is useful when you need
 to output the JSON schema as a JSON object. This would have the effect of
 creating an empty JSON document based on the schema that was provided.
 
