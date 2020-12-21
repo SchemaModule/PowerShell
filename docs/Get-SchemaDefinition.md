@@ -1,11 +1,11 @@
 ---
 external help file: schema-help.xml
 Module Name: schema
-online version: https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadodcument
+online version: https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDefinition.md#get-schemadefinition
 schema: 2.0.0
 ---
 
-# Format-SchemaDocument
+# Get-SchemaDefinition
 
 ## SYNOPSIS
 {{ Fill in the Synopsis }}
@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Format-SchemaDocument [-json] <String> [<CommonParameters>]
+Get-SchemaDefinition [[-Reference] <Uri>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,15 +30,15 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -json
-{{ Fill json Description }}
+### -Reference
+{{ Fill Reference Description }}
 
 ```yaml
-Type: System.String
+Type: System.Uri
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
@@ -50,15 +50,27 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### System.String
+### System.Uri
 
 ## OUTPUTS
 
-### System.String
+### schemaDocument
+
+### schemaString
+
+### schemaInteger
+
+### schemaNumber
+
+### schemaBoolean
+
+### schemaObject
+
+### schemaArray
 
 ## NOTES
 
 ## RELATED LINKS
 
-[https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadodcument](https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadodcument)
+[https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDefinition.md#get-schemadefinition](https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDefinition.md#get-schemadefinition)
 

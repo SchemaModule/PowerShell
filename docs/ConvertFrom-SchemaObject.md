@@ -68,7 +68,6 @@ This is a JSON Schema object as defined by the json-schema.org (see related link
 below). This object is then converted into a PowerShell object that can be used
 like any other PowerShell object.
 
-```json
 {
  "type": "object",
  "schema": "http://json-schema.org/draft-07/schema#",
@@ -97,7 +96,6 @@ like any other PowerShell object.
 
  }
 }
-```
 
 ```yaml
 Type: System.Object

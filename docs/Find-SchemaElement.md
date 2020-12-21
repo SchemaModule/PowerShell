@@ -1,19 +1,30 @@
 ---
 external help file: schema-help.xml
 Module Name: schema
-online version: https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaObject.md#convertfrom-schemaobject
+online version: https://github.com/SchemaModule/PowerShell/blob/master/docs/Find-SchemaElement.md#find-schemaelement
 schema: 2.0.0
 ---
 
-# ConvertFrom-SchemaObject
+# Find-SchemaElement
 
 ## SYNOPSIS
 {{ Fill in the Synopsis }}
 
 ## SYNTAX
 
+### path
 ```
-ConvertFrom-SchemaObject [-Object] <Object> [[-Depth] <Int32>] [<CommonParameters>]
+Find-SchemaElement -Schema <Object> [-ElementPath <Object>] [<CommonParameters>]
+```
+
+### type
+```
+Find-SchemaElement -Schema <Object> [-ElementType <Object>] [<CommonParameters>]
+```
+
+### name
+```
+Find-SchemaElement -Schema <Object> [-ElementName <Object>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,23 +41,54 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -Depth
-{{ Fill depth Description }}
+### -ElementName
+{{ Fill ElementName Description }}
 
 ```yaml
-Type: System.Int32
-Parameter Sets: (All)
+Type: System.Object
+Parameter Sets: name
 Aliases:
 
 Required: False
-Position: 1
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Object
-{{ Fill Object Description }}
+### -ElementPath
+{{ Fill ElementPath Description }}
+
+```yaml
+Type: System.Object
+Parameter Sets: path
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ElementType
+{{ Fill ElementType Description }}
+
+```yaml
+Type: System.Object
+Parameter Sets: type
+Aliases:
+Accepted values: schemaString, schemaNumber, schemaInteger, schemaObject, schemaBoolean, schemaArray, schemaDocument
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Schema
+{{ Fill Schema Description }}
 
 ```yaml
 Type: System.Object
@@ -54,7 +96,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 0
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -69,11 +111,23 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### System.Object
+### schemaDocument
+
+### schemaString
+
+### schemaInteger
+
+### schemaNumber
+
+### schemaBoolean
+
+### schemaObject
+
+### schemaArray
 
 ## NOTES
 
 ## RELATED LINKS
 
-[https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaObject.md#convertfrom-schemaobject](https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaObject.md#convertfrom-schemaobject)
+[https://github.com/SchemaModule/PowerShell/blob/master/docs/Find-SchemaElement.md#find-schemaelement](https://github.com/SchemaModule/PowerShell/blob/master/docs/Find-SchemaElement.md#find-schemaelement)
 

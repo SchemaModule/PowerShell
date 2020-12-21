@@ -72,7 +72,6 @@ This is a JSON Schema object as defined by the json-schema.org (see related link
 below). This object is then converted into a PowerShell object that can be used
 like any other PowerShell object.
 
-```json
 {
  "type": "string",
  "examples": [
@@ -88,7 +87,6 @@ like any other PowerShell object.
  "description": "An explanation about the purpose of this instance.",
  "default": ""
 }
-```
 
 ```yaml
 Type: System.Object

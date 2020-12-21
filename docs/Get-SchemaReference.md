@@ -1,69 +1,40 @@
 ---
 external help file: schema-help.xml
 Module Name: schema
-online version:
+online version: https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaReference.md#get-schemareference
 schema: 2.0.0
 ---
 
-# Get-SchemaDocument
+# Get-SchemaReference
 
 ## SYNOPSIS
-This function will return a PowerShell object of the input Schema.
+{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
 ```
-Get-SchemaDocument [[-Path] <String>] [<CommonParameters>]
+Get-SchemaReference [[-Reference] <Uri>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This function will return a PowerShell object of the input Schema. This will help in building PowerShell objects
-that can be defined by a JSON schema. This allows a script to dynamically build objects based on a well-defined
-JSON schema.
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> 'https://gist.githubusercontent.com/jeffpatton1971/c2d3ee98a37766a2784ccd626b9b8ca2/raw/a112c9119cce507c2b4e115c35afc6c26f63ffc7/schema.json' |Get-SchemaDocument
-
-
-$schema     : http://json-schema.org/draft-07/schema
-$id         : http://example.com/root.json
-type        : object
-title       : The Root Schema
-description : The root schema is the schema that comprises the entire JSON document.
-default     :
-required    : {checked, dimensions, id, name...}
-properties  : @{checked=; dimensions=; id=; name=; price=; tags=}
+PS C:\> {{ Add example code here }}
 ```
 
-This example demonstrates passing a URL along the pipeline to the function.
-
-### Example 2
-```powershell
-PS C:\> Get-SchemaDocument -Path D:\CODE\JSON\schema.json
-
-
-$schema     : http://json-schema.org/draft-07/schema
-$id         : http://example.com/root.json
-type        : object
-title       : The Root Schema
-description : The root schema is the schema that comprises the entire JSON document.
-default     :
-required    : {checked, dimensions, id, name...}
-properties  : @{checked=; dimensions=; id=; name=; price=; tags=}
-```
-
-This example passes a json schema file into the function.
+{{ Add example description here }}
 
 ## PARAMETERS
 
-### -Path
-This can be a filepath or URL, the function does light validation on the input.
+### -Reference
+{{ Fill Reference Description }}
 
 ```yaml
-Type: System.String
+Type: System.Uri
 Parameter Sets: (All)
 Aliases:
 
@@ -79,16 +50,27 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### System.String
-A local or remote Json Schema file as defined by json-schema.org
+### System.Uri
 
 ## OUTPUTS
 
-### System.Object
-A PowerShell object representing the corresponding Json Schema
+### schemaDocument
+
+### schemaString
+
+### schemaInteger
+
+### schemaNumber
+
+### schemaBoolean
+
+### schemaObject
+
+### schemaArray
 
 ## NOTES
 
 ## RELATED LINKS
 
-[https://json-schema.org/](Json Schema Organization)
+[https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaReference.md#get-schemareference](https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaReference.md#get-schemareference)
+

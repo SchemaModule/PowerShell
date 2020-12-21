@@ -17,14 +17,14 @@ Get-SchemaDocument [[-Path] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This function will return a PowerShell object of the input Schema. This will help in building PowerShell objects
-that can be defined by a JSON schema. This allows a script to dynamically build objects based on a well-defined
-JSON schema.
+This function will return a PowerShell object of the input Schema.
+This will help in building PowerShell objects that can be defined by a JSON schema.
+This allows a script to dynamically build objects based on a well-defined JSON schema.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> 'https://gist.githubusercontent.com/jeffpatton1971/c2d3ee98a37766a2784ccd626b9b8ca2/raw/a112c9119cce507c2b4e115c35afc6c26f63ffc7/schema.json' |Get-SchemaDocument
 
 
@@ -41,7 +41,7 @@ properties  : @{checked=; dimensions=; id=; name=; price=; tags=}
 This example demonstrates passing a URL along the pipeline to the function.
 
 ### Example 2
-```powershell
+```
 PS C:\> Get-SchemaDocument -Path D:\CODE\JSON\schema.json
 
 
@@ -91,4 +91,5 @@ A PowerShell object representing the corresponding Json Schema
 
 ## RELATED LINKS
 
-[https://json-schema.org/](Json Schema Organization)
+[https://json-schema.org/]()
+

@@ -1,8 +1,8 @@
 ---
 Module Name: schema
 Module Guid: b75e69d4-47bc-4ac6-b7d7-df9a36e08bbe
-Download Help Link: https://raw.githubusercontent.com/SchemaModule/PowerShell/master/cabs/
-Help Version: 1.1.0
+Download Help Link: {{ Update Download Link }}
+Help Version: {{ Please enter version of help manually (X.X.X.X) format }}
 Locale: en-US
 ---
 
@@ -23,18 +23,33 @@ that can be nicely output as a JSON string.
 This function takes the output of ConvertFrom-Json CmdLet and converts it into
 SchemaModule classes.
 
+### [Find-SchemaElement](Find-SchemaElement.md)
+{{ Fill in the Description }}
+
 ### [Format-SchemaDocument](Format-SchemaDocument.md)
-{{ Fill in the Synopsis }}
+{{ Fill in the Description }}
+
+### [Get-SchemaDefinition](Get-SchemaDefinition.md)
+{{ Fill in the Description }}
+
+### [Get-SchemaDocument](Get-SchemaDocument.md)
+{{ Fill in the Description }}
+
+### [Get-SchemaReference](Get-SchemaReference.md)
+{{ Fill in the Description }}
+
+### [New-SchemaElement](New-SchemaElement.md)
+{{ Fill in the Description }}
 
 ### [New-SchemaInteger](New-SchemaInteger.md)
-{{ Fill in the Synopsis }}
+{{ Fill in the Description }}
 
 ### [New-SchemaNumber](New-SchemaNumber.md)
-{{ Fill in the Synopsis }}
+{{ Fill in the Description }}
 
 ### [New-SchemaProperty](New-SchemaProperty.md)
-{{ Fill in the Synopsis }}
+{{ Fill in the Description }}
 
 ### [New-SchemaString](New-SchemaString.md)
-{{ Fill in the Synopsis }}
+{{ Fill in the Description }}
 
