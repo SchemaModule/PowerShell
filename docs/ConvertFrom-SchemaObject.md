@@ -8,7 +8,8 @@ schema: 2.0.0
 # ConvertFrom-SchemaObject
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+This function takes the schemaObject object and converts it into a PowerShell object
+that can be nicely output as a JSON string.
 
 ## SYNTAX
 
@@ -17,24 +18,41 @@ ConvertFrom-SchemaObject [[-Object] <Object>] [[-Depth] <Object>] [<CommonParame
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This function takes the schemaObject object and converts it into a PowerShell object
+that can be nicely output as a JSON string. This function is useful when you need
+to output the JSON schema as a JSON object. This would have the effect of
+creating an empty JSON document based on the schema that was provided.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> $Schema = Get-SchemaDocument -Path 'D:\TEMP\test\schema-sample.json'
+
+ConvertFrom-SchemaObject -Object $Schema
+
+
+$schema        : http://json-schema.org/draft-07/schema#
+$id            : http://example.com/example.json
+width          :
+depth          :
+closet         : False
+room           :
+contents       : {System.Object}
+exterioraccess : False
 ```
 
-{{ Add example description here }}
+Take an object defined in a JSON schema and convert it into a custom PowerShell
+object.
 
 ## PARAMETERS
 
 ### -Depth
-{{ Fill depth Description }}
+The Depth parameter defines the number of levers that are recursed in order to
+create the object.
 
 ```yaml
-Type: System.Object
+Type: System.Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -46,14 +64,47 @@ Accept wildcard characters: False
 ```
 
 ### -Object
-{{ Fill Object Description }}
+This is a JSON Schema object as defined by the json-schema.org (see related links
+below). This object is then converted into a PowerShell object that can be used
+like any other PowerShell object.
+
+```json
+{
+ "type": "object",
+ "schema": "http://json-schema.org/draft-07/schema#",
+ "additionalProperties": true,
+ "definitions": null,
+ "id": "http://example.com/example.json",
+ "properties": {
+  "width": "schemaString",
+  "depth": "schemaString",
+  "closet": "schemaBoolean",
+  "room": "schemaString",
+  "contents": "schemaArray",
+  "exterioraccess": "schemaBoolean"
+ },
+ "required": [
+  "room",
+  "width",
+  "depth",
+  "closet",
+  "exterioraccess",
+  "contents"
+ ],
+ "title": "The root schema",
+ "description": "The root schema comprises the entire JSON document.",
+ "default": {
+
+ }
+}
+```
 
 ```yaml
 Type: System.Object
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 0
 Default value: None
 Accept pipeline input: False
@@ -75,5 +126,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaObject.md#convertfrom-schemaobject](https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaObject.md#convertfrom-schemaobject)
+[ConvertFrom-SchemaObject](https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaObject.md#convertfrom-schemaobject)
 
+[JSON Schema Array](https://json-schema.org/understanding-json-schema/reference/array.html)

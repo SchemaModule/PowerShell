@@ -16,28 +16,11 @@ This function takes the schemaArray object and converts it into a PowerShell arr
 that can be nicely output as a JSON string.
 
 ### [ConvertFrom-SchemaObject](ConvertFrom-SchemaObject.md)
-{{ Fill in the Synopsis }}
-
-### [ConvertFrom-SchemaObject](ConvertFrom-SchemaObject.md)
-{{ Fill in the Synopsis }}
-
-### [ConvertFrom-SchemaObject](ConvertFrom-SchemaObject.md)
-{{ Fill in the Synopsis }}
+This function takes the schemaObject object and converts it into a PowerShell object
+that can be nicely output as a JSON string.
 
 ### [Format-SchemaDocument](Format-SchemaDocument.md)
 {{ Fill in the Synopsis }}
-
-### [Format-SchemaDocument](Format-SchemaDocument.md)
-{{ Fill in the Synopsis }}
-
-### [Get-SchemaDocument](Get-SchemaDocument.md)
-This function will return a PowerShell object of the input Schema.
-
-### [Get-SchemaDocument](Get-SchemaDocument.md)
-This function will return a PowerShell object of the input Schema.
-
-### [Get-SchemaDocument](Get-SchemaDocument.md)
-This function will return a PowerShell object of the input Schema.
 
 ### [New-SchemaInteger](New-SchemaInteger.md)
 {{ Fill in the Synopsis }}
