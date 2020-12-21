@@ -37,7 +37,7 @@ A function to follow the Definition keyword and return the referenced schema
 This function will return a schemaDocument object of the input Schema.
 
 ### [Get-SchemaReference](Get-SchemaReference.md)
-{{ Fill in the Description }}
+A function to follow the ref keyword and return the referenced schema
 
 ### [New-SchemaElement](New-SchemaElement.md)
 {{ Fill in the Description }}
