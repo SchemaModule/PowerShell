@@ -791,8 +791,10 @@ function ConvertFrom-Object {
     PositionalBinding = $true)]
   [OutputType([object])]
   param (
+    [parameter(Mandatory = $true, Position = 0)]
     $Object,
-    $Depth
+    [parameter(Mandatory = $false, Position = 1)]
+    [int]$Depth
   )
   if ($Object.type -eq 'object') {
     [object]$retVal = New-Object object;
