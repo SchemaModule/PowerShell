@@ -49,7 +49,7 @@ A function to create new Schema Integer object
 A function to create new Schema Number object
 
 ### [New-SchemaProperty](New-SchemaProperty.md)
-{{ Fill in the Description }}
+A Function to create either an object property or array item
 
 ### [New-SchemaString](New-SchemaString.md)
 A function to create new Schema String object
