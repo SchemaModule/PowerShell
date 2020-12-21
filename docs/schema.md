@@ -31,7 +31,7 @@ by Name, by Type or by a Path.
 A simple schema linter
 
 ### [Get-SchemaDefinition](Get-SchemaDefinition.md)
-{{ Fill in the Description }}
+A function to follow the Definition keyword and return the referenced schema
 
 ### [Get-SchemaDocument](Get-SchemaDocument.md)
 {{ Fill in the Description }}
