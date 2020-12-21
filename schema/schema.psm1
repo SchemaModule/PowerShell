@@ -845,7 +845,7 @@ function ConvertFrom-Array {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaArray.md#convertfrom-schemaarray',
     PositionalBinding = $true)]
-  [OutputType([array])]
+  [OutputType([System.Object[]])]
   param (
     [parameter(Mandatory = $true, Position = 0)]
     $Array,
