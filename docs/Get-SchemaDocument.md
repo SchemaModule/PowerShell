@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-SchemaDocument
 
 ## SYNOPSIS
-This function will return a PowerShell object of the input Schema.
+This function will return a schemaDocument object of the input Schema.
 
 ## SYNTAX
 
@@ -17,7 +17,7 @@ Get-SchemaDocument [[-Path] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This function will return a PowerShell object of the input Schema.
+This function will return a schemaDocument object of the input Schema.
 This will help in building PowerShell objects that can be defined by a JSON schema.
 This allows a script to dynamically build objects based on a well-defined JSON schema.
 

@@ -34,7 +34,7 @@ A simple schema linter
 A function to follow the Definition keyword and return the referenced schema
 
 ### [Get-SchemaDocument](Get-SchemaDocument.md)
-{{ Fill in the Description }}
+This function will return a schemaDocument object of the input Schema.
 
 ### [Get-SchemaReference](Get-SchemaReference.md)
 {{ Fill in the Description }}
