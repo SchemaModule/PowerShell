@@ -564,12 +564,12 @@ function Find-Element {
     [parameter(Mandatory = $true, ParameterSetName = 'path')]
     $Schema,
     [parameter(Mandatory = $false, ParameterSetName = 'name')]
-    $ElementName,
+    [string]$ElementName,
     [parameter(Mandatory = $false, ParameterSetName = 'type')]
     [ValidateSet('schemaString', 'schemaNumber', 'schemaInteger', 'schemaObject', 'schemaBoolean', 'schemaArray', 'schemaDocument')]
-    $ElementType,
+    [string]$ElementType,
     [parameter(Mandatory = $false, ParameterSetName = 'path')]
-    $ElementPath
+    [string]$ElementPath
   )
   switch ($PSCmdlet.ParameterSetName) {
     'name' {
