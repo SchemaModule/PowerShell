@@ -43,14 +43,14 @@ A function to follow the ref keyword and return the referenced schema
 A function to create new SchemaModule objects
 
 ### [New-SchemaInteger](New-SchemaInteger.md)
-{{ Fill in the Description }}
+A function to create new Schema Integer object
 
 ### [New-SchemaNumber](New-SchemaNumber.md)
-{{ Fill in the Description }}
+A function to create new Schema Number object
 
 ### [New-SchemaProperty](New-SchemaProperty.md)
 {{ Fill in the Description }}
 
 ### [New-SchemaString](New-SchemaString.md)
-{{ Fill in the Description }}
+A function to create new Schema String object
 

@@ -8,7 +8,7 @@ schema: 2.0.0
 # New-SchemaNumber
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+A function to create new Schema Number object
 
 ## SYNTAX
 
@@ -19,21 +19,27 @@ New-SchemaNumber [-id <String>] [-ref <String>] [-minimum <Decimal>] [-maximum <
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+A function to create new Schema Number object
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+New-SchemaNumber -title Temp -description "Default temperature for the room" -default 72.3
+
+
+$id         :
+title       : Temp
+description : Default temperature for the room
+default     : 72.3
 ```
 
-{{ Add example description here }}
+A simple example of usage
 
 ## PARAMETERS
 
 ### -default
-{{ Fill default Description }}
+The default keyword specifies a default value for an item.
 
 ```yaml
 Type: System.Decimal
@@ -48,7 +54,8 @@ Accept wildcard characters: False
 ```
 
 ### -description
-{{ Fill description Description }}
+The title and description keywords must be strings. A "description" will provide
+a more lengthy explanation about the purpose of the data described by the schema
 
 ```yaml
 Type: System.String
@@ -63,7 +70,8 @@ Accept wildcard characters: False
 ```
 
 ### -examples
-{{ Fill examples Description }}
+The examples keyword is a place to provide an array of examples that validate
+against the schema.
 
 ```yaml
 Type: System.Decimal[]
@@ -78,7 +86,9 @@ Accept wildcard characters: False
 ```
 
 ### -exclusiveMaximum
-{{ Fill exclusiveMaximum Description }}
+Ranges of numbers are specified using a combination of the minimum and maximum
+keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive
+range).
 
 ```yaml
 Type: System.Decimal
@@ -93,7 +103,9 @@ Accept wildcard characters: False
 ```
 
 ### -exclusiveMinimum
-{{ Fill exclusiveMinimum Description }}
+Ranges of numbers are specified using a combination of the minimum and maximum
+keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive
+range).
 
 ```yaml
 Type: System.Decimal
@@ -108,7 +120,9 @@ Accept wildcard characters: False
 ```
 
 ### -id
-{{ Fill id Description }}
+The $id property is a URI-reference that serves two purposes, it declares a
+unique identifier for the schema and it declares a base URI against which $ref
+URI-references are resolved.
 
 ```yaml
 Type: System.String
@@ -123,7 +137,9 @@ Accept wildcard characters: False
 ```
 
 ### -maximum
-{{ Fill maximum Description }}
+Ranges of numbers are specified using a combination of the minimum and maximum
+keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive
+range).
 
 ```yaml
 Type: System.Decimal
@@ -138,7 +154,9 @@ Accept wildcard characters: False
 ```
 
 ### -minimum
-{{ Fill minimum Description }}
+Ranges of numbers are specified using a combination of the minimum and maximum
+keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive
+range).
 
 ```yaml
 Type: System.Decimal
@@ -153,7 +171,8 @@ Accept wildcard characters: False
 ```
 
 ### -multipleOf
-{{ Fill multipleOf Description }}
+Numbers can be restricted to a multiple of a given number, using the multipleOf
+keyword.
 
 ```yaml
 Type: System.Decimal
@@ -168,7 +187,9 @@ Accept wildcard characters: False
 ```
 
 ### -ref
-{{ Fill ref Description }}
+The $id property is a URI-reference that serves two purposes, it declares a
+unique identifier for the schema and it declares a base URI against which $ref
+URI-references are resolved.
 
 ```yaml
 Type: System.String
@@ -183,7 +204,8 @@ Accept wildcard characters: False
 ```
 
 ### -title
-{{ Fill title Description }}
+The title and description keywords must be strings. A "title" will preferably be
+short explanation about the purpose of the data described by the schema.
 
 ```yaml
 Type: System.String
@@ -207,10 +229,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### schemaNumber
-
+The number type is used for any numeric type, either integers or floating point
+numbers. In PowerShell this is a double.
+[Schema Number](http://json-schema.org/understanding-json-schema/reference/numeric.html#number)
+[Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
 ## NOTES
 
 ## RELATED LINKS
 
-[https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaNumber.md#new-schemanumber](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaNumber.md#new-schemanumber)
+[New-SchemaNumber](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaNumber.md#new-schemanumber)
 
+[JSON Schema Reference](https://json-schema.org/understanding-json-schema/reference/index.html)

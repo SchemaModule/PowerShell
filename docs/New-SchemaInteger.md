@@ -8,7 +8,7 @@ schema: 2.0.0
 # New-SchemaInteger
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+A function to create new Schema Integer object
 
 ## SYNTAX
 
@@ -19,21 +19,28 @@ New-SchemaInteger [-id <String>] [-ref <String>] [-minimum <Int32>] [-maximum <I
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+A function to create new Schema Integer object
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+New-SchemaInteger -title Width -description "The width in feet of the room"
+
+
+$id         :
+title       : Width
+description : The width in feet of the room
+default     : 0
+
 ```
 
-{{ Add example description here }}
+A simple example of usage
 
 ## PARAMETERS
 
 ### -default
-{{ Fill default Description }}
+The default keyword specifies a default value for an item.
 
 ```yaml
 Type: System.Int32
@@ -48,7 +55,8 @@ Accept wildcard characters: False
 ```
 
 ### -description
-{{ Fill description Description }}
+The title and description keywords must be strings. A "description" will provide
+a more lengthy explanation about the purpose of the data described by the schema
 
 ```yaml
 Type: System.String
@@ -63,7 +71,8 @@ Accept wildcard characters: False
 ```
 
 ### -enum
-{{ Fill enum Description }}
+The enum keyword is used to restrict a value to a fixed set of values. It must
+be an array with at least one element, where each element is unique.
 
 ```yaml
 Type: System.Int32[]
@@ -78,7 +87,8 @@ Accept wildcard characters: False
 ```
 
 ### -examples
-{{ Fill examples Description }}
+The examples keyword is a place to provide an array of examples that validate
+against the schema.
 
 ```yaml
 Type: System.Int32[]
@@ -93,7 +103,9 @@ Accept wildcard characters: False
 ```
 
 ### -exclusiveMaximum
-{{ Fill exclusiveMaximum Description }}
+Ranges of numbers are specified using a combination of the minimum and maximum
+keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive
+range).
 
 ```yaml
 Type: System.Int32
@@ -108,7 +120,9 @@ Accept wildcard characters: False
 ```
 
 ### -exclusiveMinimum
-{{ Fill exclusiveMinimum Description }}
+Ranges of numbers are specified using a combination of the minimum and maximum
+keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive
+range).
 
 ```yaml
 Type: System.Int32
@@ -123,7 +137,9 @@ Accept wildcard characters: False
 ```
 
 ### -id
-{{ Fill id Description }}
+The $id property is a URI-reference that serves two purposes, it declares a
+unique identifier for the schema and it declares a base URI against which $ref
+URI-references are resolved.
 
 ```yaml
 Type: System.String
@@ -138,7 +154,9 @@ Accept wildcard characters: False
 ```
 
 ### -maximum
-{{ Fill maximum Description }}
+Ranges of numbers are specified using a combination of the minimum and maximum
+keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive
+range).
 
 ```yaml
 Type: System.Int32
@@ -153,7 +171,9 @@ Accept wildcard characters: False
 ```
 
 ### -minimum
-{{ Fill minimum Description }}
+Ranges of numbers are specified using a combination of the minimum and maximum
+keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive
+range).
 
 ```yaml
 Type: System.Int32
@@ -168,7 +188,8 @@ Accept wildcard characters: False
 ```
 
 ### -multipleOf
-{{ Fill multipleOf Description }}
+Numbers can be restricted to a multiple of a given number, using the multipleOf
+keyword.
 
 ```yaml
 Type: System.Int32
@@ -183,7 +204,9 @@ Accept wildcard characters: False
 ```
 
 ### -ref
-{{ Fill ref Description }}
+The $id property is a URI-reference that serves two purposes, it declares a
+unique identifier for the schema and it declares a base URI against which $ref
+URI-references are resolved.
 
 ```yaml
 Type: System.String
@@ -198,7 +221,8 @@ Accept wildcard characters: False
 ```
 
 ### -title
-{{ Fill title Description }}
+The title and description keywords must be strings. A "title" will preferably be
+short explanation about the purpose of the data described by the schema.
 
 ```yaml
 Type: System.String
@@ -222,10 +246,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### schemaInteger
+The integer type is used for integral numbers. In PowerShell this is an int32
+[Schema Integer](http://json-schema.org/understanding-json-schema/reference/numeric.html#integer)
+[Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
 
 ## NOTES
 
 ## RELATED LINKS
 
-[https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaInteger.md#new-schemainteger](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaInteger.md#new-schemainteger)
+[New-SchemaInteger](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaInteger.md#new-schemainteger)
 
+[JSON Schema Reference](https://json-schema.org/understanding-json-schema/reference/index.html)
