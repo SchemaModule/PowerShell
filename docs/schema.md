@@ -24,7 +24,8 @@ This function takes the output of ConvertFrom-Json CmdLet and converts it into
 SchemaModule classes.
 
 ### [Find-SchemaElement](Find-SchemaElement.md)
-{{ Fill in the Description }}
+This function provides the ability to find objects within the JSON schema either
+by Name, by Type or by a Path.
 
 ### [Format-SchemaDocument](Format-SchemaDocument.md)
 {{ Fill in the Description }}
