@@ -223,7 +223,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### schemaString
 
 The string type is used for strings of text. It may contain Unicode characters.
+
 [Schema String](https://json-schema.org/understanding-json-schema/reference/string.html)
+
 [Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
 
 ## NOTES

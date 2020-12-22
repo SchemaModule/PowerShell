@@ -247,7 +247,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 The number type is used for any numeric type, either integers or floating point
 numbers. In PowerShell this is a double.
+
 [Schema Number](http://json-schema.org/understanding-json-schema/reference/numeric.html#number)
+
 [Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
 
 ## NOTES

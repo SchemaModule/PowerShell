@@ -95,8 +95,11 @@ A local or remote Json Schema file as defined by json-schema.org
 
 This class is really modified object that contains the $schema attribute as well
 as validation on what values can be present for that attribute.
+
 [Schema Object](https://json-schema.org/understanding-json-schema/reference/object.html)
+
 [Schema Keyword](https://json-schema.org/understanding-json-schema/reference/schema.html)
+
 [Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
 
 ## NOTES

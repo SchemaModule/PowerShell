@@ -264,7 +264,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### schemaInteger
 
 The integer type is used for integral numbers. In PowerShell this is an int32
+
 [Schema Integer](http://json-schema.org/understanding-json-schema/reference/numeric.html#integer)
+
 [Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
 
 ## NOTES
