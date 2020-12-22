@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Move code out of functions into classes
+
 ## [2.0.0] - 2020-12-22
 
 ### Added
@@ -19,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New-SchemaInteger
 - New-SchemaNumber
 - New-SchemaProperty
+- New-SchemaBoolean
 - Get-SchemaDefinition
 - Get-SchemaReference
 - Find-SchemaElement
