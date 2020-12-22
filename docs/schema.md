@@ -2,24 +2,68 @@
 Module Name: schema
 Module Guid: b75e69d4-47bc-4ac6-b7d7-df9a36e08bbe
 Download Help Link: https://raw.githubusercontent.com/SchemaModule/PowerShell/master/cabs/
-Help Version: 1.1.0
+Help Version: 2.0.0
 Locale: en-US
 ---
 
 # schema Module
+
 ## Description
+
 A PowerShell Module for working with JSON Schema documents
 
 ## schema Cmdlets
-### [Get-SchemaArray](Get-SchemaArray.md)
-This function returns the object from an array within the Json Schema.
+
+### [ConvertFrom-SchemaArray](ConvertFrom-SchemaArray.md)
+
+This function takes the schemaArray object and converts it into a PowerShell array
+that can be nicely output as a JSON string.
+
+### [ConvertFrom-SchemaObject](ConvertFrom-SchemaObject.md)
+
+This function takes the schemaObject object and converts it into a PowerShell object
+that can be nicely output as a JSON string.
+
+### [ConvertTo-SchemaElement](ConvertTo-SchemaElement.md)
+
+This function takes the output of ConvertFrom-Json CmdLet and converts it into
+SchemaModule classes.
+
+### [Find-SchemaElement](Find-SchemaElement.md)
+
+This function provides the ability to find objects within the JSON schema either
+by Name, by Type or by a Path.
+
+### [Format-SchemaDocument](Format-SchemaDocument.md)
+
+A simple schema linter
+
+### [Get-SchemaDefinition](Get-SchemaDefinition.md)
+
+A function to follow the Definition keyword and return the referenced schema
 
 ### [Get-SchemaDocument](Get-SchemaDocument.md)
-This function will return a PowerShell object of the input Schema.
 
-### [Get-SchemaObject](Get-SchemaObject.md)
-This function returns an object from the Json Schema.
+This function will return a schemaDocument object of the input Schema.
 
-### [Get-SchemaProperty](Get-SchemaProperty.md)
-This function returns one ore more properties from a Json Schema object.
+### [Get-SchemaReference](Get-SchemaReference.md)
 
+A function to follow the ref keyword and return the referenced schema
+
+### [New-SchemaElement](New-SchemaElement.md)
+
+### [New-SchemaInteger](New-SchemaInteger.md)
+
+A function to create new Schema Integer object
+
+### [New-SchemaNumber](New-SchemaNumber.md)
+
+A function to create new Schema Number object
+
+### [New-SchemaProperty](New-SchemaProperty.md)
+
+A Function to create either an object property or array item
+
+### [New-SchemaString](New-SchemaString.md)
+
+A function to create new Schema String object
