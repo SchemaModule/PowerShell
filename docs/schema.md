@@ -52,6 +52,8 @@ A function to follow the ref keyword and return the referenced schema
 
 ### [New-SchemaElement](New-SchemaElement.md)
 
+A function to create new SchemaModule objects
+
 ### [New-SchemaInteger](New-SchemaInteger.md)
 
 A function to create new Schema Integer object
