@@ -363,7 +363,7 @@ function Get-Reference {
   }
 }
 function New-String {
-  [CmdletBinding(
+  [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low',
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaString.md#new-schemastring',
     PositionalBinding = $true)]
   [OutputType([schemaString])]
@@ -389,24 +389,26 @@ function New-String {
     [parameter(Mandatory = $false, ParameterSetName = 'string')]
     [string[]]$examples = @()
   )
-  Write-Verbose "Creating schemaString object"
-  $schemaString = New-SchemaElement -Type string
-  Write-Verbose ($schemaString.GetType())
+  if ($PSCmdlet.ShouldProcess("NewString")) {
+    Write-Verbose "Creating schemaString object"
+    $schemaString = New-SchemaElement -Type string
+    Write-Verbose ($schemaString.GetType())
 
-  foreach ($param in $PSBoundParameters.GetEnumerator()) {
-    switch ($param) {
-      { ($param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
-      default {
-        Write-Verbose "Setting $($param.Value) on $($param.Key)"
-        $schemaString.($param.Key) = $param.Value
+    foreach ($param in $PSBoundParameters.GetEnumerator()) {
+      switch ($param) {
+        { ($param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
+        default {
+          Write-Verbose "Setting $($param.Value) on $($param.Key)"
+          $schemaString.($param.Key) = $param.Value
+        }
       }
     }
-  }
 
-  return $schemaString
+    return $schemaString
+  }
 }
 function New-Integer {
-  [CmdletBinding(
+  [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low',
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaInteger.md#new-schemainteger',
     PositionalBinding = $true)]
   [OutputType([schemaInteger])]
@@ -436,23 +438,25 @@ function New-Integer {
     [parameter(Mandatory = $false, ParameterSetName = 'integer')]
     [int[]]$examples = @()
   )
-  Write-Verbose "Creating schemaInteger object"
-  $schemaInteger = New-SchemaElement -Type integer
+  if ($PSCmdlet.ShouldProcess("NewInteger")) {
+    Write-Verbose "Creating schemaInteger object"
+    $schemaInteger = New-SchemaElement -Type integer
 
-  foreach ($param in $PSBoundParameters.GetEnumerator()) {
-    switch ($param) {
-      { ($param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
-      default {
-        Write-Verbose "Setting $($param.Value) on $($param.Key)"
-        $schemaInteger.($param.Key) = $param.Value
+    foreach ($param in $PSBoundParameters.GetEnumerator()) {
+      switch ($param) {
+        { ($param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
+        default {
+          Write-Verbose "Setting $($param.Value) on $($param.Key)"
+          $schemaInteger.($param.Key) = $param.Value
+        }
       }
     }
-  }
 
-  return $schemaInteger
+    return $schemaInteger
+  }
 }
 function New-Number {
-  [CmdletBinding(
+  [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low',
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaNumber.md#new-schemanumber',
     PositionalBinding = $true)]
   [OutputType([schemaNumber])]
@@ -480,23 +484,25 @@ function New-Number {
     [parameter(Mandatory = $false, ParameterSetName = 'number')]
     [decimal[]]$examples = @()
   )
-  Write-Verbose "Creating schemaNumber object"
-  $schemaNumber = New-SchemaElement -Type number
+  if ($PSCmdlet.ShouldProcess("NewNumber")) {
+    Write-Verbose "Creating schemaNumber object"
+    $schemaNumber = New-SchemaElement -Type number
 
-  foreach ($param in $PSBoundParameters.GetEnumerator()) {
-    switch ($param) {
-      { ($param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
-      default {
-        Write-Verbose "Setting $($param.Value) on $($param.Key)"
-        $schemaNumber.($param.Key) = $param.Value
+    foreach ($param in $PSBoundParameters.GetEnumerator()) {
+      switch ($param) {
+        { ($param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
+        default {
+          Write-Verbose "Setting $($param.Value) on $($param.Key)"
+          $schemaNumber.($param.Key) = $param.Value
+        }
       }
     }
-  }
 
-  return $schemaNumber
+    return $schemaNumber
+  }
 }
 function New-Property {
-  [CmdletBinding(
+  [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low',
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaProperty.md#new-schemaproperty',
     PositionalBinding = $true)]
   [OutputType([hashtable])]
@@ -510,16 +516,18 @@ function New-Property {
     [ValidateSet('allOf', 'anyOf', 'oneOf')]
     $Array
   )
-  if ($Array) {
-    $Property = (New-Object -TypeName psobject -Property @{$Array = @($value) })
+  if ($PSCmdlet.ShouldProcess("NewProperty")) {
+    if ($Array) {
+      $Property = (New-Object -TypeName psobject -Property @{$Array = @($value) })
+    }
+    else {
+      $Property = (New-Object -TypeName psobject @{$Name = $value })
+    }
+    return $Property
   }
-  else {
-    $Property = (New-Object -TypeName psobject @{$Name = $value })
-  }
-  return $Property
 }
 function New-Element {
-  [CmdletBinding(
+  [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low',
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaElement.md#new-schemaelement',
     PositionalBinding = $true)]
   [OutputType([schemaDocument], [schemaString], [schemaInteger], [schemaNumber], [schemaBoolean], [schemaObject], [schemaArray])]
@@ -527,29 +535,30 @@ function New-Element {
     [ValidateSet('string', 'number', 'integer', 'object', 'boolean', 'array', 'document')]
     [string]$Type
   )
-
-  write-verbose "Creating new schema$($Type)"
-  switch ($Type) {
-    'string' {
-      [schemaString]::new()
-    }
-    'number' {
-      [schemaNumber]::new()
-    }
-    'integer' {
-      [schemaInteger]::new()
-    }
-    'object' {
-      [schemaObject]::new()
-    }
-    'boolean' {
-      [schemaBoolean]::new()
-    }
-    'array' {
-      [schemaArray]::new()
-    }
-    'document' {
-      [schemaDocument]::new()
+  if ($PSCmdlet.ShouldProcess("NewElement")) {
+    write-verbose "Creating new schema$($Type)"
+    switch ($Type) {
+      'string' {
+        [schemaString]::new()
+      }
+      'number' {
+        [schemaNumber]::new()
+      }
+      'integer' {
+        [schemaInteger]::new()
+      }
+      'object' {
+        [schemaObject]::new()
+      }
+      'boolean' {
+        [schemaBoolean]::new()
+      }
+      'array' {
+        [schemaArray]::new()
+      }
+      'document' {
+        [schemaDocument]::new()
+      }
     }
   }
 }
