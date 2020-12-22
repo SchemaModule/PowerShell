@@ -505,7 +505,7 @@ function New-Boolean {
   [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low',
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaBoolean.md#new-schemaboolean',
     PositionalBinding = $true)]
-  [OutputType([schemaInteger])]
+  [OutputType([schemaBoolean])]
   param (
     [parameter(Mandatory = $false, ParameterSetName = 'boolean')]
     [string]$id,
