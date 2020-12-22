@@ -2,27 +2,40 @@
 <helpItems schema="maml" xmlns="http://msh">
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Get-SchemaArray</command:name>
-      <command:verb>Get</command:verb>
+      <command:name>ConvertFrom-SchemaArray</command:name>
+      <command:verb>ConvertFrom</command:verb>
       <command:noun>SchemaArray</command:noun>
       <maml:description>
-        <maml:para>This function returns the object from an array within the Json Schema.</maml:para>
+        <maml:para>This function takes the schemaArray object and converts it into a PowerShell array that can be nicely output as a JSON string.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function returns the object from an array within the Json Schema. This function expands the array and returns a PowerShell representation of the object.</maml:para>
+      <maml:para>This function takes the schemaArray object and converts it into a PowerShell array that can be nicely output as a JSON string. This function is useful when you need to output the JSON schema as a JSON object. This would have the effect of creating an empty JSON document based on the schema that was provided.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Get-SchemaArray</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-          <maml:name>SchemaDocument</maml:name>
+        <maml:name>ConvertFrom-SchemaArray</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>Array</maml:name>
           <maml:Description>
-            <maml:para>This should be the output of Get-SchemaDocument. For simple JSON schema's this could be passed along the pipeline to this function.</maml:para>
+            <maml:para>This is a JSON Schema Array as defined by the json-schema.org (see related links below). This array is then converted into a PowerShell object that can be used like any other PowerShell object.</maml:para>
+            <maml:para>{  "type": "array",  "additionalItems": true,  "id": "#/properties/contents/items/anyOf/0/properties/printers",  "items": {   "anyOf": [{    "type": "object",    "additionalProperties": true,    "id": "#/properties/contents/items/anyOf/0/properties/printers/items/anyOf/0",    "properties": "System.Collections.Hashtable",    "required": "type capability brand model",    "title": "The first anyOf schema",    "description": "An explanation about the purpose of this instance.",    "default": "",    "enum": null   }]  },  "title": "The printers schema",  "description": "An explanation about the purpose of this instance.",  "default": [  ] }</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
           <dev:type>
-            <maml:name>Object</maml:name>
+            <maml:name>System.Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Depth</maml:name>
+          <maml:Description>
+            <maml:para>The Depth parameter defines the number of levers that are recursed in order to create the object.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -30,14 +43,27 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-        <maml:name>SchemaDocument</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Array</maml:name>
         <maml:Description>
-          <maml:para>This should be the output of Get-SchemaDocument. For simple JSON schema's this could be passed along the pipeline to this function.</maml:para>
+          <maml:para>This is a JSON Schema Array as defined by the json-schema.org (see related links below). This array is then converted into a PowerShell object that can be used like any other PowerShell object.</maml:para>
+          <maml:para>{  "type": "array",  "additionalItems": true,  "id": "#/properties/contents/items/anyOf/0/properties/printers",  "items": {   "anyOf": [{    "type": "object",    "additionalProperties": true,    "id": "#/properties/contents/items/anyOf/0/properties/printers/items/anyOf/0",    "properties": "System.Collections.Hashtable",    "required": "type capability brand model",    "title": "The first anyOf schema",    "description": "An explanation about the purpose of this instance.",    "default": "",    "enum": null   }]  },  "title": "The printers schema",  "description": "An explanation about the purpose of this instance.",  "default": [  ] }</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
         <dev:type>
-          <maml:name>Object</maml:name>
+          <maml:name>System.Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Depth</maml:name>
+        <maml:Description>
+          <maml:para>The Depth parameter defines the number of levers that are recursed in order to create the object.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -46,20 +72,20 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>None</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para>This should always be the output of the Get-SchemaDocument function.</maml:para>
+          <maml:para></maml:para>
         </maml:description>
       </command:inputType>
     </command:inputTypes>
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Object[]</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para>A PowerShell representation of the referenced schema</maml:para>
+          <maml:para></maml:para>
         </maml:description>
       </command:returnValue>
     </command:returnValues>
@@ -71,21 +97,948 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; $SchemaDocument = 'https://gist.githubusercontent.com/jeffpatton1971/c2d3ee98a37766a2784ccd626b9b8ca2/raw/f2a92166f52e067542964216a7618b8d2c408489/array.json' |Get-SchemaDocument
-PS C:\&gt; $SchemaDocument.properties.products |Get-SchemaArray
+        <dev:code>PS C:\&gt; $Schema = Get-SchemaDocument -Path 'D:\TEMP\test\schema-sample.json'
 
-price dimensions tags name
------ ---------- ---- ----
-    0            {}</dev:code>
+ConvertFrom-SchemaArray -Array $Schema.Find('printers')
+
+brand capability model type
+----- ---------- ----- ----</dev:code>
         <dev:remarks>
-          <maml:para>This example reads in a Json schema from the internet and then passes in a specific array item within the schema.</maml:para>
+          <maml:para>Take an object defined in a JSON schema and convert it into a custom PowerShell object.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaArray.md#convertfrom-schemaarray</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>ConvertFrom-SchemaObject</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaObject.md#convertfrom-schemaobject</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>About Classes</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>JSON Schema Array</maml:linkText>
+        <maml:uri>https://json-schema.org/understanding-json-schema/reference/array.html</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>ConvertFrom-SchemaObject</command:name>
+      <command:verb>ConvertFrom</command:verb>
+      <command:noun>SchemaObject</command:noun>
+      <maml:description>
+        <maml:para>This function takes the schemaObject object and converts it into a PowerShell object that can be nicely output as a JSON string.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This function takes the schemaObject object and converts it into a PowerShell object that can be nicely output as a JSON string. This function is useful when you need to output the JSON schema as a JSON object. This would have the effect of creating an empty JSON document based on the schema that was provided.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>ConvertFrom-SchemaObject</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>Object</maml:name>
+          <maml:Description>
+            <maml:para>This is a JSON Schema object as defined by the json-schema.org (see related links below). This object is then converted into a PowerShell object that can be used like any other PowerShell object.</maml:para>
+            <maml:para>{  "type": "object",  "schema": "&lt;http://json-schema.org/draft-07/schema&gt;#",  "additionalProperties": true,  "definitions": null,  "id": "http://example.com/example.json",  "properties": {   "width": "schemaString",   "depth": "schemaString",   "closet": "schemaBoolean",   "room": "schemaString",   "contents": "schemaArray",   "exterioraccess": "schemaBoolean"  },  "required": [   "room",   "width",   "depth",   "closet",   "exterioraccess",   "contents"  ],  "title": "The root schema",  "description": "The root schema comprises the entire JSON document.",  "default": {</maml:para>
+            <maml:para> } }</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Depth</maml:name>
+          <maml:Description>
+            <maml:para>The Depth parameter defines the number of levers that are recursed in order to create the object.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Depth</maml:name>
+        <maml:Description>
+          <maml:para>The Depth parameter defines the number of levers that are recursed in order to create the object.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Object</maml:name>
+        <maml:Description>
+          <maml:para>This is a JSON Schema object as defined by the json-schema.org (see related links below). This object is then converted into a PowerShell object that can be used like any other PowerShell object.</maml:para>
+          <maml:para>{  "type": "object",  "schema": "&lt;http://json-schema.org/draft-07/schema&gt;#",  "additionalProperties": true,  "definitions": null,  "id": "http://example.com/example.json",  "properties": {   "width": "schemaString",   "depth": "schemaString",   "closet": "schemaBoolean",   "room": "schemaString",   "contents": "schemaArray",   "exterioraccess": "schemaBoolean"  },  "required": [   "room",   "width",   "depth",   "closet",   "exterioraccess",   "contents"  ],  "title": "The root schema",  "description": "The root schema comprises the entire JSON document.",  "default": {</maml:para>
+          <maml:para> } }</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $Schema = Get-SchemaDocument -Path 'D:\TEMP\test\schema-sample.json'
+
+ConvertFrom-SchemaObject -Object $Schema
+
+
+$schema        : http://json-schema.org/draft-07/schema#
+$id            : http://example.com/example.json
+width          :
+depth          :
+closet         : False
+room           :
+contents       : {System.Object}
+exterioraccess : False</dev:code>
+        <dev:remarks>
+          <maml:para>Take an object defined in a JSON schema and convert it into a custom PowerShell object.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaObject.md#convertfrom-schemaobject</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>ConvertFrom-SchemaArray</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertFrom-SchemaArray.md#convertfrom-schemaarray</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>About Classes</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>JSON Schema Object</maml:linkText>
+        <maml:uri>https://json-schema.org/understanding-json-schema/reference/object.html</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>ConvertTo-SchemaElement</command:name>
+      <command:verb>ConvertTo</command:verb>
+      <command:noun>SchemaElement</command:noun>
+      <maml:description>
+        <maml:para>This function takes the output of ConvertFrom-Json CmdLet and converts it into SchemaModule classes.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This function takes the output of ConvertFrom-Json CmdLet and converts it into SchemaModule classes. The input to ConvertFrom-Json should be a proper JSON schema file, or a file with proper JSON schema objects. It will then convert those into one of the defined classes schemaDocument, schemaObject, schemaArray, schemaString, schemaInteger, schemaNumber or schemaBoolean.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>ConvertTo-SchemaElement</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>Object</maml:name>
+          <maml:Description>
+            <maml:para>This is a JSON Schema object as defined by the json-schema.org (see related links below). This object is then converted into a PowerShell object that can be used like any other PowerShell object.</maml:para>
+            <maml:para>{  "type": "string",  "examples": [</maml:para>
+            <maml:para> ],  "id": "#/properties/room",  "ref": null,  "minLength": 0,  "maxLength": 0,  "pattern": null,  "enum": null,  "title": "The room schema",  "description": "An explanation about the purpose of this instance.",  "default": "" }</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Object</maml:name>
+        <maml:Description>
+          <maml:para>This is a JSON Schema object as defined by the json-schema.org (see related links below). This object is then converted into a PowerShell object that can be used like any other PowerShell object.</maml:para>
+          <maml:para>{  "type": "string",  "examples": [</maml:para>
+          <maml:para> ],  "id": "#/properties/room",  "ref": null,  "minLength": 0,  "maxLength": 0,  "pattern": null,  "enum": null,  "title": "The room schema",  "description": "An explanation about the purpose of this instance.",  "default": "" }</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaDocument</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>This class is really modified object that contains the $schema attribute as well as validation on what values can be present for that attribute. Schema Object (https://json-schema.org/understanding-json-schema/reference/object.html) Schema Keyword (https://json-schema.org/understanding-json-schema/reference/schema.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaString</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The string type is used for strings of text. It may contain Unicode characters. Schema String (https://json-schema.org/understanding-json-schema/reference/string.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaInteger</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The integer type is used for integral numbers. In PowerShell this is an int32 Schema Integer (http://json-schema.org/understanding-json-schema/reference/numeric.html#integer) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaNumber</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The number type is used for any numeric type, either integers or floating point numbers. In PowerShell this is a double. Schema Number (http://json-schema.org/understanding-json-schema/reference/numeric.html#number) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaBoolean</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The boolean type matches only two special values: true and false. Note that values that evaluate to true or false, such as 1 and 0, are not accepted by the schema. Schema Boolean (http://json-schema.org/understanding-json-schema/reference/boolean.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaObject</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Objects are the mapping type in JSON. They map "keys" to "values". In JSON, the "keys" must always be strings. Each of these pairs is conventionally referred to as a "property". Schema Object (https://json-schema.org/understanding-json-schema/reference/object.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaArray</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Arrays are used for ordered elements. In JSON, each element in an array may be of a different type. Schema Array (https://json-schema.org/understanding-json-schema/reference/array.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $Schema = Get-SchemaDocument -Path 'D:\TEMP\test\schema-sample.json'
+
+ConvertTo-SchemaElement -Object $Schema.properties.room
+
+
+$id         : #/properties/room
+title       : The room schema
+description : An explanation about the purpose of this instance.
+default     :</dev:code>
+        <dev:remarks>
+          <maml:para>This example shows how to use the function to convert an object into a schema class.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $Schema = Get-SchemaDocument -Path 'D:\TEMP\test\schema-sample.json'
+
+ConvertTo-SchemaElement -Object $Schema.properties.room |fl *
+
+
+type        : string
+id          : #/properties/room
+ref         :
+minLength   : 0
+maxLength   : 0
+pattern     :
+enum        :
+title       : The room schema
+description : An explanation about the purpose of this instance.
+default     :
+examples    : {}</dev:code>
+        <dev:remarks>
+          <maml:para>To see the full list of properties on a class simply add an asterisk to the Format-List CmdLet.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaElement.md#convertto-schemaelement</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
         <maml:linkText>Get-SchemaDocument</maml:linkText>
         <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>New-SchemaProperty</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaProperty.md#new-schemaproperty</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>About Classes</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>JSON Schema Reference</maml:linkText>
+        <maml:uri>https://json-schema.org/understanding-json-schema/reference/index.html</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Find-SchemaElement</command:name>
+      <command:verb>Find</command:verb>
+      <command:noun>SchemaElement</command:noun>
+      <maml:description>
+        <maml:para>This function provides the ability to find objects within the JSON schema either by Name, by Type or by a Path.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>This function provides the ability to find objects within the JSON schema either by Name, by Type or by a Path. A search by Name allows you to simply enter the name of the item you are looking for regardless of the underlying object type. This could potentially return any object that matches the Name provided. A search by Type allows you to find types within an object, this will likely always return multiple results.</maml:para>
+      <maml:para>A search by Path is a little different as there is no real path per se. I borrowed a little bit from XPath and later iterations may borrow more heavily from there as it seems to make some sense. XPath (https://en.wikipedia.org/wiki/XPath)Basically we create a path based on where we are using a '/' to progress through objects and arrays in a fashion similar to navigating a path in a filesystem. It can be more easily seen when a JSON schema is rendered as text. For example if we wanted to view the Computer object within our Room schema it would look like this.</maml:para>
+      <maml:para>$Schema.properties.contents.items.anyOf.properties.computers</maml:para>
+      <maml:para>Whereas using a simple path notation it could more easily be viewed like this.</maml:para>
+      <maml:para>$jPath = '/contents/computers'</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Find-SchemaElement</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ElementName</maml:name>
+          <maml:Description>
+            <maml:para>The name of the property, object or array that we are looking for</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Schema</maml:name>
+          <maml:Description>
+            <maml:para>The schema that we are searching through</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Find-SchemaElement</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ElementPath</maml:name>
+          <maml:Description>
+            <maml:para>A simple Path representation of where within the schema the object can be located using a '/' in place of properties or items keywords.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Schema</maml:name>
+          <maml:Description>
+            <maml:para>The schema that we are searching through</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Find-SchemaElement</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ElementType</maml:name>
+          <maml:Description>
+            <maml:para>The name of one of the defined SchemaModule classes that are used.</maml:para>
+          </maml:Description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">schemaString</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">schemaNumber</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">schemaInteger</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">schemaObject</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">schemaBoolean</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">schemaArray</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">schemaDocument</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Schema</maml:name>
+          <maml:Description>
+            <maml:para>The schema that we are searching through</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>ElementName</maml:name>
+        <maml:Description>
+          <maml:para>The name of the property, object or array that we are looking for</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>ElementPath</maml:name>
+        <maml:Description>
+          <maml:para>A simple Path representation of where within the schema the object can be located using a '/' in place of properties or items keywords.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>ElementType</maml:name>
+        <maml:Description>
+          <maml:para>The name of one of the defined SchemaModule classes that are used.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Schema</maml:name>
+        <maml:Description>
+          <maml:para>The schema that we are searching through</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaDocument</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>This class is really modified object that contains the $schema attribute as well as validation on what values can be present for that attribute. Schema Object (https://json-schema.org/understanding-json-schema/reference/object.html) Schema Keyword (https://json-schema.org/understanding-json-schema/reference/schema.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaString</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The string type is used for strings of text. It may contain Unicode characters. Schema String (https://json-schema.org/understanding-json-schema/reference/string.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaInteger</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The integer type is used for integral numbers. In PowerShell this is an int32 Schema Integer (http://json-schema.org/understanding-json-schema/reference/numeric.html#integer) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaNumber</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The number type is used for any numeric type, either integers or floating point numbers. In PowerShell this is a double. Schema Number (http://json-schema.org/understanding-json-schema/reference/numeric.html#number) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaBoolean</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The boolean type matches only two special values: true and false. Note that values that evaluate to true or false, such as 1 and 0, are not accepted by the schema. Schema Boolean (http://json-schema.org/understanding-json-schema/reference/boolean.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaObject</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Objects are the mapping type in JSON. They map "keys" to "values". In JSON, the "keys" must always be strings. Each of these pairs is conventionally referred to as a "property". Schema Object (https://json-schema.org/understanding-json-schema/reference/object.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaArray</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Arrays are used for ordered elements. In JSON, each element in an array may be of a different type. Schema Array (https://json-schema.org/understanding-json-schema/reference/array.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>$Schema = Get-SchemaDocument -Path 'D:\TEMP\test\schema-sample.json'
+
+Find-SchemaElement -Schema $Schema -ElementName room
+
+
+$id         : #/properties/room
+title       : The room schema
+description : An explanation about the purpose of this instance.
+default     :</dev:code>
+        <dev:remarks>
+          <maml:para>This example shows how to find an object using the name, this returns the string object for the room.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>$Schema = Get-SchemaDocument -Path 'D:\TEMP\test\schema-sample.json'
+
+Find-SchemaElement -Schema $Schema -ElementType schemaBoolean
+
+
+$id         : #/properties/closet
+title       : The closet schema
+description : An explanation about the purpose of this instance.
+default     : False
+
+$id         : #/properties/exterioraccess
+title       : The exterioraccess schema
+description : An explanation about the purpose of this instance.
+default     : False</dev:code>
+        <dev:remarks>
+          <maml:para>This example shows how to find an object using the type, this returns the matching types found.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 3 --------------------------</maml:title>
+        <dev:code>$Schema = Get-SchemaDocument -Path 'D:\TEMP\test\schema-sample.json'
+
+$Schema.properties.contents.items.anyOf.properties.computers |fl
+
+
+id          : #/properties/contents/items/anyOf/0/properties/computers
+title       : The computers schema
+description : An explanation about the purpose of this instance.
+default     : {}
+items       : @{anyOf=System.Object[]}
+
+Find-SchemaElement -Schema $Schema -ElementPath '/contents/computers' |fl
+
+
+id          : #/properties/contents/items/anyOf/0/properties/computers
+title       : The computers schema
+description : An explanation about the purpose of this instance.
+default     : {}
+items       : @{anyOf=System.Object[]}</dev:code>
+        <dev:remarks>
+          <maml:para>This example shows the difference between expanding out a schema object to access the resource your after vs using the simple path syntax of Find-SchemaElement.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/Find-SchemaElement.md#find-schemaelement</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>About Classes</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>JSON Schema Reference</maml:linkText>
+        <maml:uri>https://json-schema.org/understanding-json-schema/reference/index.html</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Format-SchemaDocument</command:name>
+      <command:verb>Format</command:verb>
+      <command:noun>SchemaDocument</command:noun>
+      <maml:description>
+        <maml:para>A simple schema linter</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>A simple schema linter to output classes into a format that the schema definition would expect. Limitations of PowerShell prevent property names from starting with '$' so the linter updates values like id,schema,definitions,references to be pre-fixed with a '$'.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Format-SchemaDocument</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
+          <maml:name>json</maml:name>
+          <maml:Description>
+            <maml:para>This is a json string object to be formatted.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
+        <maml:name>json</maml:name>
+        <maml:Description>
+          <maml:para>This is a json string object to be formatted.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>$Schema |ConvertTo-Json -Depth 1 |Format-SchemaDocument
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": true,
+  "$definitions": null,
+  "$id": "http://example.com/example.json",
+  "properties": {
+    "width": "schemaString",
+    "depth": "schemaString",
+    "closet": "schemaBoolean",
+    "room": "schemaString",
+    "contents": "schemaArray",
+    "exterioraccess": "schemaBoolean"
+  },
+  "required": [
+    "room",
+    "width",
+    "depth",
+    "closet",
+    "exterioraccess",
+    "contents"
+  ],
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": {
+
+  }
+}</dev:code>
+        <dev:remarks>
+          <maml:para>This example shows how to use this function, we have restricted the ConvertTo-Json Cmdlet to a depth of 1 to keep this help readable.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadocument</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-SchemaDocument</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>ConvertTo-SchemaElement</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaElement.md#convertto-schemaelement</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>About Classes</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>JSON Schema Reference</maml:linkText>
+        <maml:uri>https://json-schema.org/understanding-json-schema/reference/index.html</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-SchemaDefinition</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>SchemaDefinition</command:noun>
+      <maml:description>
+        <maml:para>A function to follow the Definition keyword and return the referenced schema</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>A function to follow the Definition keyword and return the referenced schema. This function is mostly used in conjunction with Get-SchemaReference when processing a larger schema that has been broken into multiple files.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-SchemaDefinition</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
+          <maml:name>Reference</maml:name>
+          <maml:Description>
+            <maml:para>A URL to where this reference is found.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
+        <maml:name>Reference</maml:name>
+        <maml:Description>
+          <maml:para>A URL to where this reference is found.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaDocument</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>This class is really modified object that contains the $schema attribute as well as validation on what values can be present for that attribute. Schema Object (https://json-schema.org/understanding-json-schema/reference/object.html) Schema Keyword (https://json-schema.org/understanding-json-schema/reference/schema.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaString</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The string type is used for strings of text. It may contain Unicode characters. Schema String (https://json-schema.org/understanding-json-schema/reference/string.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaInteger</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The integer type is used for integral numbers. In PowerShell this is an int32 Schema Integer (http://json-schema.org/understanding-json-schema/reference/numeric.html#integer) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaNumber</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The number type is used for any numeric type, either integers or floating point numbers. In PowerShell this is a double. Schema Number (http://json-schema.org/understanding-json-schema/reference/numeric.html#number) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaBoolean</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The boolean type matches only two special values: true and false. Note that values that evaluate to true or false, such as 1 and 0, are not accepted by the schema. Schema Boolean (http://json-schema.org/understanding-json-schema/reference/boolean.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaObject</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Objects are the mapping type in JSON. They map "keys" to "values". In JSON, the "keys" must always be strings. Each of these pairs is conventionally referred to as a "property". Schema Object (https://json-schema.org/understanding-json-schema/reference/object.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaArray</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Arrays are used for ordered elements. In JSON, each element in an array may be of a different type. Schema Array (https://json-schema.org/understanding-json-schema/reference/array.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>Get-SchemaDefinition -Reference "https://example.com/schemas/objects.json#/definitions/Name" |fl *
+
+
+type        : string
+id          : #/definitions/Name
+ref         :
+minLength   : 0
+maxLength   : 0
+pattern     : ^(.*)$
+enum        :
+title       : The Name Schema
+description :
+default     :
+examples    : {}</dev:code>
+        <dev:remarks>
+          <maml:para>This example shows how this might be used to get the definition that is defined</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDefinition.md#get-schemadefinition</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-SchemaDocument</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>ConvertTo-SchemaElement</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaElement.md#convertto-schemaelement</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>About Classes</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>JSON Schema Reference</maml:linkText>
+        <maml:uri>https://json-schema.org/understanding-json-schema/reference/index.html</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -95,11 +1048,11 @@ price dimensions tags name
       <command:verb>Get</command:verb>
       <command:noun>SchemaDocument</command:noun>
       <maml:description>
-        <maml:para>This function will return a PowerShell object of the input Schema.</maml:para>
+        <maml:para>This function will return a schemaDocument object of the input Schema.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function will return a PowerShell object of the input Schema. This will help in building PowerShell objects that can be defined by a JSON schema. This allows a script to dynamically build objects based on a well-defined JSON schema.</maml:para>
+      <maml:para>This function will return a schemaDocument object of the input Schema. This will help in building PowerShell objects that can be defined by a JSON schema. This allows a script to dynamically build objects based on a well-defined JSON schema.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -109,9 +1062,9 @@ price dimensions tags name
           <maml:Description>
             <maml:para>This can be a filepath or URL, the function does light validation on the input.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>System.String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -124,9 +1077,9 @@ price dimensions tags name
         <maml:Description>
           <maml:para>This can be a filepath or URL, the function does light validation on the input.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>System.String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -145,10 +1098,10 @@ price dimensions tags name
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>schemaDocument</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para>A PowerShell object representing the corresponding Json Schema</maml:para>
+          <maml:para>This class is really modified object that contains the $schema attribute as well as validation on what values can be present for that attribute. Schema Object (https://json-schema.org/understanding-json-schema/reference/object.html) Schema Keyword (https://json-schema.org/understanding-json-schema/reference/schema.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
         </maml:description>
       </command:returnValue>
     </command:returnValues>
@@ -195,34 +1148,46 @@ properties  : @{checked=; dimensions=; id=; name=; price=; tags=}</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://json-schema.org/</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>ConvertTo-SchemaElement</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaElement.md#convertto-schemaelement</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>About Classes</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Schema Keyword</maml:linkText>
+        <maml:uri>https://json-schema.org/understanding-json-schema/reference/schema.html</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Get-SchemaObject</command:name>
+      <command:name>Get-SchemaReference</command:name>
       <command:verb>Get</command:verb>
-      <command:noun>SchemaObject</command:noun>
+      <command:noun>SchemaReference</command:noun>
       <maml:description>
-        <maml:para>This function returns an object from the Json Schema.</maml:para>
+        <maml:para>A function to follow the ref keyword and return the referenced schema</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function returns an object from the Json Schema. By passing in a specific data structure and get back a PowerShell representation of the structure.</maml:para>
+      <maml:para>A function to follow the ref keyword and return the referenced schema. This function is mostly used in conjunction with Get-SchemaDefinition and Get-SchemaDocument when processing a larger schema that has been broken into multiple files.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Get-SchemaObject</maml:name>
+        <maml:name>Get-SchemaReference</maml:name>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-          <maml:name>SchemaDocument</maml:name>
+          <maml:name>Reference</maml:name>
           <maml:Description>
-            <maml:para>This should be the output of Get-SchemaDocument. For simple JSON schema's this could be passed along the pipeline to this function.</maml:para>
+            <maml:para>A URL to where this reference is found.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
           <dev:type>
-            <maml:name>Object</maml:name>
+            <maml:name>System.Uri</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -231,13 +1196,13 @@ properties  : @{checked=; dimensions=; id=; name=; price=; tags=}</dev:code>
     </command:syntax>
     <command:parameters>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-        <maml:name>SchemaDocument</maml:name>
+        <maml:name>Reference</maml:name>
         <maml:Description>
-          <maml:para>This should be the output of Get-SchemaDocument. For simple JSON schema's this could be passed along the pipeline to this function.</maml:para>
+          <maml:para>A URL to where this reference is found.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
         <dev:type>
-          <maml:name>Object</maml:name>
+          <maml:name>System.Uri</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -246,20 +1211,68 @@ properties  : @{checked=; dimensions=; id=; name=; price=; tags=}</dev:code>
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Uri</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para>This should always be the output of the Get-SchemaDocument function.</maml:para>
+          <maml:para></maml:para>
         </maml:description>
       </command:inputType>
     </command:inputTypes>
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>schemaDocument</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para>A PowerShell representation of the referenced schema</maml:para>
+          <maml:para>This class is really modified object that contains the $schema attribute as well as validation on what values can be present for that attribute. Schema Object (https://json-schema.org/understanding-json-schema/reference/object.html) Schema Keyword (https://json-schema.org/understanding-json-schema/reference/schema.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaString</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The string type is used for strings of text. It may contain Unicode characters. Schema String (https://json-schema.org/understanding-json-schema/reference/string.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaInteger</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The integer type is used for integral numbers. In PowerShell this is an int32 Schema Integer (http://json-schema.org/understanding-json-schema/reference/numeric.html#integer) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaNumber</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The number type is used for any numeric type, either integers or floating point numbers. In PowerShell this is a double. Schema Number (http://json-schema.org/understanding-json-schema/reference/numeric.html#number) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaBoolean</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The boolean type matches only two special values: true and false. Note that values that evaluate to true or false, such as 1 and 0, are not accepted by the schema. Schema Boolean (http://json-schema.org/understanding-json-schema/reference/boolean.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaObject</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Objects are the mapping type in JSON. They map "keys" to "values". In JSON, the "keys" must always be strings. Each of these pairs is conventionally referred to as a "property". Schema Object (https://json-schema.org/understanding-json-schema/reference/object.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaArray</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Arrays are used for ordered elements. In JSON, each element in an array may be of a different type. Schema Array (https://json-schema.org/understanding-json-schema/reference/array.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
         </maml:description>
       </command:returnValue>
     </command:returnValues>
@@ -271,69 +1284,989 @@ properties  : @{checked=; dimensions=; id=; name=; price=; tags=}</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-SchemaObject -SchemaDocument $SchemaDocument
+        <dev:code>Get-SchemaReference -Reference "https://example.com/schemas/inventory.json" |fl *
 
-price dimensions tags name
------ ---------- ---- ----
-    0            {}</dev:code>
-        <dev:remarks>
-          <maml:para>This example shows how to pass in an object to the function.</maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; 'https://gist.githubusercontent.com/jeffpatton1971/c2d3ee98a37766a2784ccd626b9b8ca2/raw/a112c9119cce507c2b4e115c35afc6c26f63ffc7/schema.json' |Get-SchemaDocument |Get-SchemaObject
 
-price dimensions tags name
------ ---------- ---- ----
-    0            {}</dev:code>
+type                 : object
+schema               : http://json-schema.org/draft-04/schema#
+definitions          :
+id                   : https://example.com/schemas/inventory.json
+properties           : {rooms}
+required             : {rooms}
+additionalProperties : False
+title                : Room Inventory Schema
+description          :
+default              :</dev:code>
         <dev:remarks>
-          <maml:para>A slightly more complex example, showing the ability to pass the schema along the pipeline to other functions.</maml:para>
+          <maml:para>This example shows how you might use this to return a referenced schema</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaReference.md#get-schemareference</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
         <maml:linkText>Get-SchemaDocument</maml:linkText>
         <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>ConvertTo-SchemaElement</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaElement.md#convertto-schemaelement</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>About Classes</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>JSON Schema Reference</maml:linkText>
+        <maml:uri>https://json-schema.org/understanding-json-schema/reference/index.html</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Get-SchemaProperty</command:name>
-      <command:verb>Get</command:verb>
-      <command:noun>SchemaProperty</command:noun>
+      <command:name>New-SchemaElement</command:name>
+      <command:verb>New</command:verb>
+      <command:noun>SchemaElement</command:noun>
       <maml:description>
-        <maml:para>This function returns one ore more properties from a Json Schema object.</maml:para>
+        <maml:para>A function to create new SchemaModule objects</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function returns one ore more properties from a Json Schema object. This will allow you to view the detailed information of a given property from the Schema.</maml:para>
+      <maml:para>A function to create new SchemaModule objects</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Get-SchemaProperty</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-          <maml:name>SchemaDocument</maml:name>
+        <maml:name>New-SchemaElement</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>Type</maml:name>
           <maml:Description>
-            <maml:para>This should be the output of Get-SchemaDocument. For simple JSON schema's this could be passed along the pipeline to this function.</maml:para>
+            <maml:para>The name of the object to create (string, number, integer, object, boolean, array, document)</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">string</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">number</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">integer</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">object</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">boolean</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">array</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">document</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
           <dev:type>
-            <maml:name>Object</maml:name>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Type</maml:name>
+        <maml:Description>
+          <maml:para>The name of the object to create (string, number, integer, object, boolean, array, document)</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaDocument</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>This class is really modified object that contains the $schema attribute as well as validation on what values can be present for that attribute. Schema Object (https://json-schema.org/understanding-json-schema/reference/object.html) Schema Keyword (https://json-schema.org/understanding-json-schema/reference/schema.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaString</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The string type is used for strings of text. It may contain Unicode characters. Schema String (https://json-schema.org/understanding-json-schema/reference/string.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaInteger</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The integer type is used for integral numbers. In PowerShell this is an int32 Schema Integer (http://json-schema.org/understanding-json-schema/reference/numeric.html#integer) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaNumber</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The number type is used for any numeric type, either integers or floating point numbers. In PowerShell this is a double. Schema Number (http://json-schema.org/understanding-json-schema/reference/numeric.html#number) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaBoolean</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The boolean type matches only two special values: true and false. Note that values that evaluate to true or false, such as 1 and 0, are not accepted by the schema. Schema Boolean (http://json-schema.org/understanding-json-schema/reference/boolean.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaObject</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Objects are the mapping type in JSON. They map "keys" to "values". In JSON, the "keys" must always be strings. Each of these pairs is conventionally referred to as a "property". Schema Object (https://json-schema.org/understanding-json-schema/reference/object.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaArray</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Arrays are used for ordered elements. In JSON, each element in an array may be of a different type. Schema Array (https://json-schema.org/understanding-json-schema/reference/array.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>New-SchemaElement -Type object |ConvertTo-Json
+{
+    "type":  "object",
+    "additionalProperties":  false,
+    "id":  null,
+    "properties":  null,
+    "required":  null,
+    "title":  null,
+    "description":  null,
+    "default":  null,
+    "enum":  null
+}</dev:code>
+        <dev:remarks>
+          <maml:para>An example of usage</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaElement.md#new-schemaelement</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>New-SchemaString</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaString.md#new-schemastring</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>New-SchemaNumber</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaNumber.md#new-schemanumber</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>New-SchemaInteger</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaInteger.md#new-schemainteger</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>About Classes</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>JSON Schema Reference</maml:linkText>
+        <maml:uri>https://json-schema.org/understanding-json-schema/reference/index.html</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>New-SchemaInteger</command:name>
+      <command:verb>New</command:verb>
+      <command:noun>SchemaInteger</command:noun>
+      <maml:description>
+        <maml:para>A function to create new Schema Integer object</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>A function to create new Schema Integer object</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>New-SchemaInteger</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>default</maml:name>
+          <maml:Description>
+            <maml:para>The default keyword specifies a default value for an item.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>description</maml:name>
+          <maml:Description>
+            <maml:para>The title and description keywords must be strings. A "description" will provide a more lengthy explanation about the purpose of the data described by the schema</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>enum</maml:name>
+          <maml:Description>
+            <maml:para>The enum keyword is used to restrict a value to a fixed set of values. It must be an array with at least one element, where each element is unique.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Int32[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Int32[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>examples</maml:name>
+          <maml:Description>
+            <maml:para>The examples keyword is a place to provide an array of examples that validate against the schema.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Int32[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Int32[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>exclusiveMaximum</maml:name>
+          <maml:Description>
+            <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>exclusiveMinimum</maml:name>
+          <maml:Description>
+            <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>id</maml:name>
+          <maml:Description>
+            <maml:para>The $id property is a URI-reference that serves two purposes, it declares a unique identifier for the schema and it declares a base URI against which $ref URI-references are resolved.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>maximum</maml:name>
+          <maml:Description>
+            <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>minimum</maml:name>
+          <maml:Description>
+            <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>multipleOf</maml:name>
+          <maml:Description>
+            <maml:para>Numbers can be restricted to a multiple of a given number, using the multipleOf keyword.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ref</maml:name>
+          <maml:Description>
+            <maml:para>The $id property is a URI-reference that serves two purposes, it declares a unique identifier for the schema and it declares a base URI against which $ref URI-references are resolved.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>title</maml:name>
+          <maml:Description>
+            <maml:para>The title and description keywords must be strings. A "title" will preferably be short explanation about the purpose of the data described by the schema.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>default</maml:name>
+        <maml:Description>
+          <maml:para>The default keyword specifies a default value for an item.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>description</maml:name>
+        <maml:Description>
+          <maml:para>The title and description keywords must be strings. A "description" will provide a more lengthy explanation about the purpose of the data described by the schema</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>enum</maml:name>
+        <maml:Description>
+          <maml:para>The enum keyword is used to restrict a value to a fixed set of values. It must be an array with at least one element, where each element is unique.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Int32[]</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Int32[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>examples</maml:name>
+        <maml:Description>
+          <maml:para>The examples keyword is a place to provide an array of examples that validate against the schema.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Int32[]</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Int32[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>exclusiveMaximum</maml:name>
+        <maml:Description>
+          <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>exclusiveMinimum</maml:name>
+        <maml:Description>
+          <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>id</maml:name>
+        <maml:Description>
+          <maml:para>The $id property is a URI-reference that serves two purposes, it declares a unique identifier for the schema and it declares a base URI against which $ref URI-references are resolved.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>maximum</maml:name>
+        <maml:Description>
+          <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>minimum</maml:name>
+        <maml:Description>
+          <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>multipleOf</maml:name>
+        <maml:Description>
+          <maml:para>Numbers can be restricted to a multiple of a given number, using the multipleOf keyword.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>ref</maml:name>
+        <maml:Description>
+          <maml:para>The $id property is a URI-reference that serves two purposes, it declares a unique identifier for the schema and it declares a base URI against which $ref URI-references are resolved.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>title</maml:name>
+        <maml:Description>
+          <maml:para>The title and description keywords must be strings. A "title" will preferably be short explanation about the purpose of the data described by the schema.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaInteger</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The integer type is used for integral numbers. In PowerShell this is an int32 Schema Integer (http://json-schema.org/understanding-json-schema/reference/numeric.html#integer) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>New-SchemaInteger -title Width -description "The width in feet of the room"
+
+
+$id         :
+title       : Width
+description : The width in feet of the room
+default     : 0</dev:code>
+        <dev:remarks>
+          <maml:para>A simple example of usage</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaInteger.md#new-schemainteger</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>New-SchemaElement</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaElement.md#new-schemaelement</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>About Classes</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>JSON Schema Reference</maml:linkText>
+        <maml:uri>https://json-schema.org/understanding-json-schema/reference/index.html</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>New-SchemaNumber</command:name>
+      <command:verb>New</command:verb>
+      <command:noun>SchemaNumber</command:noun>
+      <maml:description>
+        <maml:para>A function to create new Schema Number object</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>A function to create new Schema Number object</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>New-SchemaNumber</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>default</maml:name>
+          <maml:Description>
+            <maml:para>The default keyword specifies a default value for an item.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Decimal</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Decimal</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>description</maml:name>
+          <maml:Description>
+            <maml:para>The title and description keywords must be strings. A "description" will provide a more lengthy explanation about the purpose of the data described by the schema</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>examples</maml:name>
+          <maml:Description>
+            <maml:para>The examples keyword is a place to provide an array of examples that validate against the schema.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Decimal[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Decimal[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>exclusiveMaximum</maml:name>
+          <maml:Description>
+            <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Decimal</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Decimal</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>exclusiveMinimum</maml:name>
+          <maml:Description>
+            <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Decimal</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Decimal</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>id</maml:name>
+          <maml:Description>
+            <maml:para>The $id property is a URI-reference that serves two purposes, it declares a unique identifier for the schema and it declares a base URI against which $ref URI-references are resolved.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>maximum</maml:name>
+          <maml:Description>
+            <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Decimal</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Decimal</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>minimum</maml:name>
+          <maml:Description>
+            <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Decimal</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Decimal</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>multipleOf</maml:name>
+          <maml:Description>
+            <maml:para>Numbers can be restricted to a multiple of a given number, using the multipleOf keyword.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Decimal</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Decimal</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ref</maml:name>
+          <maml:Description>
+            <maml:para>The $id property is a URI-reference that serves two purposes, it declares a unique identifier for the schema and it declares a base URI against which $ref URI-references are resolved.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>title</maml:name>
+          <maml:Description>
+            <maml:para>The title and description keywords must be strings. A "title" will preferably be short explanation about the purpose of the data described by the schema.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>default</maml:name>
+        <maml:Description>
+          <maml:para>The default keyword specifies a default value for an item.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Decimal</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Decimal</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>description</maml:name>
+        <maml:Description>
+          <maml:para>The title and description keywords must be strings. A "description" will provide a more lengthy explanation about the purpose of the data described by the schema</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>examples</maml:name>
+        <maml:Description>
+          <maml:para>The examples keyword is a place to provide an array of examples that validate against the schema.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Decimal[]</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Decimal[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>exclusiveMaximum</maml:name>
+        <maml:Description>
+          <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Decimal</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Decimal</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>exclusiveMinimum</maml:name>
+        <maml:Description>
+          <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Decimal</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Decimal</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>id</maml:name>
+        <maml:Description>
+          <maml:para>The $id property is a URI-reference that serves two purposes, it declares a unique identifier for the schema and it declares a base URI against which $ref URI-references are resolved.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>maximum</maml:name>
+        <maml:Description>
+          <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Decimal</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Decimal</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>minimum</maml:name>
+        <maml:Description>
+          <maml:para>Ranges of numbers are specified using a combination of the minimum and maximum keywords, (or exclusiveMinimum and exclusiveMaximum for expressing exclusive range).</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Decimal</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Decimal</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>multipleOf</maml:name>
+        <maml:Description>
+          <maml:para>Numbers can be restricted to a multiple of a given number, using the multipleOf keyword.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Decimal</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Decimal</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>ref</maml:name>
+        <maml:Description>
+          <maml:para>The $id property is a URI-reference that serves two purposes, it declares a unique identifier for the schema and it declares a base URI against which $ref URI-references are resolved.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>title</maml:name>
+        <maml:Description>
+          <maml:para>The title and description keywords must be strings. A "title" will preferably be short explanation about the purpose of the data described by the schema.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaNumber</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The number type is used for any numeric type, either integers or floating point numbers. In PowerShell this is a double. Schema Number (http://json-schema.org/understanding-json-schema/reference/numeric.html#number) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>New-SchemaNumber -title Temp -description "Default temperature for the room" -default 72.3
+
+
+$id         :
+title       : Temp
+description : Default temperature for the room
+default     : 72.3</dev:code>
+        <dev:remarks>
+          <maml:para>A simple example of usage</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaNumber.md#new-schemanumber</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>New-SchemaElement</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaElement.md#new-schemaelement</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>About Classes</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>JSON Schema Reference</maml:linkText>
+        <maml:uri>https://json-schema.org/understanding-json-schema/reference/index.html</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>New-SchemaProperty</command:name>
+      <command:verb>New</command:verb>
+      <command:noun>SchemaProperty</command:noun>
+      <maml:description>
+        <maml:para>A Function to create either an object property or array item</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>A Function to create either an object property or array item.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>New-SchemaProperty</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>Name</maml:name>
+          <maml:Description>
+            <maml:para>Name of the property created (not used for arrays)</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-          <maml:name>Name</maml:name>
+          <maml:name>Value</maml:name>
           <maml:Description>
-            <maml:para>The name of a property to return</maml:para>
+            <maml:para>A valid SchemaModule class</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">schemaDocument</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">schemaNumber</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">schemaInteger</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">schemaString</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">schemaObject</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">schemaArray</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">schemaBoolean</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>System.Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>Array</maml:name>
+          <maml:Description>
+            <maml:para>Choose one of the following validations</maml:para>
+            <maml:para> allOf: Must be valid against all of the subschemas  anyOf: Must be valid against any of the subschemas  oneOf: Must be valid against exactly one of the subschemas</maml:para>
+          </maml:Description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">allOf</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">anyOf</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">oneOf</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Object</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -341,26 +2274,39 @@ price dimensions tags name
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>Name</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>Array</maml:name>
         <maml:Description>
-          <maml:para>The name of a property to return</maml:para>
+          <maml:para>Choose one of the following validations</maml:para>
+          <maml:para> allOf: Must be valid against all of the subschemas  anyOf: Must be valid against any of the subschemas  oneOf: Must be valid against exactly one of the subschemas</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>System.Object</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-        <maml:name>SchemaDocument</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Name</maml:name>
         <maml:Description>
-          <maml:para>This should be the output of Get-SchemaDocument. For simple JSON schema's this could be passed along the pipeline to this function.</maml:para>
+          <maml:para>Name of the property created (not used for arrays)</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
         <dev:type>
-          <maml:name>Object</maml:name>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Value</maml:name>
+        <maml:Description>
+          <maml:para>A valid SchemaModule class</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Object</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -369,20 +2315,20 @@ price dimensions tags name
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>None</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para>This should always be the output of the Get-SchemaDocument function.</maml:para>
+          <maml:para></maml:para>
         </maml:description>
       </command:inputType>
     </command:inputTypes>
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Object</maml:name>
+          <maml:name>System.Collections.Hashtable</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para>A PowerShell representation of the referenced schema</maml:para>
+          <maml:para></maml:para>
         </maml:description>
       </command:returnValue>
     </command:returnValues>
@@ -394,43 +2340,404 @@ price dimensions tags name
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; $SchemaDocument.properties.products.items.anyOf |Get-SchemaProperty
+        <dev:code>New-SchemaProperty -Name Room -Value (New-SchemaString -title Room -description "Name of the room" -enum @('Living Room','Office','Bedroom','Master Bedroom','Bathroom','Kitchen')) |ConvertTo-Json
+{
+ "Room": {
+  "type": "string",
+  "examples": [
 
-
-checked    : @{$id=#/properties/products/items/anyOf/0/properties/checked; type=boolean; title=The checked schema; description=An explanation about the purpose of this instance.; default=False; examples=System.Object[]}
-dimensions : @{$id=#/properties/products/items/anyOf/0/properties/dimensions; type=object; title=The dimensions schema; description=An explanation about the purpose of this instance.; default=; examples=System.Object[]; required=System.Object[]; properties=;
-             additionalProperties=True}
-id         : @{$id=#/properties/products/items/anyOf/0/properties/id; type=integer; title=The id schema; description=An explanation about the purpose of this instance.; default=0; examples=System.Object[]}
-name       : @{$id=#/properties/products/items/anyOf/0/properties/name; type=string; title=The name schema; description=An explanation about the purpose of this instance.; default=; examples=System.Object[]}
-price      : @{$id=#/properties/products/items/anyOf/0/properties/price; type=number; title=The price schema; description=An explanation about the purpose of this instance.; default=0.0; examples=System.Object[]}
-tags       : @{$id=#/properties/products/items/anyOf/0/properties/tags; type=array; title=The tags schema; description=An explanation about the purpose of this instance.; default=System.Object[]; examples=System.Object[]; additionalItems=True; items=}</dev:code>
+  ],
+  "id": null,
+  "ref": null,
+  "minLength": 0,
+  "maxLength": 0,
+  "pattern": null,
+  "enum": [
+   "Living Room",
+   "Office",
+   "Bedroom",
+   "Master Bedroom",
+   "Bathroom",
+   "Kitchen"
+  ],
+  "title": "Room",
+  "description": "Name of the room",
+  "default": null
+ }
+}</dev:code>
         <dev:remarks>
-          <maml:para>This example passes the schema object along the pipeline and returns all properties.</maml:para>
+          <maml:para>Creating an object property</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-SchemaProperty -SchemaDocument $SchemaDocument.properties.products.items.anyOf -Name dimensions
+        <dev:code>New-SchemaProperty -Name Room -Value (New-SchemaString -title Room -description "Name of the room" -enum @('Living Room','Office','Bedroom','Master Bedroom','Bathroom','Kitchen')) -Array anyOf |ConvertTo-Json -Depth 3
+{
+ "anyOf": [{
+  "type": "string",
+  "examples": [
 
-
-$id                  : #/properties/products/items/anyOf/0/properties/dimensions
-type                 : object
-title                : The dimensions schema
-description          : An explanation about the purpose of this instance.
-default              :
-examples             : {@{width=5; height=10}}
-required             : {width, height}
-properties           : @{width=; height=}
-additionalProperties : True</dev:code>
+  ],
+  "id": null,
+  "ref": null,
+  "minLength": 0,
+  "maxLength": 0,
+  "pattern": null,
+  "enum": [
+   "Living Room",
+   "Office",
+   "Bedroom",
+   "Master Bedroom",
+   "Bathroom",
+   "Kitchen"
+  ],
+  "title": "Room",
+  "description": "Name of the room",
+  "default": null
+ }]
+}</dev:code>
         <dev:remarks>
-          <maml:para>This example passes the Schema into the function and references a specific named property to return.</maml:para>
+          <maml:para>Creating an array item</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>Get-SchemaDocument</maml:linkText>
-        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaProperty.md#new-schemaproperty</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>ConvertTo-SchemaElement</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaElement.md#convertto-schemaelement</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>JSON Combining Schemas</maml:linkText>
+        <maml:uri>http://json-schema.org/understanding-json-schema/reference/combining.html#combining</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>New-SchemaString</command:name>
+      <command:verb>New</command:verb>
+      <command:noun>SchemaString</command:noun>
+      <maml:description>
+        <maml:para>A function to create new Schema String object</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>A function to create new Schema String object</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>New-SchemaString</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>default</maml:name>
+          <maml:Description>
+            <maml:para>The default keyword specifies a default value for an item.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>description</maml:name>
+          <maml:Description>
+            <maml:para>The title and description keywords must be strings. A "description" will provide a more lengthy explanation about the purpose of the data described by the schema</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>enum</maml:name>
+          <maml:Description>
+            <maml:para>The enum keyword is used to restrict a value to a fixed set of values. It must be an array with at least one element, where each element is unique.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>examples</maml:name>
+          <maml:Description>
+            <maml:para>The examples keyword is a place to provide an array of examples that validate against the schema.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>id</maml:name>
+          <maml:Description>
+            <maml:para>The $id property is a URI-reference that serves two purposes, it declares a unique identifier for the schema and it declares a base URI against which $ref URI-references are resolved.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>maxLength</maml:name>
+          <maml:Description>
+            <maml:para>The length of a string can be constrained using the minLength and maxLength keywords. For both keywords, the value must be a non-negative number.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>minLength</maml:name>
+          <maml:Description>
+            <maml:para>The length of a string can be constrained using the minLength and maxLength keywords. For both keywords, the value must be a non-negative number.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>pattern</maml:name>
+          <maml:Description>
+            <maml:para>The pattern keyword is used to restrict a string to a particular regular expression. The regular expression syntax is the one defined in JavaScript (ECMA 262 specifically)</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ref</maml:name>
+          <maml:Description>
+            <maml:para>The $id property is a URI-reference that serves two purposes, it declares a unique identifier for the schema and it declares a base URI against which $ref URI-references are resolved.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>title</maml:name>
+          <maml:Description>
+            <maml:para>The title and description keywords must be strings. A "title" will preferably be short explanation about the purpose of the data described by the schema.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>default</maml:name>
+        <maml:Description>
+          <maml:para>The default keyword specifies a default value for an item.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>description</maml:name>
+        <maml:Description>
+          <maml:para>The title and description keywords must be strings. A "description" will provide a more lengthy explanation about the purpose of the data described by the schema</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>enum</maml:name>
+        <maml:Description>
+          <maml:para>The enum keyword is used to restrict a value to a fixed set of values. It must be an array with at least one element, where each element is unique.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>examples</maml:name>
+        <maml:Description>
+          <maml:para>The examples keyword is a place to provide an array of examples that validate against the schema.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>id</maml:name>
+        <maml:Description>
+          <maml:para>The $id property is a URI-reference that serves two purposes, it declares a unique identifier for the schema and it declares a base URI against which $ref URI-references are resolved.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>maxLength</maml:name>
+        <maml:Description>
+          <maml:para>The length of a string can be constrained using the minLength and maxLength keywords. For both keywords, the value must be a non-negative number.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>minLength</maml:name>
+        <maml:Description>
+          <maml:para>The length of a string can be constrained using the minLength and maxLength keywords. For both keywords, the value must be a non-negative number.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>pattern</maml:name>
+        <maml:Description>
+          <maml:para>The pattern keyword is used to restrict a string to a particular regular expression. The regular expression syntax is the one defined in JavaScript (ECMA 262 specifically)</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>ref</maml:name>
+        <maml:Description>
+          <maml:para>The $id property is a URI-reference that serves two purposes, it declares a unique identifier for the schema and it declares a base URI against which $ref URI-references are resolved.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>title</maml:name>
+        <maml:Description>
+          <maml:para>The title and description keywords must be strings. A "title" will preferably be short explanation about the purpose of the data described by the schema.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">System.String</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>schemaString</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The string type is used for strings of text. It may contain Unicode characters. Schema String (https://json-schema.org/understanding-json-schema/reference/string.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>New-SchemaString -title Room -description "Name of the room" -enum @('Living Room','Office','Bedroom','Master Bedroom','Bathroom','Kitchen') |fl *
+
+
+type        : string
+id          :
+ref         :
+minLength   : 0
+maxLength   : 0
+pattern     :
+enum        : {Living Room, Office, Bedroom, Master Bedroom...}
+title       : Room
+description : Name of the room
+default     :
+examples    : {}</dev:code>
+        <dev:remarks>
+          <maml:para>A simple example of usage</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaString.md#new-schemastring</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>New-SchemaElement</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaElement.md#new-schemaelement</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>About Classes</maml:linkText>
+        <maml:uri>https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>JSON Schema Reference</maml:linkText>
+        <maml:uri>https://json-schema.org/understanding-json-schema/reference/index.html</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
