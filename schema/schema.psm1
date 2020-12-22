@@ -501,6 +501,40 @@ function New-Number {
     return $schemaNumber
   }
 }
+function New-Boolean {
+  [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low',
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaBoolean.md#new-schemaboolean',
+    PositionalBinding = $true)]
+  [OutputType([schemaInteger])]
+  param (
+    [parameter(Mandatory = $false, ParameterSetName = 'boolean')]
+    [string]$id,
+    [parameter(Mandatory = $false, ParameterSetName = 'boolean')]
+    [string]$ref,
+    [parameter(Mandatory = $false, ParameterSetName = 'boolean')]
+    [string]$title,
+    [parameter(Mandatory = $false, ParameterSetName = 'boolean')]
+    [string]$description,
+    [parameter(Mandatory = $false, ParameterSetName = 'boolean')]
+    [bool]$default
+  )
+  if ($PSCmdlet.ShouldProcess("NewBoolean")) {
+    Write-Verbose "Creating schemaBoolean object"
+    $schemaBoolean = New-SchemaElement -Type boolean
+
+    foreach ($param in $PSBoundParameters.GetEnumerator()) {
+      switch ($param) {
+        { ($param.Key -eq 'Verbose' -or $param.Key -eq 'Debug' -or $param.Key -eq 'ErrorAction' -or $param.Key -eq 'WarningAction' -or $param.Key -eq 'InformationAction' -or $param.Key -eq 'ErrorVariable' -or $param.Key -eq 'WarningVariable' -or $param.Key -eq 'InformationVariable' -or $param.Key -eq 'OutVariable' -or $param.Key -eq 'OutBuffer' -or $param.Key -eq 'PipelineVariable') } {}
+        default {
+          Write-Verbose "Setting $($param.Value) on $($param.Key)"
+          $schemaBoolean.($param.Key) = $param.Value
+        }
+      }
+    }
+
+    return $schemaBoolean
+  }
+}
 function New-Property {
   [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low',
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaProperty.md#new-schemaproperty',
