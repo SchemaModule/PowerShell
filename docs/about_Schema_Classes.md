@@ -2,36 +2,23 @@
 
 ## about_Schema_Classes
 
-```
-ABOUT TOPIC NOTE:
-The first header of the about topic should be the topic name.
-The second header contains the lookup name used by the help system.
-
-IE:
-# Some Help Topic Name
-## SomeHelpTopicFileName
-
-This will be transformed into the text file
-as `about_SomeHelpTopicFileName`.
-Do not include file extensions.
-The second header should have no spaces.
-```
-
 # SHORT DESCRIPTION
 
 This module uses several custom classes in order to provide flexibility and
 functionality to the module and experience as a whole.
 
-```
-ABOUT TOPIC NOTE:
-About topics can be no longer than 80 characters wide when rendered to text.
-Any topics greater than 80 characters will be automatically wrapped.
-The generated about topic will be encoded UTF-8.
-```
-
 # LONG DESCRIPTION
 
-{{ Long Description Placeholder }}
+This module uses several custom classes in order to provide flexibility and
+functionality to the module and experience as a whole. The SchemaModule classes
+are derived from the JSON Schema reference pages for draft 7.0. They contain all
+the attributes for each object as well as some support methods to make working
+with the objects easier.
+
+As they are PowerShell Custom Types, they can't be used directly within
+PowerShell. In order to take advantage of these types in your own scripts you
+may need to add a "using" statement, or leverage the New-SchemaElement function
+to instantiate the objects in the PowerShell console.
 
 ## Classes
 
@@ -41,8 +28,8 @@ support methods to make working with the objects easier.
 
 ### schemaDocument
 
-This class is really modified object that contains the $schema attribute as well
-as validation on what values can be present for that attribute.
+This class is really a modified object that contains the $schema attribute as
+well as validation on what values can be present for that attribute.
 [Schema Object](https://json-schema.org/understanding-json-schema/reference/object.html)
 [Schema Keyword](https://json-schema.org/understanding-json-schema/reference/schema.html)
 [Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
@@ -91,29 +78,104 @@ of a different type.
 
 # EXAMPLES
 
-{{ Code or descriptive examples of how to leverage the functions described. }}
+```powershell
+String = New-SchemaElement -Type string
 
-# NOTE
+$String |Get-Member
 
-{{ Note Placeholder - Additional information that a user needs to know.}}
 
-# TROUBLESHOOTING NOTE
+   TypeName: schemaString
 
-{{ Troubleshooting Placeholder - Warns users of bugs}}
+Name        MemberType Definition
+----        ---------- ----------
+AddEnum     Method     void AddEnum(string enum)
+AddExample  Method     void AddExample(string example)
+Equals      Method     bool Equals(System.Object obj)
+GetHashCode Method     int GetHashCode()
+GetType     Method     type GetType()
+ToString    Method     System.Object ToString()
+default     Property   string default {get;set;}
+description Property   string description {get;set;}
+enum        Property   string[] enum {get;set;}
+examples    Property   string[] examples {get;set;}
+id          Property   string id {get;set;}
+maxLength   Property   int maxLength {get;set;}
+minLength   Property   int minLength {get;set;}
+pattern     Property   string pattern {get;set;}
+ref         Property   string ref {get;set;}
+title       Property   string title {get;set;}
+type        Property   string type {get;set;}
 
-{{ Explains behavior that is likely to change with fixes }}
+
+$String.AddEnum(@('cat','dog'))
+
+$String |ConvertTo-Json
+{
+    "type":  "string",
+    "examples":  [
+
+                 ],
+    "id":  null,
+    "ref":  null,
+    "minLength":  0,
+    "maxLength":  0,
+    "pattern":  null,
+    "enum":  [
+                 "cat dog"
+             ],
+    "title":  null,
+    "description":  null,
+    "default":  null
+}
+#
+```
+
+```
+This example shows how to create an object and access one of the methods
+```
+
+```powershell
+$Schema = Get-SchemaDocument -Path 'D:\TEMP\test\schema-sample.json'
+$Schema |Get-Member
+
+
+   TypeName: schemaDocument
+
+Name                 MemberType Definition
+----                 ---------- ----------
+AddProperty          Method     System.Object AddProperty(System.Object property)
+Equals               Method     bool Equals(System.Object obj)
+Find                 Method     System.Object Find(string item)
+GetHashCode          Method     int GetHashCode()
+GetProperty          Method     System.Object GetProperty(string PropertyName)
+GetType              Method     type GetType()
+ToObject             Method     System.Object ToObject(), System.Object ToObject(int Depth), System.Object ToObject(string PropertyName), System.Object ToObject(string PropertyName, int Depth)
+ToString             Method     System.Object ToString()
+additionalProperties Property   bool additionalProperties {get;set;}
+default              Property   System.Object default {get;set;}
+definitions          Property   System.Object definitions {get;set;}
+description          Property   string description {get;set;}
+id                   Property   string id {get;set;}
+properties           Property   System.Object properties {get;set;}
+required             Property   string[] required {get;set;}
+schema               Property   string schema {get;set;}
+title                Property   string title {get;set;}
+type                 Property   string type {get;set;}
+
+
+$Schema.Find('printers')
+
+$id                                                     title               description                                        default items
+---                                                     -----               -----------                                        ------- -----
+#/properties/contents/items/anyOf/0/properties/printers The printers schema An explanation about the purpose of this instance. {}      @{anyOf=System.Object[]}
+```
+
+```
+This is another example of using methods within a created object
+```
 
 # SEE ALSO
 
-{{ See also placeholder }}
+[Project Site](https://dev.azure.com/patton-tech/SchemaModule)
 
-{{ You can also list related articles, blogs, and video URLs. }}
-
-# KEYWORDS
-
-{{List alternate names or titles for this topic that readers might use.}}
-
-- {{ Keyword Placeholder }}
-- {{ Keyword Placeholder }}
-- {{ Keyword Placeholder }}
-- {{ Keyword Placeholder }}
+[Github Repo](https://github.com/schemamodule)
