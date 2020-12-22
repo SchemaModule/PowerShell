@@ -1,14 +1,15 @@
 ---
 external help file: schema-help.xml
 Module Name: schema
-online version:
+online version: https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument
 schema: 2.0.0
 ---
 
 # Get-SchemaDocument
 
 ## SYNOPSIS
-This function will return a PowerShell object of the input Schema.
+
+This function will return a schemaDocument object of the input Schema.
 
 ## SYNTAX
 
@@ -17,14 +18,16 @@ Get-SchemaDocument [[-Path] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This function will return a PowerShell object of the input Schema. This will help in building PowerShell objects
-that can be defined by a JSON schema. This allows a script to dynamically build objects based on a well-defined
-JSON schema.
+
+This function will return a schemaDocument object of the input Schema.
+This will help in building PowerShell objects that can be defined by a JSON schema.
+This allows a script to dynamically build objects based on a well-defined JSON schema.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+
+```
 PS C:\> 'https://gist.githubusercontent.com/jeffpatton1971/c2d3ee98a37766a2784ccd626b9b8ca2/raw/a112c9119cce507c2b4e115c35afc6c26f63ffc7/schema.json' |Get-SchemaDocument
 
 
@@ -41,7 +44,8 @@ properties  : @{checked=; dimensions=; id=; name=; price=; tags=}
 This example demonstrates passing a URL along the pipeline to the function.
 
 ### Example 2
-```powershell
+
+```
 PS C:\> Get-SchemaDocument -Path D:\CODE\JSON\schema.json
 
 
@@ -60,10 +64,11 @@ This example passes a json schema file into the function.
 ## PARAMETERS
 
 ### -Path
+
 This can be a filepath or URL, the function does light validation on the input.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -75,17 +80,34 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
+
 ### System.String
+
 A local or remote Json Schema file as defined by json-schema.org
 
 ## OUTPUTS
-### System.Object
-A PowerShell object representing the corresponding Json Schema
+
+### schemaDocument
+
+This class is really modified object that contains the $schema attribute as well
+as validation on what values can be present for that attribute.
+
+[Schema Object](https://json-schema.org/understanding-json-schema/reference/object.html)
+
+[Schema Keyword](https://json-schema.org/understanding-json-schema/reference/schema.html)
+
+[Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
 
 ## NOTES
 
 ## RELATED LINKS
-[https://json-schema.org/](Json Schema Organization)
+
+[ConvertTo-SchemaElement](https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaElement.md#convertto-schemaelement)
+
+[About Classes](https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md)
+
+[Schema Keyword](https://json-schema.org/understanding-json-schema/reference/schema.html)
