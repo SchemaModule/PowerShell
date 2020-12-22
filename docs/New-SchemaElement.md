@@ -72,10 +72,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-The SchemaModule classes are derived from the JSON Schema reference pages for
-draft 7.0. They contain all the attributes for each object as well as some
-support methods to make working with the objects easier.
-
 ### schemaDocument
 
 This class is really modified object that contains the $schema attribute as well

@@ -21,6 +21,17 @@ New-SchemaString [-id <String>] [-ref <String>] [-minLength <Int32>] [-maxLength
 
 ## DESCRIPTION
 
+A function to create new Schema String object
+
+## EXAMPLES
+
+### Example 1
+
+```powershell
+New-SchemaString -title Room -description "Name of the room" -enum @('Living Room','Office','Bedroom','Master Bedroom','Bathroom','Kitchen') |fl *
+
+
+type        : string
 id          :
 ref         :
 minLength   : 0
@@ -31,7 +42,6 @@ title       : Room
 description : Name of the room
 default     :
 examples    : {}
-
 ```
 
 A simple example of usage
@@ -39,6 +49,7 @@ A simple example of usage
 ## PARAMETERS
 
 ### -default
+
 The default keyword specifies a default value for an item.
 
 ```yaml
@@ -56,7 +67,6 @@ Accept wildcard characters: False
 ### -description
 
 The title and description keywords must be strings. A "description" will provide
-
 a more lengthy explanation about the purpose of the data described by the schema
 
 ```yaml

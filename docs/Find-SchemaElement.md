@@ -53,15 +53,11 @@ can be more easily seen when a JSON schema is rendered as text. For example if
 we wanted to view the Computer object within our Room schema it would look like
 this.
 
-```powershell
 $Schema.properties.contents.items.anyOf.properties.computers
-```
 
 Whereas using a simple path notation it could more easily be viewed like this.
 
-```powershell
 $jPath = '/contents/computers'
-```
 
 ## EXAMPLES
 
@@ -208,10 +204,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### None
 
 ## OUTPUTS
-
-The SchemaModule classes are derived from the JSON Schema reference pages for
-draft 7.0. They contain all the attributes for each object as well as some
-support methods to make working with the objects easier.
 
 ### schemaDocument
 
