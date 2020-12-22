@@ -56,6 +56,10 @@ A function to follow the ref keyword and return the referenced schema
 
 A function to create new Schema Integer object
 
+### [New-SchemaBoolean](New-SchemaBoolean.md)
+
+A function to create new Schema Boolean object
+
 ### [New-SchemaNumber](New-SchemaNumber.md)
 
 A function to create new Schema Number object
