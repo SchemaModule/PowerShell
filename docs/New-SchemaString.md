@@ -8,6 +8,7 @@ schema: 2.0.0
 # New-SchemaString
 
 ## SYNOPSIS
+
 A function to create new Schema String object
 
 ## SYNTAX
@@ -19,16 +20,7 @@ New-SchemaString [-id <String>] [-ref <String>] [-minLength <Int32>] [-maxLength
 ```
 
 ## DESCRIPTION
-A function to create new Schema String object
 
-## EXAMPLES
-
-### Example 1
-```powershell
-New-SchemaString -title Room -description "Name of the room" -enum @('Living Room','Office','Bedroom','Master Bedroom','Bathroom','Kitchen') |fl *
-
-
-type        : string
 id          :
 ref         :
 minLength   : 0
@@ -39,6 +31,7 @@ title       : Room
 description : Name of the room
 default     :
 examples    : {}
+
 ```
 
 A simple example of usage
@@ -61,7 +54,9 @@ Accept wildcard characters: False
 ```
 
 ### -description
+
 The title and description keywords must be strings. A "description" will provide
+
 a more lengthy explanation about the purpose of the data described by the schema
 
 ```yaml
@@ -77,6 +72,7 @@ Accept wildcard characters: False
 ```
 
 ### -enum
+
 The enum keyword is used to restrict a value to a fixed set of values. It must
 be an array with at least one element, where each element is unique.
 
@@ -93,6 +89,7 @@ Accept wildcard characters: False
 ```
 
 ### -examples
+
 The examples keyword is a place to provide an array of examples that validate
 against the schema.
 
@@ -109,6 +106,7 @@ Accept wildcard characters: False
 ```
 
 ### -id
+
 The $id property is a URI-reference that serves two purposes, it declares a
 unique identifier for the schema and it declares a base URI against which $ref
 URI-references are resolved.
@@ -126,6 +124,7 @@ Accept wildcard characters: False
 ```
 
 ### -maxLength
+
 The length of a string can be constrained using the minLength and maxLength
 keywords. For both keywords, the value must be a non-negative number.
 
@@ -142,6 +141,7 @@ Accept wildcard characters: False
 ```
 
 ### -minLength
+
 The length of a string can be constrained using the minLength and maxLength
 keywords. For both keywords, the value must be a non-negative number.
 
@@ -158,6 +158,7 @@ Accept wildcard characters: False
 ```
 
 ### -pattern
+
 The pattern keyword is used to restrict a string to a particular regular
 expression. The regular expression syntax is the one defined in JavaScript
 (ECMA 262 specifically)
@@ -175,6 +176,7 @@ Accept wildcard characters: False
 ```
 
 ### -ref
+
 The $id property is a URI-reference that serves two purposes, it declares a
 unique identifier for the schema and it declares a base URI against which $ref
 URI-references are resolved.
@@ -192,6 +194,7 @@ Accept wildcard characters: False
 ```
 
 ### -title
+
 The title and description keywords must be strings. A "title" will preferably be
 short explanation about the purpose of the data described by the schema.
 
@@ -208,6 +211,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
@@ -217,6 +221,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### schemaString
+
 The string type is used for strings of text. It may contain Unicode characters.
 [Schema String](https://json-schema.org/understanding-json-schema/reference/string.html)
 [Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)

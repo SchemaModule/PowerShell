@@ -8,6 +8,7 @@ schema: 2.0.0
 # New-SchemaProperty
 
 ## SYNOPSIS
+
 A Function to create either an object property or array item
 
 ## SYNTAX
@@ -17,11 +18,13 @@ New-SchemaProperty [[-Name] <String>] [[-Value] <Object>] [[-Array] <Object>] [<
 ```
 
 ## DESCRIPTION
+
 A Function to create either an object property or array item.
 
 ## EXAMPLES
 
 ### Example 1
+
 ```powershell
 New-SchemaProperty -Name Room -Value (New-SchemaString -title Room -description "Name of the room" -enum @('Living Room','Office','Bedroom','Master Bedroom','Bathroom','Kitchen')) |ConvertTo-Json
 {
@@ -53,6 +56,7 @@ New-SchemaProperty -Name Room -Value (New-SchemaString -title Room -description 
 Creating an object property
 
 ### Example 2
+
 ```powershell
 New-SchemaProperty -Name Room -Value (New-SchemaString -title Room -description "Name of the room" -enum @('Living Room','Office','Bedroom','Master Bedroom','Bathroom','Kitchen')) -Array anyOf |ConvertTo-Json -Depth 3
 {
@@ -86,6 +90,7 @@ Creating an array item
 ## PARAMETERS
 
 ### -Array
+
 Choose one of the following validations
 
  allOf: Must be valid against all of the subschemas
@@ -106,6 +111,7 @@ Accept wildcard characters: False
 ```
 
 ### -Name
+
 Name of the property created (not used for arrays)
 
 ```yaml
@@ -121,6 +127,7 @@ Accept wildcard characters: False
 ```
 
 ### -Value
+
 A valid SchemaModule class
 
 ```yaml
@@ -137,6 +144,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS

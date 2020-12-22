@@ -8,6 +8,7 @@ schema: 2.0.0
 # Format-SchemaDocument
 
 ## SYNOPSIS
+
 A simple schema linter
 
 ## SYNTAX
@@ -17,6 +18,7 @@ Format-SchemaDocument [-json] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
+
 A simple schema linter to output classes into a format that the schema definition
 would expect. Limitations of PowerShell prevent property names from starting
 with '$' so the linter updates values like id,schema,definitions,references to
@@ -25,6 +27,7 @@ be pre-fixed with a '$'.
 ## EXAMPLES
 
 ### Example 1
+
 ```powershell
 $Schema |ConvertTo-Json -Depth 1 |Format-SchemaDocument
 {
@@ -63,6 +66,7 @@ ConvertTo-Json Cmdlet to a depth of 1 to keep this help readable.
 ## PARAMETERS
 
 ### -json
+
 This is a json string object to be formatted.
 
 ```yaml
@@ -78,6 +82,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
@@ -93,4 +98,3 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## RELATED LINKS
 
 [Format-SchemaDocument](https://github.com/SchemaModule/PowerShell/blob/master/docs/Format-SchemaDocument.md#format-schemadocument)
-
