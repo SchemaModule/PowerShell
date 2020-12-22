@@ -130,6 +130,12 @@ of a different type.
 
 ## RELATED LINKS
 
-[New-SchemaElement](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaElement.md#new-schemaelement)
+[New-SchemaString](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaString.md#new-schemastring)
+
+[New-SchemaNumber](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaNumber.md#new-schemanumber)
+
+[New-SchemaInteger](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaInteger.md#new-schemainteger)
+
+[About Classes](https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md)
 
 [JSON Schema Reference](https://json-schema.org/understanding-json-schema/reference/index.html)

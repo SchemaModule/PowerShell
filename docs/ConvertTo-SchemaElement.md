@@ -173,6 +173,10 @@ of a different type.
 
 ## RELATED LINKS
 
-[ConvertTo-SchemaElement](https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaElement.md#convertto-schemaelement)
+[Get-SchemaDocument](https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument)
+
+[New-SchemaProperty](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaProperty.md#new-schemaproperty)
+
+[About Classes](https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md)
 
 [JSON Schema Reference](https://json-schema.org/understanding-json-schema/reference/index.html)

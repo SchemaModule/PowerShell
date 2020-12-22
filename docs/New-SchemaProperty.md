@@ -159,6 +159,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[New-SchemaProperty](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaProperty.md#new-schemaproperty)
+[ConvertTo-SchemaElement](https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaElement.md#convertto-schemaelement)
 
 [JSON Combining Schemas](http://json-schema.org/understanding-json-schema/reference/combining.html#combining)

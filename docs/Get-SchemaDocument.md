@@ -1,7 +1,7 @@
 ---
 external help file: schema-help.xml
 Module Name: schema
-online version:
+online version: https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument
 schema: 2.0.0
 ---
 
@@ -102,5 +102,9 @@ as validation on what values can be present for that attribute.
 ## NOTES
 
 ## RELATED LINKS
+
+[ConvertTo-SchemaElement](https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaElement.md#convertto-schemaelement)
+
+[About Classes](https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md)
 
 [Schema Keyword](https://json-schema.org/understanding-json-schema/reference/schema.html)

@@ -267,6 +267,6 @@ of a different type.
 
 ## RELATED LINKS
 
-[Find-SchemaElement](https://github.com/SchemaModule/PowerShell/blob/master/docs/Find-SchemaElement.md#find-schemaelement)
+[About Classes](https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md)
 
 [JSON Schema Reference](https://json-schema.org/understanding-json-schema/reference/index.html)

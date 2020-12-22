@@ -254,6 +254,8 @@ numbers. In PowerShell this is a double.
 
 ## RELATED LINKS
 
-[New-SchemaNumber](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaNumber.md#new-schemanumber)
+[New-SchemaElement](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaElement.md#new-schemaelement)
+
+[About Classes](https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md)
 
 [JSON Schema Reference](https://json-schema.org/understanding-json-schema/reference/index.html)

@@ -230,6 +230,8 @@ The string type is used for strings of text. It may contain Unicode characters.
 
 ## RELATED LINKS
 
-[New-SchemaString](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaString.md#new-schemastring)
+[New-SchemaElement](https://github.com/SchemaModule/PowerShell/blob/master/docs/New-SchemaElement.md#new-schemaelement)
+
+[About Classes](https://github.com/SchemaModule/PowerShell/blob/master/docs/about_Schema_Classes.md)
 
 [JSON Schema Reference](https://json-schema.org/understanding-json-schema/reference/index.html)
