@@ -344,12 +344,19 @@ function Get-Definition {
   [OutputType([schemaDocument], [schemaString], [schemaInteger], [schemaNumber], [schemaBoolean], [schemaObject], [schemaArray])]
   param (
     [Parameter(ValueFromPipeline)]
-    [System.Uri]$Reference
+    [string]$Reference
   )
   process {
-    $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/') + 1, ($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/')) - 1)
-    $Definition = Get-SchemaDocument -Path $Reference.AbsoluteUri
-    return (ConvertTo-SchemaElement -object ($Definition.definitions.($DefinitionName)))
+    if ($Reference.Contains('#')) {
+      $DefinitionName = $Reference.Split('/')[2]
+      $Definition = $Global:RawSchema.definitions.($DefinitionName)
+      return (ConvertTo-SchemaElement -object ($Definition))
+    } else {
+      $Reference = [System.Uri]::new($Reference);
+      $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/') + 1, ($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/')) - 1)
+      $Definition = Get-SchemaDocument -Path $Reference.AbsoluteUri
+      return (ConvertTo-SchemaElement -object ($Definition.definitions.($DefinitionName)))
+    }
   }
 }
 function Get-Reference {
