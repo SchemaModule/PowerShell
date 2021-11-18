@@ -718,7 +718,12 @@ function ConvertTo-Element {
           $Result.id = $Object.$prop
         }
         else {
-          $Result.$prop = $Object.$prop
+          if ($Object.$prop.GetType().IsArray)
+          {
+            $Result.$prop = $Object.$prop[0]
+          } else {
+            $Result.$prop = $Object.$prop
+          }
         }
         write-verbose ($Result | out-String)
       }
@@ -731,7 +736,12 @@ function ConvertTo-Element {
           $Result.id = $Object.$prop
         }
         else {
-          $Result.$prop = $Object.$prop
+          if ($Object.$prop.GetType().IsArray)
+          {
+            $Result.$prop = $Object.$prop[0]
+          } else {
+            $Result.$prop = $Object.$prop
+          }
         }
       }
     }
@@ -743,7 +753,12 @@ function ConvertTo-Element {
           $Result.id = $Object.$prop
         }
         else {
-          $Result.$prop = $Object.$prop
+          if ($Object.$prop.GetType().IsArray)
+          {
+            $Result.$prop = $Object.$prop[0]
+          } else {
+            $Result.$prop = $Object.$prop
+          }
         }
       }
     }
@@ -755,7 +770,12 @@ function ConvertTo-Element {
           $Result.id = $Object.$prop
         }
         else {
-          $Result.$prop = $Object.$prop
+          if ($Object.$prop.GetType().IsArray)
+          {
+            $Result.$prop = $Object.$prop[0]
+          } else {
+            $Result.$prop = $Object.$prop
+          }
         }
       }
     }
@@ -784,7 +804,12 @@ function ConvertTo-Element {
           $Result.schema = $Object.$prop
         }
         else {
-          $Result.$prop = $Object.$prop
+          if ($Object.$prop.GetType().IsArray)
+          {
+            $Result.$prop = $Object.$prop[0]
+          } else {
+            $Result.$prop = $Object.$prop
+          }
         }
       }
     }
@@ -813,7 +838,12 @@ function ConvertTo-Element {
           }
         }
         else {
-          $Result.$prop = $Object.$prop
+          if ($Object.$prop.GetType().IsArray)
+          {
+            $Result.$prop = $Object.$prop[0]
+          } else {
+            $Result.$prop = $Object.$prop
+          }
         }
       }
     }
