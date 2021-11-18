@@ -293,6 +293,7 @@ class schemaDocument {
     }
   }
 }
+$Global:RawSchema = $null;
 function Get-Document {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument',
@@ -317,17 +318,19 @@ function Get-Document {
       switch ($Schema.Scheme) {
         'file' {
           Write-Verbose "Incoming Filepath";
-          Return (ConvertTo-SchemaElement -object (Get-Content -Path $Path | ConvertFrom-Json) -IsRootSchema);
+          $Global:RawSchema = (Get-Content -Path $Path | ConvertFrom-Json);
+
         }
         'https' {
           Write-Verbose "Incoming HTTPs path";
-          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json) -IsRootSchema);
+          $Global:RawSchema = (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json);
         }
         'http' {
           Write-Verbose "Incoming HTTP path";
-          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json) -IsRootSchema);
+          $Global:RawSchema = (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json);
         }
       }
+      Return (ConvertTo-SchemaElement -object $Global:RawSchema -IsRootSchema);
     }
     catch {
       throw $_;
