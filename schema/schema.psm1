@@ -317,15 +317,15 @@ function Get-Document {
       switch ($Schema.Scheme) {
         'file' {
           Write-Verbose "Incoming Filepath";
-          Return (ConvertTo-SchemaElement -object (Get-Content -Path $Path | ConvertFrom-Json));
+          Return (ConvertTo-SchemaElement -object (Get-Content -Path $Path | ConvertFrom-Json) -IsRootSchema);
         }
         'https' {
           Write-Verbose "Incoming HTTPs path";
-          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json));
+          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json) -IsRootSchema);
         }
         'http' {
           Write-Verbose "Incoming HTTP path";
-          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json));
+          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json) -IsRootSchema);
         }
       }
     }
@@ -704,7 +704,8 @@ function ConvertTo-Element {
   [OutputType([schemaDocument], [schemaString], [schemaInteger], [schemaNumber], [schemaBoolean], [schemaObject], [schemaArray])]
   param (
     [parameter(Mandatory = $true, Position = 0)]
-    [object]$Object
+    [object]$Object,
+    [switch]$IsRootSchema
   )
   write-verbose ($Object | Out-String)
   switch ($Object.type) {
@@ -759,7 +760,7 @@ function ConvertTo-Element {
       }
     }
     'object' {
-      if ($Object.psobject.properties.name.Contains('$schema')) {
+      if ($Object.psobject.properties.name.Contains('$schema') -or $IsRootSchema) {
         write-verbose "Creating schemaDcoument object"
         $Result = New-SchemaElement -Type document
       }
