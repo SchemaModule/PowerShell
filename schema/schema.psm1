@@ -821,6 +821,7 @@ function ConvertTo-Element {
           }
         }
       }
+      $Result.required = $Object.required;
     }
     'array' {
       write-verbose "Creating schemaArray object"
