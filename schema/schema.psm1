@@ -841,7 +841,16 @@ function ConvertTo-Element {
                 write-verbose ($Object.items.psobject.properties.name | out-string)
                 Write-Verbose "Found valid array object"
                 Write-Verbose $oprop
-                $Result.items += ($Object.items.$oprop.GetEnumerator() | ForEach-Object { ((New-SchemaProperty -Name $oprop -Value (ConvertTo-SchemaElement -object $_) -Array $oprop)) })
+                if ($oprop -eq '$ref') {
+                  if ($Object.items.($oprop).contains('definitions')) {
+                    $Result = Get-SchemaDefinition -Reference $Object.items.($oprop)
+                  }
+                  else {
+                    $Result = Get-SchemaReference -Reference $Object.items.($oprop)
+                  }
+                } else {
+                  $Result.items += ($Object.items.$oprop.GetEnumerator() | ForEach-Object { ((New-SchemaProperty -Name $oprop -Value (ConvertTo-SchemaElement -object $_) -Array $oprop)) })
+                }
               }
             }
           }
