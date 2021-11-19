@@ -557,7 +557,6 @@ function New-Property {
     [ValidateSet([schemaDocument], [schemaNumber], [schemaInteger], [schemaString], [schemaObject], [schemaArray], [schemaBoolean])]
     $Value,
 
-    [ValidateSet('allOf', 'anyOf', 'oneOf')]
     $Array
   )
   if ($PSCmdlet.ShouldProcess("NewProperty")) {
