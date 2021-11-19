@@ -255,6 +255,9 @@ class schemaDocument {
   [object]Find([string]$item) {
     return (Find-SchemaElement -Schema $this -ElementName $item)
   }
+  [object]Find([string]$item, [boolean]$IsDefinition) {
+    return (Find-SchemaElement -Schema $this -ElementName $item -Isdefinition:$IsDefinition)
+  }
   [object]ToString() {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } }, @{Name = '$definitions'; Exp = { $_.definitions } } -ExcludeProperty id, schema, definitions | ConvertTo-Json)
   }
@@ -614,14 +617,18 @@ function Find-Element {
     [parameter(Mandatory = $true, ParameterSetName = 'name')]
     [parameter(Mandatory = $true, ParameterSetName = 'type')]
     [parameter(Mandatory = $true, ParameterSetName = 'path')]
+    [parameter(Mandatory = $true, ParameterSetName = 'definitions')]
     $Schema,
     [parameter(Mandatory = $false, ParameterSetName = 'name')]
+    [parameter(Mandatory = $false, ParameterSetName = 'definitions')]
     [string]$ElementName,
     [parameter(Mandatory = $false, ParameterSetName = 'type')]
     [ValidateSet('schemaString', 'schemaNumber', 'schemaInteger', 'schemaObject', 'schemaBoolean', 'schemaArray', 'schemaDocument')]
     [string]$ElementType,
     [parameter(Mandatory = $false, ParameterSetName = 'path')]
-    [string]$ElementPath
+    [string]$ElementPath,
+    [parameter(Mandatory = $true, ParameterSetName = 'definitions')]
+    [switch]$IsDefinition
   )
   switch ($PSCmdlet.ParameterSetName) {
     'name' {
@@ -701,6 +708,21 @@ function Find-Element {
         }
         'array' {
           Find-SchemaElement -Schema ($Schema.items.anyof.properties.($items[0])) -ElementPath $NewPath
+        }
+      }
+    }
+    'definitions' {
+      Write-Verbose "Definition Search"
+      if ($schema.GetType().Name -eq 'schemaDocument') {
+        if ($schema.definitions.psobject.properties.name.Contains($ElementName)) {
+          return $Schema.definitions.$ElementName
+        }
+        else {
+          $keys = $schema.definitions.psobject.properties.name
+          foreach ($key in $keys) {
+            write-verbose $key
+            Find-SchemaElement -Schema ($Schema) -ElementName $key -IsDefinition
+          }
         }
       }
     }
