@@ -296,6 +296,14 @@ class schemaDocument {
     }
   }
 }
+class schemaDefinition {
+  [ValidateSet('object')]
+  [string]$type = 'object'
+  [object]$properties
+  [string[]]$required
+
+  schemaDefinition () {}
+}
 $Global:RawSchema = $null;
 function Get-Document {
   [CmdletBinding(
@@ -359,6 +367,35 @@ function Get-Definition {
       $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/') + 1, ($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/')) - 1)
       $Definition = Get-SchemaDocument -Path $Reference.AbsoluteUri
       return (ConvertTo-SchemaElement -object ($Definition.definitions.($DefinitionName)))
+    }
+  }
+}
+function ConvertTo-Definition {
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaDefinition.md#convertto-schemadefinition',
+    PositionalBinding = $true)]
+  #[OutputType([string],[schemaDefinition])]
+  param (
+    [Parameter(ValueFromPipeline)]
+    [object]$Definition,
+    [switch]$AsJson
+  )
+  process {
+    Write-Verbose "Creating New Definition";
+    $NewDefinition = New-SchemaElement -Type definition;
+    $NewDefinition.required = $Definition.required;
+    $NewDefinition.properties = $Definition.properties;
+    foreach ($defProperty in $Definition.properties.psobject.properties.name) {
+      write-verbose "Definition Property : $($defProperty)"
+      if ($NewDefinition.properties.($defProperty).type) {
+        write-verbose "Found type property"
+        $NewDefinition.properties.($defProperty).type = $Definition.properties.($defProperty).type.split(' ')[0]
+      }
+    }
+    if ($AsJson) {
+      return ($NewDefinition |ConvertTo-Json -Depth 99)
+    } else {
+      return $NewDefinition
     }
   }
 }
@@ -557,7 +594,7 @@ function New-Property {
     [ValidateNotNullOrEmpty()]
     [string]$Name,
 
-    [ValidateSet([schemaDocument], [schemaNumber], [schemaInteger], [schemaString], [schemaObject], [schemaArray], [schemaBoolean])]
+    [ValidateSet([schemaDocument], [schemaNumber], [schemaInteger], [schemaString], [schemaObject], [schemaArray], [schemaBoolean],[schemaDefinition])]
     $Value,
 
     $Array
@@ -578,7 +615,7 @@ function New-Element {
     PositionalBinding = $true)]
   [OutputType([schemaDocument], [schemaString], [schemaInteger], [schemaNumber], [schemaBoolean], [schemaObject], [schemaArray])]
   param (
-    [ValidateSet('string', 'number', 'integer', 'object', 'boolean', 'array', 'document')]
+    [ValidateSet('string', 'number', 'integer', 'object', 'boolean', 'array', 'document', 'definition')]
     [string]$Type
   )
   if ($PSCmdlet.ShouldProcess("NewElement")) {
@@ -604,6 +641,9 @@ function New-Element {
       }
       'document' {
         [schemaDocument]::new()
+      }
+      'definition' {
+        [schemaDefinition]::new()
       }
     }
   }
@@ -833,6 +873,14 @@ function ConvertTo-Element {
         elseif ($prop -eq '$schema') {
           write-verbose "Found `$schema property"
           $Result.schema = $Object.$prop
+        }
+        elseif ($prop -eq 'definitions') {
+          write-verbose "Found Definitions"
+          write-verbose $object.$prop;
+          foreach ($definition in $object.$prop.psobject.properties) {
+            write-verbose "Definition Name : $($Definition.Name)"
+            $Result.definitions += ((New-SchemaProperty -Name $definition.Name -Value ($definition.Value |ConvertTo-SchemaDefinition)))
+          }
         }
         else {
           if ($Object.$prop.GetType().IsArray)
