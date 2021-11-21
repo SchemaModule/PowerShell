@@ -226,6 +226,15 @@ class schemaArray {
   [array]ToArray() {
     return (ConvertFrom-SchemaArray -Array $this)
   }
+  [array]ToArray([int]$Depth) {
+    return (ConvertFrom-SchemaArray -Array $this -depth $Depth)
+  }
+  [object]ToObject() {
+    return (ConvertFrom-SchemaArray -Array $this)[0]
+  }
+  [object]ToObject([int]$Depth) {
+    return (ConvertFrom-SchemaArray -Array $this -depth $Depth)[0]
+  }
 }
 class schemaDocument {
   [ValidateSet('object')]
