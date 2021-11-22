@@ -919,11 +919,11 @@ function ConvertTo-Element {
           $Result.id = $Object.$prop
         }
         elseif ($prop -eq 'items') {
-          if ($Object.items.psobject.properties.name.contains('properties')) {
-            Write-Verbose "Found invalid nested object"
-            $Result.items += (New-SchemaProperty -Array oneOf -Value (ConvertTo-SchemaElement -object $Object.items))
-          }
-          else {
+          # if ($Object.items.psobject.properties.name.contains('properties')) {
+          #   Write-Verbose "Found invalid nested object"
+          #   $Result.items += (New-SchemaProperty -Array oneOf -Value (ConvertTo-SchemaElement -object $Object.items))
+          # }
+          # else {
             foreach ($oprop in $Object.items.psobject.properties.name) {
               if (!($oprop -eq '$id')) {
                 write-verbose ($Object.items.psobject.properties.name | out-string)
@@ -933,15 +933,18 @@ function ConvertTo-Element {
                   if ($Object.items.($oprop).contains('definitions')) {
                     $Result = Get-SchemaDefinition -Reference $Object.items.($oprop)
                   }
-                  else {
+                  elseif ($Object.items.($oprop).contains('http')) {
                     $Result = Get-SchemaReference -Reference $Object.items.($oprop)
+                  }
+                  else {
+                    $Result = Get-SchemaDefinition -Reference $Object.items.($oprop)
                   }
                 } else {
                   $Result.items += ($Object.items.$oprop.GetEnumerator() | ForEach-Object { ((New-SchemaProperty -Name $oprop -Value (ConvertTo-SchemaElement -object $_) -Array $oprop)) })
                 }
               }
             }
-          }
+          #}
         }
         else {
           if ($Object.$prop.GetType().IsArray)
