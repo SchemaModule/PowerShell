@@ -233,6 +233,7 @@ class schemaArray {
     return (ConvertFrom-SchemaArray -Array $this)[0]
   }
   [object]ToObject([int]$Depth) {
+    write-verbose $this |out-String
     return (ConvertFrom-SchemaArray -Array $this -depth $Depth)[0]
   }
 }
@@ -931,13 +932,13 @@ function ConvertTo-Element {
                 Write-Verbose $oprop
                 if ($oprop -eq '$ref') {
                   if ($Object.items.($oprop).contains('definitions')) {
-                    $Result = Get-SchemaDefinition -Reference $Object.items.($oprop)
+                    $Result.items += Get-SchemaDefinition -Reference $Object.items.($oprop)
                   }
                   elseif ($Object.items.($oprop).contains('http')) {
-                    $Result = Get-SchemaReference -Reference $Object.items.($oprop)
+                    $Result.items += Get-SchemaReference -Reference $Object.items.($oprop)
                   }
                   else {
-                    $Result = Get-SchemaDefinition -Reference $Object.items.($oprop)
+                    $Result.items += Get-SchemaDefinition -Reference $Object.items.($oprop)
                   }
                 } else {
                   $Result.items += ($Object.items.$oprop.GetEnumerator() | ForEach-Object { ((New-SchemaProperty -Name $oprop -Value (ConvertTo-SchemaElement -object $_) -Array $oprop)) })
@@ -1047,10 +1048,11 @@ function ConvertFrom-Array {
       Write-Verbose "ConvertFrom-Array: Calculated: $($Depth)"
       foreach ($item in $Array.items) {
         Write-Verbose "ConvertFrom-Array: Found: $($item |Out-string)"
-        foreach ($key in $item.psobject.Properties.name) {
-          Write-Verbose "ConvertFrom-Array: Found: $($key)"
-          $retVal += (ConvertFrom-SchemaObject -Object $item.$key -depth $Depth)
-        }
+#        foreach ($key in $item.psobject.Properties.name) {
+#          Write-Verbose "ConvertFrom-Array: Found: $($key)"
+#          $retVal += (ConvertFrom-SchemaObject -Object $item.$key -depth $Depth)
+          $retVal += (ConvertFrom-SchemaObject -Object $item -depth $Depth)
+#        }
       }
     }
     return $retVal
