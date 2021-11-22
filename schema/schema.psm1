@@ -367,15 +367,23 @@ function Get-Definition {
     [string]$Reference
   )
   process {
+    Write-Verbose "Reference $($Reference)"
     if ($Reference.Contains('#')) {
+      Write-Verbose "Path to definitions"
       $DefinitionName = $Reference.Split('/')[2]
       $Definition = $Global:RawSchema.definitions.($DefinitionName)
       return (ConvertTo-SchemaElement -object ($Definition))
-    } else {
+    } elseif ($Reference.Contains('http')) {
+      write-verbose "Uri to definitions"
       $Reference = [System.Uri]::new($Reference);
       $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/') + 1, ($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/')) - 1)
       $Definition = Get-SchemaDocument -Path $Reference.AbsoluteUri
       return (ConvertTo-SchemaElement -object ($Definition.definitions.($DefinitionName)))
+    } else {
+      write-verbose "Named definition"
+      $DefinitionName = $Reference;
+      $Definition = $Global:RawSchema.definitions.($DefinitionName)
+      return (ConvertTo-SchemaElement -object ($Definition))
     }
   }
 }
@@ -947,11 +955,15 @@ function ConvertTo-Element {
     }
     default {
       if ($Object.('$ref')) {
+        write-verbose "ConvertTo-Element : Reference : $(($Object.('$ref'))|Out-String)"
         if ($Object.('$ref').contains('definitions')) {
           $Result = Get-SchemaDefinition -Reference $Object.('$ref')
         }
-        else {
+        elseif ($Object.('$ref').contains('http')) {
           $Result = Get-SchemaReference -Reference $Object.('$ref')
+        }
+        else {
+          $Result = Get-SchemaDefinition -Reference $Object.('$ref')
         }
       }
     }
