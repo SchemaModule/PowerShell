@@ -706,14 +706,28 @@ function Find-Element {
         }
         'array' {
           write-verbose "array"
-          if ($Schema.items.anyOf.properties.keys -contains $ElementName) {
-            return $Schema.items.anyOf.properties.$ElementName
-          }
-          else {
-            $keys = $Schema.items.anyOf.properties.keys
-            foreach ($key in $keys) {
-              write-verbose $key
-              Find-SchemaElement -Schema ($Schema.items.anyOf.properties.$key) -ElementName $ElementName
+          [string]$Selector = $Schema.items.properties.keys -match "of"
+          if ($Selector){
+            if ($Schema.items.$Selector.properties.keys -contains $ElementName) {
+              return $Schema.items.$Selector.properties.$ElementName
+            }
+            else {
+              $keys = $Schema.items.$Selector.properties.keys
+              foreach ($key in $keys) {
+                write-verbose $key
+                Find-SchemaElement -Schema ($Schema.items.$Selector.properties.$key) -ElementName $ElementName
+              }
+            }
+          } else {
+            if ($Schema.items.properties.keys -contains $ElementName) {
+              return $Schema.items.properties.$ElementName
+            }
+            else {
+              $keys = $Schema.items.properties.keys
+              foreach ($key in $keys) {
+                write-verbose $key
+                Find-SchemaElement -Schema ($Schema.items.properties.$key) -ElementName $ElementName
+              }
             }
           }
         }
