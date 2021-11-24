@@ -8,6 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Move code out of functions into classes
+- Better Error handling support
+
+## [3.0.0] - 2021-11-24
+
+### Added
+- Added support for processing definitions
+- Added schemaDefinition Class
+- Added type support for Definitions
+- Added ConvertTo-SchemaDefinition function
+- Added ToObject support for Arrays
+- Added Global:RawSchema variable to view incoming schema before processing
+
+### Updated
+
+- Find-SchemaElement handles arrays and definitions
+- ConvertTo-SchemaElement can now work with definitions properly
+- Get-SchemaDefinition has better support for actual definitions
 
 ## [2.0.0] - 2020-12-22
 
