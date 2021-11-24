@@ -16,7 +16,7 @@ A function to create new Schema Number object
 ```
 New-SchemaNumber [-id <String>] [-ref <String>] [-minimum <Decimal>] [-maximum <Decimal>]
  [-exclusiveMinimum <Decimal>] [-exclusiveMaximum <Decimal>] [-multipleOf <Decimal>] [-title <String>]
- [-description <String>] [-default <Decimal>] [-examples <Decimal[]>] [<CommonParameters>]
+ [-description <String>] [-default <Decimal>] [-examples <Decimal[]>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -233,24 +233,46 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### CommonParameters
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
 
+```yaml
+Type: System.Management.Automation.SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs. The cmdlet is not run.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### schemaNumber
-
-The number type is used for any numeric type, either integers or floating point
-numbers. In PowerShell this is a double.
-
-[Schema Number](http://json-schema.org/understanding-json-schema/reference/numeric.html#number)
-
-[Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
+The number type is used for any numeric type, either integers or floating point numbers. In PowerShell this is a double. Schema Number (http://json-schema.org/understanding-json-schema/reference/numeric.html#number) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)
 
 ## NOTES
 

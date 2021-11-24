@@ -60,6 +60,12 @@ Classes
     Schema Object
     Schema Types
 
+    SCHEMADEFINITION
+    Sometimes we have small subschemas that are only intended for use in the
+    current schema and it doesn't make sense to define them as separate schemas.
+    Schema Definition
+    Schema Types
+
     SCHEMAARRAY
     Arrays are used for ordered elements. In JSON, each element in an array may
     be of a different type.

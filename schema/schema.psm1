@@ -226,6 +226,16 @@ class schemaArray {
   [array]ToArray() {
     return (ConvertFrom-SchemaArray -Array $this)
   }
+  [array]ToArray([int]$Depth) {
+    return (ConvertFrom-SchemaArray -Array $this -depth $Depth)
+  }
+  [object]ToObject() {
+    return (ConvertFrom-SchemaArray -Array $this)[0]
+  }
+  [object]ToObject([int]$Depth) {
+    write-verbose $this |out-String
+    return (ConvertFrom-SchemaArray -Array $this -depth $Depth)[0]
+  }
 }
 class schemaDocument {
   [ValidateSet('object')]
@@ -254,6 +264,9 @@ class schemaDocument {
   }
   [object]Find([string]$item) {
     return (Find-SchemaElement -Schema $this -ElementName $item)
+  }
+  [object]Find([string]$item, [boolean]$IsDefinition) {
+    return (Find-SchemaElement -Schema $this -ElementName $item -Isdefinition:$IsDefinition)
   }
   [object]ToString() {
     return ($this | Select-Object *, @{Name = '$id'; Exp = { $_.id } }, @{Name = '$schema'; Exp = { $_.schema } }, @{Name = '$definitions'; Exp = { $_.definitions } } -ExcludeProperty id, schema, definitions | ConvertTo-Json)
@@ -293,6 +306,15 @@ class schemaDocument {
     }
   }
 }
+class schemaDefinition {
+  [ValidateSet('object')]
+  [string]$type = 'object'
+  [object]$properties
+  [string[]]$required
+
+  schemaDefinition () {}
+}
+$Global:RawSchema = $null;
 function Get-Document {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/Get-SchemaDocument.md#get-schemadocument',
@@ -317,17 +339,19 @@ function Get-Document {
       switch ($Schema.Scheme) {
         'file' {
           Write-Verbose "Incoming Filepath";
-          Return (ConvertTo-SchemaElement -object (Get-Content -Path $Path | ConvertFrom-Json));
+          $Global:RawSchema = (Get-Content -Path $Path | ConvertFrom-Json);
+
         }
         'https' {
           Write-Verbose "Incoming HTTPs path";
-          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json));
+          $Global:RawSchema = (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json);
         }
         'http' {
           Write-Verbose "Incoming HTTP path";
-          Return (ConvertTo-SchemaElement -object (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json));
+          $Global:RawSchema = (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json);
         }
       }
+      Return (ConvertTo-SchemaElement -object $Global:RawSchema -IsRootSchema);
     }
     catch {
       throw $_;
@@ -341,12 +365,56 @@ function Get-Definition {
   [OutputType([schemaDocument], [schemaString], [schemaInteger], [schemaNumber], [schemaBoolean], [schemaObject], [schemaArray])]
   param (
     [Parameter(ValueFromPipeline)]
-    [System.Uri]$Reference
+    [string]$Reference
   )
   process {
-    $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/') + 1, ($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/')) - 1)
-    $Definition = Get-SchemaDocument -Path $Reference.AbsoluteUri
-    return (ConvertTo-SchemaElement -object ($Definition.definitions.($DefinitionName)))
+    Write-Verbose "Reference $($Reference)"
+    if ($Reference.Contains('#')) {
+      Write-Verbose "Path to definitions"
+      $DefinitionName = $Reference.Split('/')[2]
+      $Definition = $Global:RawSchema.definitions.($DefinitionName)
+      return (ConvertTo-SchemaElement -object ($Definition))
+    } elseif ($Reference.Contains('http')) {
+      write-verbose "Uri to definitions"
+      $Reference = [System.Uri]::new($Reference);
+      $DefinitionName = $Reference.Fragment.Substring($Reference.Fragment.LastIndexOf('/') + 1, ($Reference.Fragment.Length - $Reference.Fragment.LastIndexOf('/')) - 1)
+      $Definition = Get-SchemaDocument -Path $Reference.AbsoluteUri
+      return (ConvertTo-SchemaElement -object ($Definition.definitions.($DefinitionName)))
+    } else {
+      write-verbose "Named definition"
+      $DefinitionName = $Reference;
+      $Definition = $Global:RawSchema.definitions.($DefinitionName)
+      return (ConvertTo-SchemaElement -object ($Definition))
+    }
+  }
+}
+function ConvertTo-Definition {
+  [CmdletBinding(
+    HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaDefinition.md#convertto-schemadefinition',
+    PositionalBinding = $true)]
+  [OutputType([string],[schemaDefinition])]
+  param (
+    [Parameter(ValueFromPipeline)]
+    [object]$Definition,
+    [switch]$AsJson
+  )
+  process {
+    Write-Verbose "Creating New Definition";
+    $NewDefinition = New-SchemaElement -Type definition;
+    $NewDefinition.required = $Definition.required;
+    $NewDefinition.properties = $Definition.properties;
+    foreach ($defProperty in $Definition.properties.psobject.properties.name) {
+      write-verbose "Definition Property : $($defProperty)"
+      if ($NewDefinition.properties.($defProperty).type) {
+        write-verbose "Found type property"
+        $NewDefinition.properties.($defProperty).type = $Definition.properties.($defProperty).type.split(' ')[0]
+      }
+    }
+    if ($AsJson) {
+      return ($NewDefinition |ConvertTo-Json -Depth 99)
+    } else {
+      return $NewDefinition
+    }
   }
 }
 function Get-Reference {
@@ -544,10 +612,9 @@ function New-Property {
     [ValidateNotNullOrEmpty()]
     [string]$Name,
 
-    [ValidateSet([schemaDocument], [schemaNumber], [schemaInteger], [schemaString], [schemaObject], [schemaArray], [schemaBoolean])]
+    [ValidateSet([schemaDocument], [schemaNumber], [schemaInteger], [schemaString], [schemaObject], [schemaArray], [schemaBoolean],[schemaDefinition])]
     $Value,
 
-    [ValidateSet('allOf', 'anyOf', 'oneOf')]
     $Array
   )
   if ($PSCmdlet.ShouldProcess("NewProperty")) {
@@ -566,7 +633,7 @@ function New-Element {
     PositionalBinding = $true)]
   [OutputType([schemaDocument], [schemaString], [schemaInteger], [schemaNumber], [schemaBoolean], [schemaObject], [schemaArray])]
   param (
-    [ValidateSet('string', 'number', 'integer', 'object', 'boolean', 'array', 'document')]
+    [ValidateSet('string', 'number', 'integer', 'object', 'boolean', 'array', 'document', 'definition')]
     [string]$Type
   )
   if ($PSCmdlet.ShouldProcess("NewElement")) {
@@ -593,6 +660,9 @@ function New-Element {
       'document' {
         [schemaDocument]::new()
       }
+      'definition' {
+        [schemaDefinition]::new()
+      }
     }
   }
 }
@@ -605,14 +675,18 @@ function Find-Element {
     [parameter(Mandatory = $true, ParameterSetName = 'name')]
     [parameter(Mandatory = $true, ParameterSetName = 'type')]
     [parameter(Mandatory = $true, ParameterSetName = 'path')]
+    [parameter(Mandatory = $true, ParameterSetName = 'definitions')]
     $Schema,
     [parameter(Mandatory = $false, ParameterSetName = 'name')]
+    [parameter(Mandatory = $false, ParameterSetName = 'definitions')]
     [string]$ElementName,
     [parameter(Mandatory = $false, ParameterSetName = 'type')]
     [ValidateSet('schemaString', 'schemaNumber', 'schemaInteger', 'schemaObject', 'schemaBoolean', 'schemaArray', 'schemaDocument')]
     [string]$ElementType,
     [parameter(Mandatory = $false, ParameterSetName = 'path')]
-    [string]$ElementPath
+    [string]$ElementPath,
+    [parameter(Mandatory = $true, ParameterSetName = 'definitions')]
+    [switch]$IsDefinition
   )
   switch ($PSCmdlet.ParameterSetName) {
     'name' {
@@ -632,14 +706,34 @@ function Find-Element {
         }
         'array' {
           write-verbose "array"
-          if ($Schema.items.anyOf.properties.keys -contains $ElementName) {
-            return $Schema.items.anyOf.properties.$ElementName
-          }
-          else {
-            $keys = $Schema.items.anyOf.properties.keys
-            foreach ($key in $keys) {
-              write-verbose $key
-              Find-SchemaElement -Schema ($Schema.items.anyOf.properties.$key) -ElementName $ElementName
+          #[array]$keys = $Schema.items.properties.keys|ForEach-Object {$_.ToLower()}
+          [array]$keys = $Schema.items.psobject.Properties.Name.ToLower()
+          if ($keys.Contains('oneof')) { $Selector = "OneOf" }
+          if ($keys.Contains('allof')) { $Selector = "AllOf" }
+          if ($keys.Contains('anyof')) { $Selector = "AnyOf" }
+          if ($Selector){
+            write-verbose "Found Selector : $($Selector)"
+            if ($Schema.items.$Selector.properties.keys -contains $ElementName) {
+              return $Schema.items.$Selector.properties.$ElementName
+            }
+            else {
+              $keys = $Schema.items.$Selector.properties.keys
+              foreach ($key in $keys) {
+                write-verbose $key
+                Find-SchemaElement -Schema ($Schema.items.$Selector.properties.$key) -ElementName $ElementName
+              }
+            }
+          } else {
+            write-verbose "No Selector"
+            if ($Schema.items.properties.keys -contains $ElementName) {
+              return $Schema.items.properties.$ElementName
+            }
+            else {
+              $keys = $Schema.items.properties.keys
+              foreach ($key in $keys) {
+                write-verbose $key
+                Find-SchemaElement -Schema ($Schema.items.properties.$key) -ElementName $ElementName
+              }
             }
           }
         }
@@ -695,6 +789,21 @@ function Find-Element {
         }
       }
     }
+    'definitions' {
+      Write-Verbose "Definition Search"
+      if ($schema.GetType().Name -eq 'schemaDocument') {
+        if ($schema.definitions.psobject.properties.name.Contains($ElementName)) {
+          return $Schema.definitions.$ElementName
+        }
+        else {
+          $keys = $schema.definitions.psobject.properties.name
+          foreach ($key in $keys) {
+            write-verbose $key
+            Find-SchemaElement -Schema ($Schema) -ElementName $key -IsDefinition
+          }
+        }
+      }
+    }
   }
 }
 function ConvertTo-Element {
@@ -704,7 +813,8 @@ function ConvertTo-Element {
   [OutputType([schemaDocument], [schemaString], [schemaInteger], [schemaNumber], [schemaBoolean], [schemaObject], [schemaArray])]
   param (
     [parameter(Mandatory = $true, Position = 0)]
-    [object]$Object
+    [object]$Object,
+    [switch]$IsRootSchema
   )
   write-verbose ($Object | Out-String)
   switch ($Object.type) {
@@ -717,7 +827,12 @@ function ConvertTo-Element {
           $Result.id = $Object.$prop
         }
         else {
-          $Result.$prop = $Object.$prop
+          if ($Object.$prop.GetType().IsArray)
+          {
+            $Result.$prop = $Object.$prop[0]
+          } else {
+            $Result.$prop = $Object.$prop
+          }
         }
         write-verbose ($Result | out-String)
       }
@@ -730,7 +845,12 @@ function ConvertTo-Element {
           $Result.id = $Object.$prop
         }
         else {
-          $Result.$prop = $Object.$prop
+          if ($Object.$prop.GetType().IsArray)
+          {
+            $Result.$prop = $Object.$prop[0]
+          } else {
+            $Result.$prop = $Object.$prop
+          }
         }
       }
     }
@@ -742,7 +862,12 @@ function ConvertTo-Element {
           $Result.id = $Object.$prop
         }
         else {
-          $Result.$prop = $Object.$prop
+          if ($Object.$prop.GetType().IsArray)
+          {
+            $Result.$prop = $Object.$prop[0]
+          } else {
+            $Result.$prop = $Object.$prop
+          }
         }
       }
     }
@@ -754,12 +879,17 @@ function ConvertTo-Element {
           $Result.id = $Object.$prop
         }
         else {
-          $Result.$prop = $Object.$prop
+          if ($Object.$prop.GetType().IsArray)
+          {
+            $Result.$prop = $Object.$prop[0]
+          } else {
+            $Result.$prop = $Object.$prop
+          }
         }
       }
     }
     'object' {
-      if ($Object.psobject.properties.name.Contains('$schema')) {
+      if ($Object.psobject.properties.name.Contains('$schema') -or $IsRootSchema) {
         write-verbose "Creating schemaDcoument object"
         $Result = New-SchemaElement -Type document
       }
@@ -782,10 +912,24 @@ function ConvertTo-Element {
           write-verbose "Found `$schema property"
           $Result.schema = $Object.$prop
         }
+        elseif ($prop -eq 'definitions') {
+          write-verbose "Found Definitions"
+          write-verbose $object.$prop;
+          foreach ($definition in $object.$prop.psobject.properties) {
+            write-verbose "Definition Name : $($Definition.Name)"
+            $Result.definitions += ((New-SchemaProperty -Name $definition.Name -Value ($definition.Value |ConvertTo-SchemaDefinition)))
+          }
+        }
         else {
-          $Result.$prop = $Object.$prop
+          if ($Object.$prop.GetType().IsArray)
+          {
+            $Result.$prop = $Object.$prop[0]
+          } else {
+            $Result.$prop = $Object.$prop
+          }
         }
       }
+      $Result.required = $Object.required;
     }
     'array' {
       write-verbose "Creating schemaArray object"
@@ -796,33 +940,54 @@ function ConvertTo-Element {
           $Result.id = $Object.$prop
         }
         elseif ($prop -eq 'items') {
-          if ($Object.items.psobject.properties.name.contains('properties')) {
-            Write-Verbose "Found invalid nested object"
-            $Result.items += (New-SchemaProperty -Array oneOf -Value (ConvertTo-SchemaElement -object $Object.items))
-          }
-          else {
+          # if ($Object.items.psobject.properties.name.contains('properties')) {
+          #   Write-Verbose "Found invalid nested object"
+          #   $Result.items += (New-SchemaProperty -Array oneOf -Value (ConvertTo-SchemaElement -object $Object.items))
+          # }
+          # else {
             foreach ($oprop in $Object.items.psobject.properties.name) {
               if (!($oprop -eq '$id')) {
                 write-verbose ($Object.items.psobject.properties.name | out-string)
                 Write-Verbose "Found valid array object"
                 Write-Verbose $oprop
-                $Result.items += ($Object.items.$oprop.GetEnumerator() | ForEach-Object { ((New-SchemaProperty -Name $oprop -Value (ConvertTo-SchemaElement -object $_) -Array $oprop)) })
+                if ($oprop -eq '$ref') {
+                  if ($Object.items.($oprop).contains('definitions')) {
+                    $Result.items += Get-SchemaDefinition -Reference $Object.items.($oprop)
+                  }
+                  elseif ($Object.items.($oprop).contains('http')) {
+                    $Result.items += Get-SchemaReference -Reference $Object.items.($oprop)
+                  }
+                  else {
+                    $Result.items += Get-SchemaDefinition -Reference $Object.items.($oprop)
+                  }
+                } else {
+                  $Result.items += ($Object.items.$oprop.GetEnumerator() | ForEach-Object { ((New-SchemaProperty -Name $oprop -Value (ConvertTo-SchemaElement -object $_) -Array $oprop)) })
+                }
               }
             }
-          }
+          #}
         }
         else {
-          $Result.$prop = $Object.$prop
+          if ($Object.$prop.GetType().IsArray)
+          {
+            $Result.$prop = $Object.$prop[0]
+          } else {
+            $Result.$prop = $Object.$prop
+          }
         }
       }
     }
     default {
       if ($Object.('$ref')) {
+        write-verbose "ConvertTo-Element : Reference : $(($Object.('$ref'))|Out-String)"
         if ($Object.('$ref').contains('definitions')) {
           $Result = Get-SchemaDefinition -Reference $Object.('$ref')
         }
-        else {
+        elseif ($Object.('$ref').contains('http')) {
           $Result = Get-SchemaReference -Reference $Object.('$ref')
+        }
+        else {
+          $Result = Get-SchemaDefinition -Reference $Object.('$ref')
         }
       }
     }
@@ -903,10 +1068,20 @@ function ConvertFrom-Array {
       Write-Verbose "ConvertFrom-Array: Calculated: $($Depth)"
       foreach ($item in $Array.items) {
         Write-Verbose "ConvertFrom-Array: Found: $($item |Out-string)"
-        foreach ($key in $item.psobject.Properties.name) {
-          Write-Verbose "ConvertFrom-Array: Found: $($key)"
-          $retVal += (ConvertFrom-SchemaObject -Object $item.$key -depth $Depth)
+        [array]$keys = $item.psobject.Properties.Name.ToLower()
+        if ($keys.Contains('oneof')) { $Selector = "OneOf" }
+        if ($keys.Contains('allof')) { $Selector = "AllOf" }
+        if ($keys.Contains('anyof')) { $Selector = "AnyOf" }
+        if ($Selector) {
+          write-verbose "Selector : $($Selector)"
+          $retVal += (ConvertFrom-SchemaObject -Object $item.$Selector -depth $Depth)
+        } else {
+          $retVal += (ConvertFrom-SchemaObject -Object $item -depth $Depth)
         }
+#        foreach ($key in $item.psobject.Properties.name) {
+#          Write-Verbose "ConvertFrom-Array: Found: $($key)"
+#          $retVal += (ConvertFrom-SchemaObject -Object $item.$key -depth $Depth)
+#        }
       }
     }
     return $retVal

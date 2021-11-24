@@ -82,6 +82,15 @@ to as a "property".
 
 [Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
 
+### schemaDefinition
+
+Sometimes we have small subschemas that are only intended for use in the current
+schema and it doesn’t make sense to define them as separate schemas.
+
+[Schema Definition](https://json-schema.org/understanding-json-schema/structuring.html#defs)
+
+[Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
+
 ### schemaArray
 
 Arrays are used for ordered elements. In JSON, each element in an array may be

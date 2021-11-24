@@ -16,7 +16,8 @@ A function to create new Schema Integer object
 ```
 New-SchemaInteger [-id <String>] [-ref <String>] [-minimum <Int32>] [-maximum <Int32>]
  [-exclusiveMinimum <Int32>] [-exclusiveMaximum <Int32>] [-multipleOf <Int32>] [-enum <Int32[]>]
- [-title <String>] [-description <String>] [-default <Int32>] [-examples <Int32[]>] [<CommonParameters>]
+ [-title <String>] [-description <String>] [-default <Int32>] [-examples <Int32[]>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -35,7 +36,6 @@ $id         :
 title       : Width
 description : The width in feet of the room
 default     : 0
-
 ```
 
 A simple example of usage
@@ -251,23 +251,46 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### CommonParameters
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
 
+```yaml
+Type: System.Management.Automation.SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs. The cmdlet is not run.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### schemaInteger
-
-The integer type is used for integral numbers. In PowerShell this is an int32
-
-[Schema Integer](http://json-schema.org/understanding-json-schema/reference/numeric.html#integer)
-
-[Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
+The integer type is used for integral numbers. In PowerShell this is an int32 Schema Integer (http://json-schema.org/understanding-json-schema/reference/numeric.html#integer) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)
 
 ## NOTES
 

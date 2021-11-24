@@ -160,7 +160,6 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
@@ -170,14 +169,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### schemaBoolean
-
-The boolean type matches only two special values: true and false. Note that
-values that evaluate to true or false, such as 1 and 0, are not accepted by
-the schema.
-
-[Schema Boolean](http://json-schema.org/understanding-json-schema/reference/boolean.html)
-
-[Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
 
 ## NOTES
 

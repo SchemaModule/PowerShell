@@ -80,27 +80,17 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ### System.String
-
 A local or remote Json Schema file as defined by json-schema.org
 
 ## OUTPUTS
 
 ### schemaDocument
-
-This class is really modified object that contains the $schema attribute as well
-as validation on what values can be present for that attribute.
-
-[Schema Object](https://json-schema.org/understanding-json-schema/reference/object.html)
-
-[Schema Keyword](https://json-schema.org/understanding-json-schema/reference/schema.html)
-
-[Schema Types](https://json-schema.org/understanding-json-schema/reference/type.html)
+This class is really modified object that contains the $schema attribute as well as validation on what values can be present for that attribute. Schema Object (https://json-schema.org/understanding-json-schema/reference/object.html) Schema Keyword (https://json-schema.org/understanding-json-schema/reference/schema.html) Schema Types (https://json-schema.org/understanding-json-schema/reference/type.html)
 
 ## NOTES
 
