@@ -392,7 +392,7 @@ function ConvertTo-Definition {
   [CmdletBinding(
     HelpURI = 'https://github.com/SchemaModule/PowerShell/blob/master/docs/ConvertTo-SchemaDefinition.md#convertto-schemadefinition',
     PositionalBinding = $true)]
-  #[OutputType([string],[schemaDefinition])]
+  [OutputType([string],[schemaDefinition])]
   param (
     [Parameter(ValueFromPipeline)]
     [object]$Definition,
