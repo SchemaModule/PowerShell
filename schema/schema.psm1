@@ -706,8 +706,13 @@ function Find-Element {
         }
         'array' {
           write-verbose "array"
-          [string]$Selector = $Schema.items.properties.keys -match "of"
+          #[array]$keys = $Schema.items.properties.keys|ForEach-Object {$_.ToLower()}
+          [array]$keys = $Schema.items.psobject.Properties.Name.ToLower()
+          if ($keys.Contains('oneof')) { $Selector = "OneOf" }
+          if ($keys.Contains('allof')) { $Selector = "AllOf" }
+          if ($keys.Contains('anyof')) { $Selector = "AnyOf" }
           if ($Selector){
+            write-verbose "Found Selector : $($Selector)"
             if ($Schema.items.$Selector.properties.keys -contains $ElementName) {
               return $Schema.items.$Selector.properties.$ElementName
             }
@@ -719,6 +724,7 @@ function Find-Element {
               }
             }
           } else {
+            write-verbose "No Selector"
             if ($Schema.items.properties.keys -contains $ElementName) {
               return $Schema.items.properties.$ElementName
             }
@@ -1062,10 +1068,19 @@ function ConvertFrom-Array {
       Write-Verbose "ConvertFrom-Array: Calculated: $($Depth)"
       foreach ($item in $Array.items) {
         Write-Verbose "ConvertFrom-Array: Found: $($item |Out-string)"
+        [array]$keys = $item.psobject.Properties.Name.ToLower()
+        if ($keys.Contains('oneof')) { $Selector = "OneOf" }
+        if ($keys.Contains('allof')) { $Selector = "AllOf" }
+        if ($keys.Contains('anyof')) { $Selector = "AnyOf" }
+        if ($Selector) {
+          write-verbose "Selector : $($Selector)"
+          $retVal += (ConvertFrom-SchemaObject -Object $item.$Selector -depth $Depth)
+        } else {
+          $retVal += (ConvertFrom-SchemaObject -Object $item -depth $Depth)
+        }
 #        foreach ($key in $item.psobject.Properties.name) {
 #          Write-Verbose "ConvertFrom-Array: Found: $($key)"
 #          $retVal += (ConvertFrom-SchemaObject -Object $item.$key -depth $Depth)
-          $retVal += (ConvertFrom-SchemaObject -Object $item -depth $Depth)
 #        }
       }
     }
