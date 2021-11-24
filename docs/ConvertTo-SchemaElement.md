@@ -72,7 +72,9 @@ Format-List CmdLet.
 ## PARAMETERS
 
 ### -IsRootSchema
-{{ Fill IsRootSchema Description }}
+
+This switch allows the function to know when it's working with the root of a
+schema document versus a regular object.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
