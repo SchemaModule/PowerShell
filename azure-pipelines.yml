@@ -12,7 +12,7 @@ resources:
   repositories:
   - repository: tools
     type: github
-    name: Azure-Devops-PowerShell-Module/tools
+    name: SchemaModule/tools
     endpoint: SchemaModule
     ref: refs/heads/master
   - repository: powershell
