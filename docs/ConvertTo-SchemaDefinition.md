@@ -16,7 +16,7 @@ schemaDefinition class or a json string.
 ## SYNTAX
 
 ```
-ConvertTo-SchemaDefinition [[-Definition] <Object>] [-AsJson]  [<CommonParameters>]
+ConvertTo-SchemaDefinition [[-Definition] <Object>] [-AsJson] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -42,7 +42,6 @@ required    :
 
 This example shows how to use the function to convert an object into a schema
 class.
-
 
 ## PARAMETERS
 
@@ -94,10 +93,10 @@ Type: System.Object
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 

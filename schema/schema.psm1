@@ -322,7 +322,8 @@ function Get-Document {
   [OutputType([schemaDocument])]
   param (
     [Parameter(ValueFromPipeline)]
-    [string]$Path
+    [string]$Path,
+    [hashtable]$Headers
   )
 
   process {
@@ -344,13 +345,22 @@ function Get-Document {
         }
         'https' {
           Write-Verbose "Incoming HTTPs path";
-          $Global:RawSchema = (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json);
+          if ($Headers){
+            $Global:RawSchema = (Invoke-WebRequest -UseBasicParsing -Uri $Path -Headers $Headers | ConvertFrom-Json | ConvertFrom-Json);
+          } else {
+            $Global:RawSchema = (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json);
+          }
         }
         'http' {
           Write-Verbose "Incoming HTTP path";
-          $Global:RawSchema = (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json);
+          if ($Headers){
+            $Global:RawSchema = (Invoke-WebRequest -UseBasicParsing -Uri $Path -Headers $Headers | ConvertFrom-Json | ConvertFrom-Json);
+          } else {
+            $Global:RawSchema = (Invoke-WebRequest -UseBasicParsing -Uri $Path | ConvertFrom-Json);
+          }
         }
       }
+      write-verbose "converting"
       Return (ConvertTo-SchemaElement -object $Global:RawSchema -IsRootSchema);
     }
     catch {
