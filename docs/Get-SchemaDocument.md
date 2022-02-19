@@ -14,7 +14,7 @@ This function will return a schemaDocument object of the input Schema.
 ## SYNTAX
 
 ```
-Get-SchemaDocument [[-Path] <String>] [<CommonParameters>]
+Get-SchemaDocument [[-Path] <String>] [-Headers <Hashtable>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -62,6 +62,22 @@ properties  : @{checked=; dimensions=; id=; name=; price=; tags=}
 This example passes a json schema file into the function.
 
 ## PARAMETERS
+
+### -Headers
+
+This should be a hashtable of key/value pairs that the server is expecting.
+
+```yaml
+Type: System.Collections.Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -Path
 
